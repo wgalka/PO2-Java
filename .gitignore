@@ -1,0 +1,21 @@
+# Prywatne materiały dydaktyczne: sylabusy, skany, archiwa i pliki pomocnicze.
+# W repozytorium pojawiają się oba zapisy nazwy katalogu, dlatego ignorujemy oba.
+/priv/
+/prv/
+
+# Typowe artefakty projektów Java.
+target/
+out/
+*.class
+
+# Ustawienia lokalnych środowisk programistycznych.
+.idea/
+*.iml
+.vscode/
+nb-configuration.xml
+nbactions.xml
+.nb-gradle/
+
+# Pliki systemowe.
+.DS_Store
+Thumbs.db
