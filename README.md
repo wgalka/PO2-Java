@@ -11,6 +11,7 @@ Materiały do przedmiotu **Programowanie obiektowe** dla kierunku Informatyka i 
 | Semestr | III |
 | Zajęcia | 14 spotkań, łącznie 30 godzin laboratoryjnych |
 | Forma zaliczenia | Projekt z obroną |
+| Środowisko | IntelliJ IDEA, JDK 27 GA, JavaFX 27, Maven — stan na 13.10.2026 |
 
 ## Laboratoria
 
@@ -37,6 +38,8 @@ Zacznij od [konfiguracji IntelliJ IDEA i Maven](./2026-2027/srodowisko.md).
 Każdy lab zawiera plan spotkań, diagramy Mermaid, punkty kontrolne i opis materiałów do oddania.
 Diagramy pokazują zależności i zachowanie; dokładny wygląd GUI sprawdzaj w działającej aplikacji.
 W Lab 1 dostępna jest [galeria działających komponentów Swing](./2026-2027/lab1/demo/README.md).
+W Lab 2 uruchom [Layout Explorer JavaFX](./2026-2027/lab2/demo/README.md),
+aby porównać kontenery, zmieniać ich parametry i obserwować obsługę zdarzeń.
 
 Instrukcje uwzględniają [adaptacyjny układ, HiDPI i jasny/ciemny motyw](./2026-2027/jakosc-gui.md).
 Lab 1 zawiera responsywny kalkulator, Lab 2 adaptacyjny panel danych, a kolejne

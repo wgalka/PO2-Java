@@ -116,7 +116,7 @@ Wykonaj uruchomienie WAR, `GET`, formularz `POST`, walidację, wyświetlenie wyn
 1. Utwórz zwykły projekt Maven. Dodaj `packaging` równy `war`, zależności powyżej i poniższy plugin do `build/plugins`.
 2. W klasie servletu dopisz `package pl.uczelnia.lab5;`, a pliki JSP umieść dokładnie w `src/main/webapp/WEB-INF/views`.
 3. W oknie Maven uruchom **Lifecycle → package**. Wynikiem ma być `target/lab5.war`.
-4. Przygotuj Tomcat 10.1, uruchamiany na JDK 17. Skopiuj WAR do jego katalogu `webapps` i uruchom `bin/catalina.bat run` w terminalu IntelliJ, z katalogu Tomcata. Pozostaw terminal otwarty.
+4. Przygotuj Tomcat 10.1, uruchamiany na JDK 27 GA zgodnie z konfiguracją środowiska. Ustaw `JAVA_HOME` na katalog tego JDK. Skopiuj WAR do katalogu `webapps` Tomcata i uruchom `bin/catalina.bat run` w terminalu IntelliJ, z katalogu Tomcata. Pozostaw terminal otwarty.
 5. Otwórz `http://localhost:8080/lab5/hello`. Zatrzymasz serwer przez Ctrl+C. Przed podmianą WAR na kolejny build zatrzymaj serwer.
 
 ```xml

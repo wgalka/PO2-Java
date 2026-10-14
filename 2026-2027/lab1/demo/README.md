@@ -1,6 +1,6 @@
 # Galeria Swing — IntelliJ IDEA
 
-Otwórz [pom.xml](pom.xml) jako projekt Maven, wybierz JDK 17 lub nowszy i uruchom `LayoutGallery.main` z [kodu źródłowego](src/main/java/pl/uczelnia/lab1/LayoutGallery.java). Program nie wymaga zewnętrznych bibliotek.
+Otwórz [pom.xml](pom.xml) jako projekt Maven, wybierz JDK 27 GA i uruchom `LayoutGallery.main` z [kodu źródłowego](src/main/java/pl/uczelnia/lab1/LayoutGallery.java). Program nie wymaga zewnętrznych bibliotek.
 
 Pierwsza zakładka pokazuje sześć menedżerów układu. Zmieniaj rozmiar okna, porównuj rozmiary komórek i przełączaj karty `dane` / `analiza`. Druga zakładka zawiera menu `Plik`, sortowalną tabelę i status. `Otwórz` wybiera plik, `Nowy` i `Zapisz` demonstrują zdarzenia — nie wykonują importu ani zapisu. Dane ekonomiczne są syntetyczne.
 
@@ -16,7 +16,7 @@ W konfiguracji uruchomienia IntelliJ ustaw **Program arguments** na `--render ..
 Alternatywnie użyj terminala z JDK w katalogu `demo`:
 
 ```powershell
-javac -encoding UTF-8 --release 17 -d target/classes src/main/java/pl/uczelnia/lab1/LayoutGallery.java
+javac -encoding UTF-8 --release 27 -d target/classes src/main/java/pl/uczelnia/lab1/LayoutGallery.java
 java '-Djava.awt.headless=true' -cp target/classes pl.uczelnia.lab1.LayoutGallery --render ../assets
 ```
 

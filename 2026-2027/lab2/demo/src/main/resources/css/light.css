@@ -1,0 +1,10 @@
+.root {
+    -fx-base: #eef1f5;
+    -fx-background: #f6f8fb;
+    -fx-control-inner-background: #ffffff;
+    -fx-text-background-color: #172637;
+    -fx-accent: #2764ad;
+    -fx-focus-color: #2764ad;
+    demo-tile: #e2edf9;
+    demo-overlay: #eaf2ff;
+}

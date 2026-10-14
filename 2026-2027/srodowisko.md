@@ -1,13 +1,36 @@
 # Środowisko laboratoriów — IntelliJ IDEA
 
-Pracujemy w IntelliJ IDEA, w projektach Maven. Przykłady używają składni Javy 17.
-Wybierz JDK 17; jeżeli pracownia ma nowszy JDK, pozostaw `release` równy 17.
-Nie używamy funkcji preview. Numer JDK i wersje bibliotek zapisz w README projektu.
+Pracujemy w IntelliJ IDEA, w projektach Maven. Używamy najnowszych stabilnych
+wydań JDK i JavaFX, podanych poniżej jako konkretne wersje dla tej edycji instrukcji.
+
+Stan zweryfikowany **13 października 2026**:
+
+| Element | Wersja w laboratoriach |
+|---|---|
+| JDK | **27 (GA)** |
+| JavaFX | **27** — wszystkie moduły `org.openjfx` |
+| Maven `maven.compiler.release` | **27** |
+| IntelliJ Project SDK, Module SDK, Maven Runner i Importer | **JDK 27** |
+| Language level | **27**, bez preview |
+
+Nie instaluj wydań EA, alpha, beta, RC ani SNAPSHOT bibliotek. Nie włączaj
+`--enable-preview` i nie używaj API inkubacyjnych. Oznaczenie `1.0-SNAPSHOT`
+własnego projektu w przykładowym POM jest numerem roboczym aplikacji studenta,
+nie wersją JDK ani zależnością prerelease.
+
+JavaFX 27 wymaga co najmniej JDK 25; przyjęty tu JDK 27 spełnia ten warunek.
+Numerów JDK i JavaFX nie dobiera się na podstawie samej równości numerów.
+W tej instrukcji konfigurujemy dokładnie JDK 27 i JavaFX 27.
+Po wydaniu kolejnych stabilnych wersji aktualizujemy tę tabelę i przykłady
+razem, po sprawdzeniu zgodności — nie używamy dynamicznych wersji `LATEST`.
+
+Źródła wersji: [wydania GA JDK 27](https://www.oracle.com/java/technologies/javase/27u-relnotes.html)
+oraz [wydanie i wymagania JavaFX 27](https://gluonhq.com/products/javafx/openjfx-27-release-notes/).
 
 ## Pierwszy projekt
 
 1. Wybierz **New Project → Java**, nazwij projekt `lab1`, wybierz **Maven** jako system budowania.
-2. W polu JDK wskaż zainstalowany JDK albo użyj **Download JDK**. Samo środowisko uruchomieniowe IDE nie zastępuje JDK projektu.
+2. W polu JDK wskaż JDK 27 GA albo użyj **Download JDK → Version 27**, wybierając wydanie bez oznaczenia Early Access. Samo środowisko uruchomieniowe IDE nie zastępuje JDK projektu.
 3. Ustaw GroupId `pl.uczelnia` i ArtifactId `lab1`. Dla kolejnych labów zmieniaj numer.
 4. Otwórz `pom.xml` i zastosuj poniższą bazę. Zależności z instrukcji dodawaj wewnątrz `dependencies`, a pluginy wewnątrz `build/plugins`.
 5. Po zmianie POM wybierz **Load Maven Changes / Reload All Maven Projects**. Nazwa przycisku zależy od wersji IDE.
@@ -23,7 +46,7 @@ Nie używamy funkcji preview. Numer JDK i wersje bibliotek zapisz w README proje
     <artifactId>lab1</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.release>27</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -54,7 +77,12 @@ labN/
 └── data/                          ← lokalna baza i pliki robocze
 ```
 
-Otwierając gotowy projekt, wybierz jego `pom.xml` i **Open as Project**. Nie otwieraj samego katalogu z klasami. W **Project Structure → Project SDK** oraz ustawieniach **Build Tools → Maven → Runner** wybierz zgodny JDK. Wbudowany Maven w IntelliJ wystarcza; polecenie `mvn` w zewnętrznym terminalu wymaga osobnej instalacji lub wrappera.
+Otwierając gotowy projekt, wybierz jego `pom.xml` i **Open as Project**. Nie otwieraj samego katalogu z klasami. W **Project Structure → Project SDK** ustaw JDK 27, a **Language level** na 27 bez preview. W **Modules → Dependencies** ustaw Module SDK na Project SDK. W ustawieniach **Build Tools → Maven → Runner** i **Importing** wskaż JDK 27. Jeżeli IDE nie obsługuje poziomu 27, zainstaluj aktualne stabilne IntelliJ IDEA, nie wydanie EAP. Wbudowany Maven wystarcza; polecenie `mvn` w zewnętrznym terminalu wymaga osobnej instalacji lub wrappera.
+
+W terminalu sprawdź `java --version` oraz `javac --version`: obydwa mają wskazywać
+27, bez oznaczenia `-ea`. Przy zewnętrznym Maven sprawdź również `mvn --version`:
+Java używana przez Maven ma być w wersji 27. Ustawienia terminala i Runnera IntelliJ
+mogą się różnić — zweryfikuj oba środowiska, jeśli korzystasz z obu.
 
 | Laboratorium | Uruchomienie w IntelliJ | Oczekiwany efekt |
 |---|---|---|
@@ -78,7 +106,7 @@ Przed oddaniem uruchom **Maven → Lifecycle → clean**, potem **verify**. Udan
 
 | Objaw | Co sprawdzić |
 |---|---|
-| `invalid target release: 17` | JDK używany przez Maven jest starszy niż 17 |
+| `invalid target release: 27` | Maven używa niewłaściwego JDK; ustaw JDK 27 w Runnerze lub `JAVA_HOME` terminala |
 | czerwone importy biblioteki | zapis POM, synchronizacja Maven, dostęp do repozytorium zależności |
 | `JavaFX runtime components are missing` | uruchom `javafx:run`; nie samą klasę z błędną konfiguracją classpath |
 | `ClassNotFoundException` dla klasy startowej | zgodność `package`, ścieżki pliku i `mainClass` |

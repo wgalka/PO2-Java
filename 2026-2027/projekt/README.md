@@ -146,7 +146,7 @@ Wymagane są:
 
 ## 6. Wymagania dotyczące Javy i architektury
 
-Projekt musi być wykonany w Javie z użyciem Mavena. Zalecany jest JDK 17 lub nowszy oraz JavaFX. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
+Projekt musi być wykonany w Javie z użyciem Mavena i **JDK 27 GA**, z `maven.compiler.release=27`. Dla interfejsu JavaFX używaj **JavaFX 27**. Wersje i ustawienia IntelliJ określa [konfiguracja środowiska](../srodowisko.md); nie używamy wydań prerelease ani funkcji preview. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
 
 Zalecany podział:
 
