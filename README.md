@@ -31,18 +31,3 @@ spotkań i 30 godzin zajęć laboratoryjnych.
 
 - [Plan laboratoriów](./2026-2027/plan.md)
 - [Wymagania projektu i kryteria oceny](./2026-2027/projekt/README.md)
-
-## Zasady pracy
-
-Zacznij od [konfiguracji IntelliJ IDEA i Maven](./2026-2027/srodowisko.md).
-Każdy lab zawiera plan spotkań, diagramy Mermaid, punkty kontrolne i opis materiałów do oddania.
-Diagramy pokazują zależności i zachowanie; dokładny wygląd GUI sprawdzaj w działającej aplikacji.
-W Lab 1 dostępna jest [galeria działających komponentów Swing](./2026-2027/lab1/demo/README.md).
-W Lab 2 uruchom [Layout Explorer JavaFX](./2026-2027/lab2/demo/README.md),
-aby porównać kontenery, zmieniać ich parametry i obserwować obsługę zdarzeń.
-
-Instrukcje uwzględniają [adaptacyjny układ, HiDPI i jasny/ciemny motyw](./2026-2027/jakosc-gui.md).
-Lab 1 zawiera responsywny kalkulator, Lab 2 adaptacyjny panel danych, a kolejne
-laby i projekt zachowują te wymagania. Odbiór GUI obejmuje testy skalowania 100%, 150% i 200%.
-
-Instrukcje zawierają kod startowy i zadania. Kod należy przepisać, uruchomić, zrozumieć i rozszerzyć, a nie tylko skopiować. Do każdego zadania warto przygotować krótką demonstrację działania oraz zadbać o obsługę błędnych danych.

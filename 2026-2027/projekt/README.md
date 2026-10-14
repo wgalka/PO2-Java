@@ -1,5 +1,11 @@
 # Wymagania projektu - Programowanie obiektowe w Javie
 
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
+document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
+mermaid.initialize({ startOnLoad: true });
+</script>
+
 Projekt jest praktycznym podsumowaniem przedmiotu **Programowanie obiektowe**. Tematem projektu ma być **desktopowa aplikacja Java** wspierająca pracę z danymi ekonomicznymi lub ekonometrycznymi, a nie ogólny system CRUD bez uzasadnienia merytorycznego.
 
 Projekt powinien pokazać, że student potrafi zaprojektować i wykonać aplikację w Javie, wykorzystać programowanie obiektowe, zbudować graficzny interfejs użytkownika, połączyć go z relacyjną bazą danych oraz udokumentować rozwiązanie. Kontekst ekonometryczny powinien być widoczny w danych, zmiennych, modelu analizy i interpretacji wyników.

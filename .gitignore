@@ -3,6 +3,9 @@
 /priv/
 /prv/
 
+# Lokalne wskazówki dla asystenta — nie publikować.
+/AGENTS.md
+
 # Typowe artefakty projektów Java.
 target/
 out/

@@ -1,5 +1,11 @@
 # Lab 4 - Hibernate i mapowanie obiektowo-relacyjne
 
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
+document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
+mermaid.initialize({ startOnLoad: true });
+</script>
+
 ## Zakres: 2 zajęcia
 
 ## Cel zajęć

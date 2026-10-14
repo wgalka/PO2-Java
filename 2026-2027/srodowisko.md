@@ -115,10 +115,10 @@ Przed oddaniem uruchom **Maven → Lifecycle → clean**, potem **verify**. Udan
 
 ## Dokumentacja narzędzi
 
-Diagramy w instrukcjach są zapisane w blokach `mermaid` i można je wyświetlać
-w podglądzie Markdown na GitHubie. Obsługa w podglądzie IntelliJ zależy od dostępnej
-integracji Mermaid; jeśli widzisz sam kod diagramu, otwórz dokument na GitHubie.
-Ilustracje PNG działają niezależnie od obsługi Mermaid.
+Diagramy Mermaid wyświetlają się na stronie materiałów GitHub Pages. Podgląd
+Markdown w IntelliJ zależy od dostępnej integracji Mermaid; jeśli pokazuje sam
+kod, obejrzyj diagram na stronie materiałów. Ilustracje PNG działają niezależnie
+od obsługi Mermaid.
 
 - [Pierwsza aplikacja Java w IntelliJ IDEA](https://www.jetbrains.com/help/idea/creating-and-running-your-first-java-application.html)
 - [Obsługa Maven w IntelliJ IDEA](https://www.jetbrains.com/help/idea/maven-support.html)

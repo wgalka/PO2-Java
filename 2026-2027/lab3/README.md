@@ -1,5 +1,11 @@
 # Lab 3 - JDBC i relacyjne bazy danych
 
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
+document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
+mermaid.initialize({ startOnLoad: true });
+</script>
+
 ## Zakres: 3 zajęcia
 
 ## Cel zajęć

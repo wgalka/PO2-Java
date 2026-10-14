@@ -1,5 +1,11 @@
 # Lab 1 - Graficzny interfejs użytkownika w Swing
 
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
+document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
+mermaid.initialize({ startOnLoad: true });
+</script>
+
 ## Zakres: 3 zajęcia
 
 ## Przygotowanie i cel
