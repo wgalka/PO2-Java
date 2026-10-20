@@ -4,9 +4,8 @@ lang: pl-PL
 url: https://po2-java.lazysolutions.pl
 baseurl: ""
 
-# Motyw nie ma jeszcze opublikowanego tagu wydania, dlatego wskazujemy jego
-# aktualną gałąź domyślną. Po opublikowaniu stabilnego tagu należy go przypiąć.
-remote_theme: wgalka/instructions-jekyll-theme@master
+# Przypięcie do poprawionej wersji zapewnia powtarzalny build GitHub Pages.
+remote_theme: wgalka/instructions-jekyll-theme@98787034b11f0f730c20859c34ef9125951d56a4
 
 plugins:
   - jekyll-remote-theme
