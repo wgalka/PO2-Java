@@ -1,8 +1,8 @@
 title: Programowanie obiektowe w Javie
 description: Instrukcje laboratoryjne z programowania obiektowego dla kierunku Informatyka i ekonometria.
 lang: pl-PL
-url: https://wgalka.github.io
-baseurl: /PO2-Java
+url: https://po2-java.lazysolutions.pl
+baseurl: ""
 
 # Motyw nie ma jeszcze opublikowanego tagu wydania, dlatego wskazujemy jego
 # aktualną gałąź domyślną. Po opublikowaniu stabilnego tagu należy go przypiąć.
