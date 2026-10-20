@@ -887,7 +887,8 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
   }
 
   .po2-layout-demo__box-viewport {
-    width: 100%;
+    margin: 0.65rem;
+    border-radius: 0.7rem;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-color: var(--layout-muted) transparent;
