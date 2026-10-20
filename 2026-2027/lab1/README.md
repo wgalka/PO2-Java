@@ -542,7 +542,13 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     --layout-accent: #356fe5;
     --layout-accent-soft: #eaf1ff;
     --layout-shadow: 0 18px 48px rgba(39, 58, 91, 0.14);
+    box-sizing: border-box;
     margin: 1.25rem 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    overflow: hidden;
+    border: 1px solid var(--layout-line);
+    border-radius: 1.15rem;
+    background: linear-gradient(145deg, var(--layout-shell), var(--layout-window));
     color: var(--layout-ink);
     color-scheme: light dark;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
