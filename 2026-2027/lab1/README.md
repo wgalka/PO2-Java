@@ -68,9 +68,8 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     --flow-accent-soft: #eaf1ff;
     --flow-chart: #557fe4;
     --flow-grid: rgba(78, 105, 151, 0.12);
-    --flow-layout-bg: #f3edff;
-    --flow-layout-edge: #d7c5f4;
-    --flow-layout-accent: #8051c8;
+    --flow-layout-bg: #ebe3f7;
+    --flow-layout-edge: #d3c3e5;
     --flow-shadow: 0 18px 48px rgba(39, 58, 91, 0.14);
     box-sizing: border-box;
     margin: 1.25rem 0;
@@ -97,9 +96,8 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
       --flow-accent-soft: #2a3b5c;
       --flow-chart: #89aaff;
       --flow-grid: rgba(176, 196, 232, 0.12);
-      --flow-layout-bg: #2a2438;
+      --flow-layout-bg: #332b42;
       --flow-layout-edge: #514267;
-      --flow-layout-accent: #b89aec;
       --flow-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
     }
   }
@@ -145,7 +143,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     margin-top: 0.16rem;
     border: 1px solid var(--flow-layout-edge);
     border-radius: 0.25rem;
-    background: var(--flow-layout-accent);
+    background: var(--flow-layout-bg);
   }
 
   .po2-flow-demo__explanation {
@@ -251,7 +249,6 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     height: 3.55rem;
     border-block: 1px solid var(--flow-layout-edge);
     background: var(--flow-layout-bg);
-    box-shadow: inset 0.22rem 0 var(--flow-layout-accent);
     transition: height 480ms cubic-bezier(0.2, 0.75, 0.25, 1);
   }
 
