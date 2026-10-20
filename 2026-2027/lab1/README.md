@@ -54,8 +54,6 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 
 #### Zmień szerokość i zobacz zawijanie
 
-Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wierszu, `FlowLayout.LEFT` przeniesie „Zapisz” na początek następnego wiersza.
-
 <style>
   .po2-flow-demo {
     --flow-ink: #18243a;
@@ -70,6 +68,9 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
     --flow-accent-soft: #eaf1ff;
     --flow-chart: #557fe4;
     --flow-grid: rgba(78, 105, 151, 0.12);
+    --flow-layout-bg: #f3edff;
+    --flow-layout-edge: #d7c5f4;
+    --flow-layout-accent: #8051c8;
     --flow-shadow: 0 18px 48px rgba(39, 58, 91, 0.14);
     box-sizing: border-box;
     margin: 1.25rem 0;
@@ -96,6 +97,9 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
       --flow-accent-soft: #2a3b5c;
       --flow-chart: #89aaff;
       --flow-grid: rgba(176, 196, 232, 0.12);
+      --flow-layout-bg: #2a2438;
+      --flow-layout-edge: #514267;
+      --flow-layout-accent: #b89aec;
       --flow-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
     }
   }
@@ -118,6 +122,37 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
     margin: 0 0 1rem;
     color: var(--flow-muted);
     font-size: 0.94em;
+  }
+
+  .po2-flow-demo__legend {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin: 0 0 0.75rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--flow-layout-edge);
+    border-radius: 0.7rem;
+    background: var(--flow-layout-bg);
+    color: var(--flow-ink);
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  .po2-flow-demo__legend-swatch {
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 auto;
+    margin-top: 0.16rem;
+    border: 1px solid var(--flow-layout-edge);
+    border-radius: 0.25rem;
+    background: var(--flow-layout-accent);
+  }
+
+  .po2-flow-demo__explanation {
+    margin: 0 0 1rem;
+    color: var(--flow-muted);
+    font-size: 0.94em;
+    line-height: 1.55;
   }
 
   .po2-flow-demo__hint-icon {
@@ -214,7 +249,9 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
   .po2-flow-demo__toolbar {
     position: relative;
     height: 3.55rem;
-    border-bottom: 1px solid var(--flow-line);
+    border-block: 1px solid var(--flow-layout-edge);
+    background: var(--flow-layout-bg);
+    box-shadow: inset 0.22rem 0 var(--flow-layout-accent);
     transition: height 480ms cubic-bezier(0.2, 0.75, 0.25, 1);
   }
 
@@ -441,6 +478,8 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
 
 <section class="po2-flow-demo" aria-labelledby="po2-flow-demo-title">
   <h4 id="po2-flow-demo-title"><code>FlowLayout.LEFT</code> · pasek narzędzi</h4>
+  <p class="po2-flow-demo__legend"><span class="po2-flow-demo__legend-swatch" aria-hidden="true"></span><span>Fioletowym tłem oznaczono pasek narzędzi — kontener z <code>FlowLayout.LEFT</code>. Przyciski „Dane”, „Wykres” i „Zapisz” są jego elementami.</span></p>
+  <p class="po2-flow-demo__explanation">Gdy zwężysz okno i przyciski nie zmieszczą się w jednym wierszu, „Zapisz” przejdzie na początek następnego wiersza, wyrównanego do lewej. Przyciski zachowają swój rozmiar; po poszerzeniu okna wrócą do jednego wiersza.</p>
   <p class="po2-flow-demo__hint"><span class="po2-flow-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt w prawym dolnym rogu okna, aby zmienić jego szerokość.</p>
   <div class="po2-flow-demo__window" role="group" aria-label="Podgląd okna aplikacji Analiza">
     <div class="po2-flow-demo__titlebar">
