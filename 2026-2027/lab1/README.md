@@ -127,11 +127,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     align-items: flex-start;
     gap: 0.65rem;
     margin: 0 0 0.75rem;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid var(--flow-layout-edge);
-    border-radius: 0.7rem;
-    background: var(--flow-layout-bg);
-    color: var(--flow-ink);
+    color: var(--flow-muted);
     font-size: 0.9em;
     line-height: 1.5;
   }
@@ -585,11 +581,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
     align-items: flex-start;
     gap: 0.65rem;
     margin: 0 0 0.75rem;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid var(--layout-region-edge);
-    border-radius: 0.7rem;
-    background: var(--layout-region);
-    color: var(--layout-ink);
+    color: var(--layout-muted);
     font-size: 0.9em;
     line-height: 1.5;
   }
