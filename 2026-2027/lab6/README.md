@@ -1,10 +1,9 @@
-# Lab 6 - Projekt: integracja aplikacji desktopowej i obrona
+---
+layout: default
+title: "Lab 6 - Projekt: integracja aplikacji desktopowej i obrona"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 6 - Projekt: integracja aplikacji desktopowej i obrona
 
 ## Zakres: 1 zajęcie
 
@@ -12,7 +11,7 @@ mermaid.initialize({ startOnLoad: true });
 
 Ostatnie zajęcia służą integracji elementów poznanych w semestrze oraz przygotowaniu działającej wersji projektu. Projekt ma być desktopową aplikacją Java z GUI, relacyjną bazą danych i analizą danych ekonomicznych lub ekonometrycznych.
 
-Projekt rozwijaj stopniowo od Lab 1. Jedno ostatnie spotkanie służy sprawdzeniu integracji i obronie przygotowanego rozwiązania. Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.md). Uruchamianie i budowanie wykonujemy w [IntelliJ IDEA](../srodowisko.md).
+Projekt rozwijaj stopniowo od Lab 1. Jedno ostatnie spotkanie służy sprawdzeniu integracji i obronie przygotowanego rozwiązania. Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.html). Uruchamianie i budowanie wykonujemy w [IntelliJ IDEA](../srodowisko.html).
 
 ## Zakres pracy
 
@@ -29,7 +28,7 @@ Projekt rozwijaj stopniowo od Lab 1. Jedno ostatnie spotkanie służy sprawdzeni
 - [ ] układ adaptuje się do małego i dużego okna, a wszystkie podstawowe akcje pozostają dostępne;
 - [ ] jasny i ciemny motyw obejmują formularze, menu, dialogi, tabele oraz wykresy;
 - [ ] przełączenie motywu nie gubi danych, a wybór jest odtwarzany po restarcie;
-- [ ] wykonano [macierz testów 100%, 150%, 200%](../jakosc-gui.md) i opisano wyniki;
+- [ ] wykonano [macierz testów 100%, 150%, 200%](../jakosc-gui.html) i opisano wyniki;
 - [ ] tekst, ikony, fokus i zaznaczenie są czytelne; większa czcionka nie ucina treści;
 
 - [ ] aplikacja uruchamia się na czystym środowisku zgodnie z README;
@@ -136,7 +135,7 @@ Interpretacja ma odróżniać zależność statystyczną od przyczynowości. Prz
 
 ## Pakiet do oddania
 
-Do materiałów GUI dołącz także [raport HiDPI i motywów](../jakosc-gui.md):
+Do materiałów GUI dołącz także [raport HiDPI i motywów](../jakosc-gui.html):
 12 przypadków, cztery zrzuty obu układów i motywów oraz opis ograniczeń sprzętowych,
 jeżeli wystąpiły. Podczas obrony pokaż zmianę szerokości i przełącz motyw
 na załadowanych danych. Stan aplikacji i wynik analizy muszą zostać zachowane.

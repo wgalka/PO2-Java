@@ -1,16 +1,15 @@
-# Lab 5 - Wprowadzenie do JSP i Servlet API
+---
+layout: default
+title: "Lab 5 - Wprowadzenie do JSP i Servlet API"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 5 - Wprowadzenie do JSP i Servlet API
 
 ## Zakres: 1 zajęcie
 
 ## Cel zajęć
 
-Pracujemy w [IntelliJ IDEA i Maven](../srodowisko.md), w projekcie `lab5`. Jest to krótkie ćwiczenie porównawcze z aplikacją desktopową. Projekt zaliczeniowy pozostaje desktopowy.
+Pracujemy w [IntelliJ IDEA i Maven](../srodowisko.html), w projekcie `lab5`. Jest to krótkie ćwiczenie porównawcze z aplikacją desktopową. Projekt zaliczeniowy pozostaje desktopowy.
 
 JSP (JavaServer Pages) służy do generowania stron HTML po stronie serwera. Współczesne JSP działa razem z Jakarta Servlet API. Laboratorium pokazuje prosty przepływ MVC: żądanie trafia do servletu, servlet przygotowuje dane i przekazuje je do widoku JSP.
 
@@ -213,7 +212,7 @@ Servlet obsługuje wiele żądań równocześnie. Nie przechowuj danych bieżąc
 
 ## Sprawdzenie i oddanie
 
-W tym krótkim ćwiczeniu zastosuj webowy odpowiednik [zasad jakości GUI](../jakosc-gui.md):
+W tym krótkim ćwiczeniu zastosuj webowy odpowiednik [zasad jakości GUI](../jakosc-gui.html):
 formularz o elastycznej szerokości, przejście etykiet nad pola na wąskim ekranie
 i kolory zależne od `prefers-color-scheme`. Użyj CSS z właściwością
 `color-scheme: light dark` oraz regułą `@media (prefers-color-scheme: dark)`

@@ -1,16 +1,15 @@
-# Lab 4 - Hibernate i mapowanie obiektowo-relacyjne
+---
+layout: default
+title: "Lab 4 - Hibernate i mapowanie obiektowo-relacyjne"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 4 - Hibernate i mapowanie obiektowo-relacyjne
 
 ## Zakres: 2 zajęcia
 
 ## Cel zajęć
 
-Przygotuj projekt Maven `lab4` według [instrukcji IntelliJ IDEA](../srodowisko.md). Użyj pakietu `pl.uczelnia.lab4` we wszystkich klasach; w szczególności dopisz go do `Person.java`. Konfigurację umieść w resources, zsynchronizuj Maven i uruchom klasę `Main`.
+Przygotuj projekt Maven `lab4` według [instrukcji IntelliJ IDEA](../srodowisko.html). Użyj pakietu `pl.uczelnia.lab4` we wszystkich klasach; w szczególności dopisz go do `Person.java`. Konfigurację umieść w resources, zsynchronizuj Maven i uruchom klasę `Main`.
 
 Hibernate jest narzędziem ORM. Mapuje obiekty Javy na tabele i pozwala pracować na encjach zamiast ręcznie pisać większość zapytań SQL. JDBC z Lab 3 nadal jest potrzebne do zrozumienia, co dzieje się pod spodem.
 
@@ -306,7 +305,7 @@ Próba odczytu niezaładowanej relacji `LAZY` po zamknięciu sesji może zakońc
 
 ## Sprawdzenie i oddanie
 
-Zachowaj [adaptacyjny układ, HiDPI i motywy](../jakosc-gui.md) przy integracji
+Zachowaj [adaptacyjny układ, HiDPI i motywy](../jakosc-gui.html) przy integracji
 z Hibernate. Podczas pobierania danych zmień rozmiar okna: interfejs powinien
 reagować, a wskaźnik pracy być czytelny w obu motywach. Sesję otwieraj i zamykaj
 w obrębie operacji w tle; do wątku GUI przekazuj gotowe DTO. Nie współdziel

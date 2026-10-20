@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Responsywność, HiDPI i motywy — wymagania oraz testy"
+---
+
 # Responsywność, HiDPI i motywy — wymagania oraz testy
 
 Wymagania obowiązują w ćwiczeniach GUI Lab 1–4 i w projekcie końcowym. Lab 5 stosuje ich odpowiednik dla strony WWW. Nie wystarcza pokazanie okna w jednym rozmiarze i jednym motywie.

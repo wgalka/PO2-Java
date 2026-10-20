@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Layout Explorer — działająca aplikacja JavaFX"
+---
+
 # Layout Explorer — działająca aplikacja JavaFX
 
 Otwórz [pom.xml](pom.xml) jako projekt Maven w IntelliJ IDEA. Ustaw **JDK 27 GA**
@@ -30,7 +35,7 @@ własności `spacing`, a AnchorPane pozycjonuje według kotwic.
 Próbka ma demonstracyjną wysokość 300 jednostek. Jeżeli przy ekstremalnych
 odstępach zabraknie miejsca, obserwuj ograniczenia kontenera i użyj przewijania
 obszaru pokazu. W docelowym formularzu ustal minimalny użyteczny rozmiar oraz
-adaptacyjny układ zgodnie z [wymaganiami GUI](../../jakosc-gui.md).
+adaptacyjny układ zgodnie z [wymaganiami GUI](../../jakosc-gui.html).
 
 ## Eksperymenty
 
@@ -46,7 +51,7 @@ adaptacyjny układ zgodnie z [wymaganiami GUI](../../jakosc-gui.md).
 | Zdarzenia | zatrzymanie w filtrze | kolejność komunikatów w dzienniku |
 
 W kodzie dodaj własny widok, np. formularz wyboru zmiennych z przyciskiem analizy.
-Przewidź rezultat przed uruchomieniem. Pełne wyjaśnienia i diagramy są w [Lab 2](../README.md).
+Przewidź rezultat przed uruchomieniem. Pełne wyjaśnienia i diagramy są w [Lab 2](../README.html).
 
 ## Kontrola techniczna
 

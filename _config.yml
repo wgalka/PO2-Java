@@ -1,0 +1,34 @@
+title: Programowanie obiektowe w Javie
+description: Instrukcje laboratoryjne z programowania obiektowego dla kierunku Informatyka i ekonometria.
+lang: pl-PL
+url: https://wgalka.github.io
+baseurl: /PO2-Java
+
+# Motyw nie ma jeszcze opublikowanego tagu wydania, dlatego wskazujemy jego
+# aktualną gałąź domyślną. Po opublikowaniu stabilnego tagu należy go przypiąć.
+remote_theme: wgalka/instructions-jekyll-theme@master
+
+plugins:
+  - jekyll-remote-theme
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - priv
+  - prv
+  - .agents
+  - AGENTS.md
+  - agents.md
+  - target
+  - out

@@ -1,16 +1,15 @@
-# Lab 3 - JDBC i relacyjne bazy danych
+---
+layout: default
+title: "Lab 3 - JDBC i relacyjne bazy danych"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 3 - JDBC i relacyjne bazy danych
 
 ## Zakres: 3 zajęcia
 
 ## Cel zajęć
 
-Utwórz projekt Maven `lab3` w [IntelliJ IDEA](../srodowisko.md). Najpierw uruchom warstwę bazy przez `main`, dopiero potem podłącz GUI. Working directory ustaw na katalog projektu.
+Utwórz projekt Maven `lab3` w [IntelliJ IDEA](../srodowisko.html). Najpierw uruchom warstwę bazy przez `main`, dopiero potem podłącz GUI. Working directory ustaw na katalog projektu.
 
 JDBC jest standardowym interfejsem Javy do komunikacji z relacyjnymi bazami danych. W laboratorium użyjemy SQLite, ponieważ baza jest przechowywana w jednym pliku i nie wymaga uruchamiania serwera. Te same zasady można później zastosować do MySQL lub PostgreSQL, zmieniając sterownik i adres połączenia.
 
@@ -279,7 +278,7 @@ Zadanie transakcyjne można wykonać na aktualnym modelu: dodanie kategorii i pi
 
 ## Sprawdzenie i oddanie
 
-Po podłączeniu bazy wykonaj ponownie [testy jakości GUI](../jakosc-gui.md).
+Po podłączeniu bazy wykonaj ponownie [testy jakości GUI](../jakosc-gui.html).
 Zmień rozmiar okna i motyw przy aktywnym filtrze oraz zaznaczonym rekordzie:
 filtr, identyfikator zaznaczenia i niezapisane dane formularza mają pozostać.
 Sprawdź błąd SQL w obu motywach oraz tekst wierszy przy 200% skali.

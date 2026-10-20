@@ -22,3 +22,6 @@ nbactions.xml
 # Pliki systemowe.
 .DS_Store
 Thumbs.db
+.agents/
+AGENTS.md
+agents.md

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Galeria Swing — IntelliJ IDEA"
+---
+
 # Galeria Swing — IntelliJ IDEA
 
 Otwórz [pom.xml](pom.xml) jako projekt Maven, wybierz JDK 27 GA i uruchom `LayoutGallery.main` z [kodu źródłowego](src/main/java/pl/uczelnia/lab1/LayoutGallery.java). Program nie wymaga zewnętrznych bibliotek.
@@ -6,7 +11,7 @@ Pierwsza zakładka pokazuje sześć menedżerów układu. Zmieniaj rozmiar okna,
 
 To pokaz mechaniki layoutów, nie wzorzec ukończonej aplikacji. Używa stałej
 palety i demonstracyjnych rozmiarów. Responsywny kalkulator,
-przełączanie motywów oraz [testy HiDPI](../../jakosc-gui.md) wykonaj zgodnie
+przełączanie motywów oraz [testy HiDPI](../../jakosc-gui.html) wykonaj zgodnie
 z główną instrukcją Lab 1; renderów galerii nie traktuj jako dowodu tych testów.
 
 ## Jak wygenerowano ilustracje

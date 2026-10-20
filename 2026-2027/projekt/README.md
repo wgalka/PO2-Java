@@ -1,10 +1,9 @@
-# Wymagania projektu - Programowanie obiektowe w Javie
+---
+layout: default
+title: "Wymagania projektu - Programowanie obiektowe w Javie"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Wymagania projektu - Programowanie obiektowe w Javie
 
 Projekt jest praktycznym podsumowaniem przedmiotu **Programowanie obiektowe**. Tematem projektu ma być **desktopowa aplikacja Java** wspierająca pracę z danymi ekonomicznymi lub ekonometrycznymi, a nie ogólny system CRUD bez uzasadnienia merytorycznego.
 
@@ -76,7 +75,7 @@ Operacje CRUD mogą być częścią aplikacji, ale nie mogą być jej jedynym ce
 ### Standard GUI
 
 Wszystkie projekty, również na ocenę podstawową, spełniają [wymagania responsywności,
-HiDPI i motywów](../jakosc-gui.md):
+HiDPI i motywów](../jakosc-gui.html):
 
 - adaptacyjny układ dla wąskiego i szerokiego okna, bez utraty podstawowych akcji;
 - czytelny interfejs przy skali systemowej 100%, 150% i 200%, także z większą czcionką;
@@ -152,7 +151,7 @@ Wymagane są:
 
 ## 6. Wymagania dotyczące Javy i architektury
 
-Projekt musi być wykonany w Javie z użyciem Mavena i **JDK 27 GA**, z `maven.compiler.release=27`. Dla interfejsu JavaFX używaj **JavaFX 27**. Wersje i ustawienia IntelliJ określa [konfiguracja środowiska](../srodowisko.md); nie używamy wydań prerelease ani funkcji preview. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
+Projekt musi być wykonany w Javie z użyciem Mavena i **JDK 27 GA**, z `maven.compiler.release=27`. Dla interfejsu JavaFX używaj **JavaFX 27**. Wersje i ustawienia IntelliJ określa [konfiguracja środowiska](../srodowisko.html); nie używamy wydań prerelease ani funkcji preview. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
 
 Zalecany podział:
 
@@ -209,9 +208,9 @@ Projekt jest spójnym narzędziem analitycznym. Obsługuje rozbudowany model dan
 
 ## 9. Dokumentacja
 
-Przygotuj instrukcję uruchomienia w IntelliJ IDEA według [konfiguracji środowiska](../srodowisko.md).
+Przygotuj instrukcję uruchomienia w IntelliJ IDEA według [konfiguracji środowiska](../srodowisko.html).
 Diagramy zapisuj w blokach `mermaid`, a obrazy GUI wykonaj w swojej działającej aplikacji.
-Scenariusz końcowego sprawdzenia zawiera [Lab 6](../lab6/README.md).
+Scenariusz końcowego sprawdzenia zawiera [Lab 6](../lab6/README.html).
 
 Dokumentacja powinna zawierać:
 

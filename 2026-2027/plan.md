@@ -1,14 +1,19 @@
+---
+layout: default
+title: "Plan laboratoriów"
+---
+
 # Plan laboratoriów
 
 Instrukcje są blokami tematycznymi. Liczba w nawiasie oznacza liczbę spotkań
 przeznaczonych na dany blok:
 
-Środowisko wszystkich bloków: [IntelliJ IDEA i Maven](srodowisko.md).
+Środowisko wszystkich bloków: [IntelliJ IDEA i Maven](srodowisko.html).
 Rozkład materiału na pojedyncze spotkania oraz kryteria sprawdzenia znajdują się wewnątrz instrukcji.
 
 Jakość GUI rozwijamy w ramach istniejących spotkań: responsywny kalkulator
 i motywy w Lab 1, adaptacyjny panel danych oraz CSS w Lab 2, utrzymanie tego
-standardu po podłączeniu bazy w Lab 3–4. [Testy HiDPI i motywów](jakosc-gui.md)
+standardu po podłączeniu bazy w Lab 3–4. [Testy HiDPI i motywów](jakosc-gui.html)
 wchodzą w odbiór ćwiczeń i projektu; nie tworzą dodatkowego spotkania.
 
 1. **Swing: graficzny interfejs użytkownika** — okna, menedżery układu,

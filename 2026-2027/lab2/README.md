@@ -1,10 +1,9 @@
-# Lab 2 - Graficzny interfejs użytkownika w JavaFX
+---
+layout: default
+title: "Lab 2 - Graficzny interfejs użytkownika w JavaFX"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 2 - Graficzny interfejs użytkownika w JavaFX
 
 ## Cel i plan pracy — 4 zajęcia
 
@@ -21,7 +20,7 @@ wyjaśnienie, przykład i sposób sprawdzenia rezultatu. Wykonuj je w podanej ko
 | 4 | 7–8: FXML, kontrolery, adaptacja, CSS i HiDPI | kompletna aplikacja i raport sprawdzenia |
 
 Pracujemy w IntelliJ IDEA z **JDK 27 GA i JavaFX 27**. Konfigurację i diagnostykę
-opisuje [środowisko](../srodowisko.md). [Layout Explorer](demo/README.md) jest
+opisuje [środowisko](../srodowisko.html). [Layout Explorer](demo/README.html) jest
 osobnym pokazem pomocniczym do zadań 3–4; nie zastępuje własnej aplikacji.
 
 Pierwszy przykład klasy `Main` jest kompletny. Następne krótkie bloki to fragmenty
@@ -30,7 +29,7 @@ go po każdym zadaniu; nie sklejaj wszystkich przykładów w jednej metodzie.
 
 ## 1. Przygotuj projekt w IntelliJ IDEA
 
-JavaFX nie jest częścią JDK. Używamy **JDK 27 GA i JavaFX 27**, stabilnych wydań wskazanych w [konfiguracji środowiska](../srodowisko.md). Utwórz projekt Maven `lab2` według [instrukcji środowiska](../srodowisko.md).
+JavaFX nie jest częścią JDK. Używamy **JDK 27 GA i JavaFX 27**, stabilnych wydań wskazanych w [konfiguracji środowiska](../srodowisko.html). Utwórz projekt Maven `lab2` według [instrukcji środowiska](../srodowisko.html).
 Nie twórz `module-info.java`. Poniżej kompletny `pom.xml` tego laboratorium:
 
 ```xml
@@ -276,7 +275,7 @@ nie wykonuje się podczas tworzenia okna i jaki obiekt zmienia się po kliknięc
 
 ## 3. Dobierz układ do formularza
 
-Uruchom [Layout Explorer](demo/README.md) jako osobny projekt demonstracyjny.
+Uruchom [Layout Explorer](demo/README.html) jako osobny projekt demonstracyjny.
 Wykonaj doświadczenia „Sprawdź” przy kolejnych kontenerach, a potem wykorzystaj
 poznane układy we własnym `lab2`. Przykładów nie wklejaj wszystkich naraz do `start`.
 
@@ -935,7 +934,7 @@ Ten przykład zakłada dwa arkusze sceny. Jeżeli masz dodatkowe arkusze funkcjo
 2. Oznacz komunikat błędu klasą `status-error`; komunikat musi mieć również treść, nie tylko kolor.
 3. Dopasuj wykres: osie i legenda mają być czytelne w obu motywach, serie rozróżnialne także symbolem lub stylem linii. Zachowaj znaczenie kolorów przy przełączaniu.
 4. Sprawdź tabelę: zaznaczenie, edycję, fokus klawiatury, puste dane i długą nazwę kolumny. Nie ustawiaj zbyt małej stałej wysokości komórki.
-5. Wykonaj pełną [macierz testów](../jakosc-gui.md). Dołącz zrzuty obu układów i motywów oraz próbę zwiększenia czcionki o 25%.
+5. Wykonaj pełną [macierz testów](../jakosc-gui.html). Dołącz zrzuty obu układów i motywów oraz próbę zwiększenia czcionki o 25%.
 
 Warunkiem wykonania jest działający adaptacyjny układ i kompletny wygląd obu motywów — samo dodanie plików CSS nie wystarcza.
 
@@ -954,7 +953,7 @@ wyświetl wykres, przełącz scenę i motyw, zmień szerokość okna.
 | filtrowanie wskaźników | tabela i wykres pokazują ten sam zakres, lata są uporządkowane |
 | przejście między scenami FXML | dane i stan widoków pozostają |
 | zmiana motywu i szerokości | akcje dostępne, formularz i wykres czytelne |
-| skale 100%, 150%, 200% | wyniki zapisane w [macierzy jakości GUI](../jakosc-gui.md) |
+| skale 100%, 150%, 200% | wyniki zapisane w [macierzy jakości GUI](../jakosc-gui.html) |
 
 Oddaj projekt Maven z kodem, FXML i CSS, pliki danych demonstracyjnych dla obu
 zbiorów z opisem formatów, tabelę obserwacji kontenerów, opis propagacji zdarzeń

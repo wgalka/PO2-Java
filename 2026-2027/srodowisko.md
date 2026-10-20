@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Środowisko laboratoriów — IntelliJ IDEA"
+---
+
 # Środowisko laboratoriów — IntelliJ IDEA
 
 Pracujemy w IntelliJ IDEA, w projektach Maven. Używamy najnowszych stabilnych
@@ -96,7 +101,7 @@ W konfiguracji uruchomienia ustaw **Working directory** na katalog projektu z `p
 
 ## Debugger i sprawdzanie działania
 
-W testach GUI stosuj [procedurę responsywności, HiDPI i motywów](jakosc-gui.md).
+W testach GUI stosuj [procedurę responsywności, HiDPI i motywów](jakosc-gui.html).
 Motyw IntelliJ i skalowanie jego edytora nie są ustawieniami uruchamianej aplikacji.
 Testuj okno aplikacji, menu i dialogi przy systemowej skali 100%, 150% i 200%.
 

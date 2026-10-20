@@ -1,16 +1,15 @@
-# Lab 1 - Graficzny interfejs użytkownika w Swing
+---
+layout: default
+title: "Lab 1 - Graficzny interfejs użytkownika w Swing"
+---
 
-<script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs";
-document.querySelectorAll(".language-mermaid").forEach((block) => block.classList.add("mermaid"));
-mermaid.initialize({ startOnLoad: true });
-</script>
+# Lab 1 - Graficzny interfejs użytkownika w Swing
 
 ## Zakres: 3 zajęcia
 
 ## Przygotowanie i cel
 
-Utwórz projekt `lab1` zgodnie z [instrukcją IntelliJ IDEA](../srodowisko.md). Swing jest w JDK — nie dodawaj osobnej biblioteki. W przykładzie `Main` dopisz pakiet zgodny z projektem.
+Utwórz projekt `lab1` zgodnie z [instrukcją IntelliJ IDEA](../srodowisko.html). Swing jest w JDK — nie dodawaj osobnej biblioteki. W przykładzie `Main` dopisz pakiet zgodny z projektem.
 
 Swing jest częścią standardowej biblioteki Javy. W laboratorium poznajemy `JFrame`, panele, układy, podstawowe kontrolki i obsługę zdarzeń. Zbudujemy prosty kalkulator oraz przygotujemy miejsce na kolejne widoki.
 
@@ -268,7 +267,7 @@ Efekt: u góry okna jest pasek `Plik`; rozwinięcie pokazuje pozycje menu, a `Ot
 
 ![Menu i widok danych w Swing](assets/menu.png)
 
-Ilustracje są renderami rzeczywistych komponentów Swing wygenerowanymi przez [kod galerii](demo/README.md), bez ramki systemowego okna. To nie makiety narysowane ręcznie. Galerię można uruchomić w IntelliJ, zmieniać rozmiar okna i klikać menu.
+Ilustracje są renderami rzeczywistych komponentów Swing wygenerowanymi przez [kod galerii](demo/README.html), bez ramki systemowego okna. To nie makiety narysowane ręcznie. Galerię można uruchomić w IntelliJ, zmieniać rozmiar okna i klikać menu.
 
 ## Tabela, rysowanie i responsywność
 
@@ -288,7 +287,7 @@ Długie odczyty pliku i zapytania do bazy wykonuj przez `SwingWorker`: `doInBack
 
 ## Sprawdzenie i oddanie
 
-Obowiązuje również [macierz testów responsywności, HiDPI i motywów](../jakosc-gui.md).
+Obowiązuje również [macierz testów responsywności, HiDPI i motywów](../jakosc-gui.html).
 
 | Próba | Oczekiwany wynik |
 |---|---|
@@ -309,7 +308,7 @@ Rozwijaj kalkulator ze spotkania 1 podczas spotkań 2–3. Nie jest to drugi pro
 3. Przełączenie układu nie może zerować obliczeń ani tworzyć nowego modelu. Przenoś istniejące panele, nie dodawaj tej samej kontrolki do dwóch kontenerów.
 4. Długi wynik wyrównaj do prawej i umożliw jego odczyt/przewijanie. Nie ściskaj czcionki do nieczytelnego rozmiaru. Ustal minimalny rozmiar okna na podstawie czytelności kontrolek.
 5. Dodaj menu **Widok → Motyw → Jasny / Ciemny**, zapamiętanie wyboru i obsługę klawiatury: cyfry, Enter oraz Escape. Fokus ma pozostać widoczny w obu motywach.
-6. Wykonaj [testy 100%, 150%, 200%](../jakosc-gui.md), także dla rozwiniętego menu i komunikatu dzielenia przez zero. Zachowaj rozpoczęte działanie podczas zmiany motywu.
+6. Wykonaj [testy 100%, 150%, 200%](../jakosc-gui.html), także dla rozwiniętego menu i komunikatu dzielenia przez zero. Zachowaj rozpoczęte działanie podczas zmiany motywu.
 
 ```mermaid
 flowchart TD
