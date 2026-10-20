@@ -5,9 +5,7 @@ title: "Lab 3 - JDBC i relacyjne bazy danych"
 
 # Lab 3 - JDBC i relacyjne bazy danych
 
-## Zakres: 3 zajęcia
-
-## Cel zajęć
+## Cel laboratorium
 
 Utwórz projekt Maven `lab3` w [IntelliJ IDEA](../srodowisko.html). Najpierw uruchom warstwę bazy przez `main`, dopiero potem podłącz GUI. Working directory ustaw na katalog projektu.
 
@@ -162,13 +160,13 @@ try (Connection connection = Database.open()) {
 3. Co robi `ResultSet`?
 4. Dlaczego połączenia i strumienie trzeba zamykać?
 
-## Plan pracy na trzy spotkania
+## Etapy pracy
 
-| Spotkanie | Zakres | Punkt kontrolny |
+| Etap | Zakres | Punkt kontrolny |
 |---|---|---|
-| 1 | połączenie, schemat, insert/select | rekord przetrwa restart aplikacji |
-| 2 | DAO, CRUD i GUI | tabela pokazuje wynik zapisany w bazie |
-| 3 | relacja, JOIN, transakcja i błędy | awaria drugiej operacji wycofuje pierwszą |
+| Baza i zapytania | połączenie, schemat, insert/select | rekord przetrwa restart aplikacji |
+| Warstwa dostępu | DAO, CRUD i GUI | tabela pokazuje wynik zapisany w bazie |
+| Relacje i spójność | JOIN, transakcja i błędy | awaria drugiej operacji wycofuje pierwszą |
 
 ## Warstwy aplikacji
 

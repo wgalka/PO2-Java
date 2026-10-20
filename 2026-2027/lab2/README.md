@@ -5,19 +5,19 @@ title: "Lab 2 - Graficzny interfejs użytkownika w JavaFX"
 
 # Lab 2 - Graficzny interfejs użytkownika w JavaFX
 
-## Cel i plan pracy — 4 zajęcia
+## Cel i kolejność pracy
 
 W kolejnych zadaniach rozwijasz jedną aplikację: od pierwszego okna przez
 formularz i tabelę pracowników do importu wskaźników rynku pracy, wykresu
 oraz widoków FXML z adaptacyjnym układem i motywami. Każde zadanie zawiera
 wyjaśnienie, przykład i sposób sprawdzenia rezultatu. Wykonuj je w podanej kolejności.
 
-| Spotkanie | Zadania | Rezultat na koniec |
+| Etap | Zadania | Rezultat |
 |---|---|---|
-| 1 | 1–4: Maven, pierwsze okno, kontenery, formularz i zdarzenia | działający formularz z walidacją |
-| 2 | 5: model, właściwości, tabela, edycja i filtrowanie | formularz i tabela korzystają ze wspólnych danych |
-| 3 | 6: zapis/odczyt, import wskaźników i wykres | lokalne pliki, wykres i praca w tle |
-| 4 | 7–8: FXML, kontrolery, adaptacja, CSS i HiDPI | kompletna aplikacja i raport sprawdzenia |
+| Okno i formularz | 1–4: Maven, pierwsze okno, kontenery, formularz i zdarzenia | działający formularz z walidacją |
+| Model danych | 5: właściwości, tabela, edycja i filtrowanie | formularz i tabela korzystają ze wspólnych danych |
+| Analiza i prezentacja | 6: zapis/odczyt, import wskaźników i wykres | lokalne pliki, wykres i praca w tle |
+| Struktura i dopracowanie | 7–8: FXML, kontrolery, adaptacja, CSS i HiDPI | kompletna aplikacja i raport sprawdzenia |
 
 Pracujemy w IntelliJ IDEA z **JDK 27 GA i JavaFX 27**. Konfigurację i diagnostykę
 opisuje [środowisko](../srodowisko.html). [Layout Explorer](demo/README.html) jest

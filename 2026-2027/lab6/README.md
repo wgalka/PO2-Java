@@ -5,13 +5,11 @@ title: "Lab 6 - Projekt: integracja aplikacji desktopowej i obrona"
 
 # Lab 6 - Projekt: integracja aplikacji desktopowej i obrona
 
-## Zakres: 1 zajęcie
+## Cel laboratorium
 
-## Cel zajęć
+Lab 6 domyka integrację elementów poznanych w semestrze oraz przygotowanie działającej wersji projektu. Projekt ma być desktopową aplikacją Java z GUI, relacyjną bazą danych i analizą danych ekonomicznych lub ekonometrycznych.
 
-Ostatnie zajęcia służą integracji elementów poznanych w semestrze oraz przygotowaniu działającej wersji projektu. Projekt ma być desktopową aplikacją Java z GUI, relacyjną bazą danych i analizą danych ekonomicznych lub ekonometrycznych.
-
-Projekt rozwijaj stopniowo od Lab 1. Jedno ostatnie spotkanie służy sprawdzeniu integracji i obronie przygotowanego rozwiązania. Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.html). Uruchamianie i budowanie wykonujemy w [IntelliJ IDEA](../srodowisko.html).
+Projekt rozwijaj stopniowo od Lab 1. Lab 6 porządkuje sprawdzenie integracji i obronę przygotowanego rozwiązania. Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.html). Uruchamianie i budowanie wykonujemy w [IntelliJ IDEA](../srodowisko.html).
 
 ## Zakres pracy
 

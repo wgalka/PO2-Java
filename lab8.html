@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 8: Programowanie Zorientowane Obiektowo - JavaFX & Hibernate</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Prism Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --secondary: #06b6d4;
+            --accent: #f43f5e;
+            
+            --header-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1.25rem;
+            --radius-xl: 2rem;
+            
+            --code-inline-bg: #fee2e2;
+            --code-inline-color: #be123c;
+            
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #090d16;
+            --bg-secondary: #0f172a;
+            --bg-card: #151f32;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            
+            --primary: #818cf8;
+            --primary-light: #a5b4fc;
+            --primary-glow: rgba(129, 140, 248, 0.2);
+            --secondary: #22d3ee;
+            
+            --code-inline-bg: #311b22;
+            --code-inline-color: #fda4af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header Style */
+        header {
+            position: relative;
+            padding: 6rem 2rem 5rem;
+            background: var(--header-gradient);
+            color: white;
+            text-align: center;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.03);
+        }
+
+        /* Layout Grid */
+        .app-layout {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+        }
+
+        /* Sidebar & TOC */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .toc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .toc-card h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .toc-item a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .toc-item a:hover {
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .toc-indent-1 {
+            font-weight: 600;
+            border-left: 2px solid var(--primary);
+            padding-left: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .toc-indent-2 {
+            padding-left: 1.25rem;
+        }
+
+        .toc-indent-3 {
+            padding-left: 2rem;
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        /* Content Container */
+        main {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 4rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Elements Styling */
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 3.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 32px;
+            background: var(--header-gradient);
+            border-radius: 3px;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Emphasis & Strong */
+        strong {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--code-inline-bg);
+            color: var(--code-inline-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        pre {
+            margin: 2rem 0;
+            border-radius: var(--radius-md) !important;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            background: #1e1e1e !important;
+        }
+
+        pre code {
+            background-color: transparent !important;
+            color: inherit !important;
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.9rem !important;
+            font-weight: inherit;
+        }
+
+        /* Copy Code Button */
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #d1d5db;
+            padding: 0.3rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            user-select: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Details/Disclosure Widget */
+        details {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        details[open] {
+            box-shadow: var(--shadow-md);
+        }
+
+        summary {
+            padding: 1.25rem 1.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            user-select: none;
+            outline: none;
+        }
+
+        summary:hover {
+            background: var(--bg-secondary);
+        }
+
+        summary::after {
+            content: '\002B';
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        details .details-content {
+            padding: 1.75rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+
+        /* Images Styles */
+        .img-container {
+            margin: 2.5rem 0;
+            text-align: center;
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .img-container:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--primary-glow) 0px 0px 15px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 4rem 0;
+        }
+
+        /* Alert/Callout Box */
+        .alert {
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            background: var(--primary-glow);
+            border-left: 5px solid var(--primary);
+            color: var(--text-primary);
+        }
+
+        .alert ul {
+            margin-bottom: 0;
+            padding-left: 1.5rem;
+        }
+
+        /* Exercise Cards */
+        .exercise-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .exercise-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .exercise-card:hover::before {
+            opacity: 1;
+        }
+
+        .exercise-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Footer Style */
+        footer {
+            text-align: center;
+            padding: 5rem 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 5rem;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 1024px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            main {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            main {
+                padding: 1.5rem;
+            }
+            pre {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span>Ciemny motyw</span>
+    </button>
+
+    <header>
+        <h1>Lab 8: Programowanie Zorientowane Obiektowo</h1>
+        <p>Przewodnik po architekturze aplikacji desktopowych, wzorcach projektowych i persystencji danych z użyciem JavaFX 24 i Hibernate 6.6.</p>
+    </header>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="toc-card">
+                <h3>Spis treści</h3>
+                <ul class="toc-list">
+                    <li class="toc-item toc-indent-1"><a href="#lab-8-comprehensive-guide-to-javafx-amp-hibernate">Lab 8: Comprehensive Guide to JavaFX &amp; Hibernate</a></li>
+<li class="toc-item toc-indent-2"><a href="#1-project-architecture-the-why">1. Project Architecture: The "Why"</a></li>
+<li class="toc-item toc-indent-3"><a href="#the-layered-pattern">The Layered Pattern</a></li>
+<li class="toc-item toc-indent-3"><a href="#solid-principles-in-practice">SOLID Principles in Practice</a></li>
+<li class="toc-item toc-indent-3"><a href="#why-use-this">Why use this?</a></li>
+<li class="toc-item toc-indent-2"><a href="#2-setting-up-the-environment">2. Setting Up the Environment</a></li>
+<li class="toc-item toc-indent-3"><a href="#dependencies-maven">Dependencies (Maven)</a></li>
+<li class="toc-item toc-indent-3"><a href="#configuration-hibernate-cfg-xml">Configuration (hibernate.cfg.xml)</a></li>
+<li class="toc-item toc-indent-2"><a href="#3-the-data-layer-orm">3. The Data Layer (ORM)</a></li>
+<li class="toc-item toc-indent-3"><a href="#what-is-an-entity">What is an Entity?</a></li>
+<li class="toc-item toc-indent-3"><a href="#encapsulation">Encapsulation</a></li>
+<li class="toc-item toc-indent-2"><a href="#4-the-repository-pattern">4. The Repository Pattern</a></li>
+<li class="toc-item toc-indent-2"><a href="#5-the-service-layer-amp-dependency-injection-di">5. The Service Layer &amp; Dependency Injection (DI)</a></li>
+<li class="toc-item toc-indent-3"><a href="#what-is-dependency-injection">What is Dependency Injection?</a></li>
+<li class="toc-item toc-indent-2"><a href="#6-building-the-ui-with-javafx">6. Building the UI with JavaFX</a></li>
+<li class="toc-item toc-indent-3"><a href="#fxml-the-structure">FXML: The Structure</a></li>
+<li class="toc-item toc-indent-3"><a href="#css-the-style">CSS: The Style</a></li>
+<li class="toc-item toc-indent-2"><a href="#7-advanced-ui-logic">7. Advanced UI Logic</a></li>
+<li class="toc-item toc-indent-3"><a href="#filteredlist-search">FilteredList (Search)</a></li>
+<li class="toc-item toc-indent-3"><a href="#pagination">Pagination</a></li>
+<li class="toc-item toc-indent-2"><a href="#8-summary-of-concepts">8. Summary of Concepts</a></li>
+<li class="toc-item toc-indent-2"><a href="#9-exercises-extend-the-application">9. Exercises: Extend the Application</a></li>
+<li class="toc-item toc-indent-3"><a href="#task-1-add-a-course-entity">Task 1: Add a "Course" Entity</a></li>
+<li class="toc-item toc-indent-3"><a href="#task-2-implement-data-access">Task 2: Implement Data Access</a></li>
+<li class="toc-item toc-indent-3"><a href="#task-3-create-the-service-layer">Task 3: Create the Service Layer</a></li>
+<li class="toc-item toc-indent-3"><a href="#task-4-expand-the-ui">Task 4: Expand the UI</a></li>
+<li class="toc-item toc-indent-3"><a href="#bonus-task-relationships">Bonus Task: Relationships</a></li>
+
+                </ul>
+            </div>
+        </aside>
+
+        <main>
+            <h1 id="lab-8-comprehensive-guide-to-javafx-amp-hibernate"  id="lab-8-comprehensive-guide-to-javafx-hibernate">Lab 8: Comprehensive Guide to JavaFX &amp; Hibernate</h1>
+<p>This tutorial is a deep dive into building professional desktop applications with Java. We will move beyond simple coding and explore <strong>Software Architecture</strong>, <strong>Design Patterns</strong>, and <strong>Data Persistence</strong>. </p>
+<p>By the end of this lab, you will understand how to build a scalable Student Management System using <strong>JavaFX 24</strong> and <strong>Hibernate 6.6</strong>.</p>
+<hr />
+<h2 id="1-project-architecture-the-why"  id="1-project-architecture-the-why">1. Project Architecture: The "Why"</h2>
+<p>Before we write a single line of code, we must understand how to organize it. A professional application is divided into layers. This is called <strong>Separation of Concerns</strong>.</p>
+<h3 id="the-layered-pattern"  id="the-layered-pattern">The Layered Pattern</h3>
+<ol>
+<li><strong>Model Layer</strong>: Represents the data (e.g., a "Student"). It's a simple Java class that maps to a database table.</li>
+</ol>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image.png" /></div></p>
+<ol start="2">
+<li><strong>Repository Layer (DAO - Data Access Object)</strong>: The only layer that talks to the database. It handles raw "Create, Read, Update, Delete" (CRUD) operations.</li>
+</ol>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image-1.png" /></div></p>
+<ol start="3">
+<li><strong>Service Layer</strong>: The "Brain" of the app. It holds business logic (e.g., "Is this email valid?") and uses the Repository to save data.</li>
+</ol>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image-2.png" /></div></p>
+<ol start="4">
+<li><strong>Controller Layer</strong>: Handles the user interface (UI). It reacts to button clicks and tells the Service what to do.</li>
+</ol>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image-3.png" /></div></p>
+<h3 id="solid-principles-in-practice"  id="solid-principles-in-practice">SOLID Principles in Practice</h3>
+<p>It follows the <strong>SOLID</strong> principles of object-oriented design:</p>
+<ul>
+<li><strong>S - Single Responsibility</strong>: Each class has one reason to change. The <code>StudentService</code> only changes if business rules change, while the <code>StudentRepository</code> only changes if the database logic changes.</li>
+<li><strong>O - Open/Closed</strong>: Our code is open for extension but closed for modification. We can add a <code>TeacherRepository</code> by implementing the <code>Repository</code> interface without changing existing code.</li>
+<li><strong>L - Liskov Substitution</strong>: We can swap any <code>Repository</code> implementation (e.g., H2 vs. MySQL) and the <code>StudentService</code> will still work perfectly because they share the same contract.</li>
+<li><strong>I - Interface Segregation</strong>: We use a focused <code>Repository</code> interface so that classes only depend on methods they actually use.</li>
+<li><strong>D - Dependency Inversion</strong>: The <code>StudentService</code> depends on the <strong>Abstraction</strong> (<code>Repository</code> interface), not the <strong>Implementation</strong> (<code>StudentRepository</code>). We "inject" the dependency, decoupling the high-level logic from low-level data access.</li>
+</ul>
+<h3 id="why-use-this"  id="why-use-this">Why use this?</h3>
+<ul>
+<li><strong>Maintainability</strong>: If you change your database from H2 to PostgreSQL, you only change the Repository, not the whole app.</li>
+<li><strong>Testability</strong>: You can test the Service logic without even having a database!</li>
+</ul>
+<hr />
+<h2 id="2-setting-up-the-environment"  id="2-setting-up-the-environment">2. Setting Up the Environment</h2>
+<h3 id="dependencies-maven"  id="dependencies-maven">Dependencies (Maven)</h3>
+<p>We use <code>pom.xml</code> to manage libraries. </p>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image-5.png" /></div></p>
+<p>To add library you need to add entry into dependencies section in <code>pom.xml</code> file. For example:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;version&gt;1.18.32&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>This is base <code>pom.xml</code> file to start with your project, configured for Java 24:</p>
+<pre><code class="language-xml">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;!-- Project basic info --&gt;
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;lab8_project&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;!-- Use Java 24 --&gt;
+        &lt;maven.compiler.source&gt;24&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;24&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- External libraries will be listed here --&gt;
+        &lt;!-- Examples: JavaFX, Hibernate, H2, Lombok --&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;!-- Plugin to run JavaFX application directly from Maven --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+                &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.0.8&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;org.example.app.App&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- Standard compiler plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.13.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;24&lt;/source&gt;
+                    &lt;target&gt;24&lt;/target&gt;
+                    &lt;!-- Critical for Lombok: tells the compiler to use Lombok processor --&gt;
+                    &lt;annotationProcessorPaths&gt;
+                        &lt;path&gt;
+                            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                            &lt;version&gt;1.18.46&lt;/version&gt;
+                        &lt;/path&gt;
+                    &lt;/annotationProcessorPaths&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<p>Now lets add dependencies that will simplyfy our life. You can search them on <a href="https://mvnrepository.com/">mvnrepository.com</a>. For example if you need Lombok you can find it on this page. You can copy the dependency code into the <code>&lt;dependencies&gt;</code> section of your <code>pom.xml</code> file.</p>
+<p>After pasting the code in <code>pom.xml</code> file you need to refresh the project so new dependencies will be downloaded. Usually IDE does it automatically. In IntelliJ IDEA you can do it by clicking on the "Refresh all Maven Projects" button in the Maven tool window.</p>
+<ul>
+<li><strong>Lombok</strong>: Automatically generates getters, setters, and constructors using annotations like <code>@Data</code>.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-java">@Data
+public class Student {
+    private String firstName;
+    private String lastName;
+}
+</code></pre>
+<p>This is equivalent to:</p>
+<pre><code class="language-java">public class Student {
+    private String firstName;
+    private String lastName;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Hibernate</strong>: An <strong>ORM</strong> (Object-Relational Mapping) tool. It lets you interact with a database using Java objects instead of writing SQL queries manually.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-java">@Entity
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+}
+</code></pre>
+<p>it will create a table named "students" with columns "id", "first_name", and "last_name". And also it will map data from Student object to database table and vice versa. To be more precise. When we do it manually we do something like this:</p>
+<pre><code class="language-java">// MANUAL JDBC WAY (The &quot;Hard&quot; Way)
+ResultSet rs = statement.executeQuery(&quot;SELECT * FROM students WHERE id = 1&quot;);
+if (rs.next()) {
+    Student s = new Student();
+    s.setId(rs.getLong(&quot;id&quot;));
+    s.setFirstName(rs.getString(&quot;first_name&quot;));
+    s.setLastName(rs.getString(&quot;last_name&quot;));
+    // You have to manually map every single column!
+}
+
+// HIBERNATE WAY (The ORM Way)
+Student s = session.get(Student.class, 1L);
+// Hibernate automatically creates the object and fills all fields for you!
+</code></pre>
+<ul>
+<li><strong>JavaFX</strong>: The standard toolkit for building modern GUIs in Java.</li>
+</ul>
+<details>
+<summary>Full pom.xml</summary>
+
+
+<pre><code class="language-xml">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;lab8_project&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;24&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;24&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+            &lt;artifactId&gt;javafx-controls&lt;/artifactId&gt;
+            &lt;version&gt;24&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+            &lt;artifactId&gt;javafx-fxml&lt;/artifactId&gt;
+            &lt;version&gt;24&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+            &lt;version&gt;6.6.1.Final&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;version&gt;2.3.232&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.46&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+                &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.0.8&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;org.example.app.App&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.13.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;24&lt;/source&gt;
+                    &lt;target&gt;24&lt;/target&gt;
+                    &lt;annotationProcessorPaths&gt;
+                        &lt;path&gt;
+                            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                            &lt;version&gt;1.18.46&lt;/version&gt;
+                        &lt;/path&gt;
+                    &lt;/annotationProcessorPaths&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+
+
+</details>
+
+<h3 id="configuration-hibernate-cfg-xml"  id="configuration-hibernatecfgxml">Configuration (<code>hibernate.cfg.xml</code>)</h3>
+<p><div class="img-container"><img src="data:image/png;base64,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" alt="image-4.png" /></div></p>
+<p>This file tells Hibernate:
+-   <strong>Where</strong> the database is (JDBC URL).
+-   <strong>How</strong> to talk to it (Dialect).
+-   <strong>What</strong> to do with the schema (<code>hbm2ddl.auto=update</code> automatically creates tables for you).</p>
+<details>
+<summary>Full hibernate.cfg.xml</summary>
+
+
+<pre><code class="language-xml">&lt;!DOCTYPE hibernate-configuration SYSTEM &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;
+&lt;hibernate-configuration&gt;
+    &lt;session-factory&gt;
+        &lt;!-- Database connection settings --&gt;
+        &lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;org.h2.Driver&lt;/property&gt;
+        &lt;!-- Connect to an in-memory database for this lab --&gt;
+        &lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:h2:mem:testdb;MODE=MySQL&lt;/property&gt;
+        &lt;property name=&quot;hibernate.connection.username&quot;&gt;sa&lt;/property&gt;
+        &lt;property name=&quot;hibernate.connection.password&quot;&gt;password&lt;/property&gt;
+
+        &lt;!-- SQL dialect --&gt;
+        &lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.H2Dialect&lt;/property&gt;
+
+        &lt;!-- Show SQL and format it nicely --&gt;
+        &lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;
+        &lt;property name=&quot;hibernate.format_sql&quot;&gt;true&lt;/property&gt;
+
+        &lt;!-- Hibernate will automatically create/update database tables based on your @Entity classes --&gt;
+        &lt;property name=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/property&gt;
+    &lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="3-the-data-layer-orm"  id="3-the-data-layer-orm">3. The Data Layer (ORM)</h2>
+<h3 id="what-is-an-entity"  id="what-is-an-entity">What is an Entity?</h3>
+<p>An <strong>Entity</strong> is a Java class that Hibernate "tracks." We use annotations:
+-   <code>@Entity</code>: Marks the class for Hibernate.
+-   <code>@Id</code>: Defines the primary key.
+-   <code>@GeneratedValue</code>: Tells the database to increment the ID automatically (1, 2, 3...).</p>
+<h3 id="encapsulation"  id="encapsulation">Encapsulation</h3>
+<p>Notice that fields like <code>private String firstName;</code> are <strong>private</strong>. This is <strong>Encapsulation</strong>. We control access to data through methods, preventing other classes from accidentally corrupting the state of our object.</p>
+<details>
+<summary>Model - Student.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.models;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Data
+@Entity
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    public Student() {}
+
+    public Student(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+}
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="4-the-repository-pattern"  id="4-the-repository-pattern">4. The Repository Pattern</h2>
+<p>Instead of writing Hibernate code directly in the UI, we create a <code>StudentRepository</code>. </p>
+<p><strong>The Generic Interface:</strong>
+We use a <strong>Generic Interface</strong> <code>Repository&lt;T, ID&gt;</code>. This is an example of <strong>Polymorphism</strong>. We can have one interface that works for Students, Teachers, or Courses.</p>
+<pre><code class="language-java">public interface Repository&lt;T, ID&gt; {
+    Optional&lt;T&gt; findById(ID id);
+    List&lt;T&gt; findAll();
+    void save(T entity);
+    void delete(T entity);
+}
+</code></pre>
+<details>
+<summary>Generic Repository - Repository.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.repositories;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface Repository&lt;T, ID&gt; {
+    Optional&lt;T&gt; findById(ID id);
+    List&lt;T&gt; findAll();
+    void save(T entity);
+    void delete(T entity);
+}
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Implementation - StudentRepository.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.repositories;
+
+import org.example.app.models.Student;
+import org.example.app.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import java.util.List;
+import java.util.Optional;
+
+public class StudentRepository implements Repository&lt;Student, Long&gt; {
+
+    @Override
+    public Optional&lt;Student&gt; findById(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return Optional.ofNullable(session.get(Student.class, id));
+        }
+    }
+
+    @Override
+    public List&lt;Student&gt; findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(&quot;from Student&quot;, Student.class).list();
+        }
+    }
+
+    @Override
+    public void save(Student student) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(student);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw e;
+        }
+    }
+
+    @Override
+    public void delete(Student student) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.remove(session.contains(student) ? student : session.merge(student));
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw e;
+        }
+    }
+}
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Utility - HibernateUtil.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.utils;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class HibernateUtil {
+    private static final SessionFactory sessionFactory = buildSessionFactory();
+
+    private static SessionFactory buildSessionFactory() {
+        try {
+            return new Configuration().configure().buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println(&quot;Initial SessionFactory creation failed: &quot; + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public static void shutdown() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
+    }
+}
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="5-the-service-layer-amp-dependency-injection-di"  id="5-the-service-layer-dependency-injection-di">5. The Service Layer &amp; Dependency Injection (DI)</h2>
+<h3 id="what-is-dependency-injection"  id="what-is-dependency-injection">What is Dependency Injection?</h3>
+<p>If <code>StudentService</code> needs a <code>StudentRepository</code>, we don't create it inside the service. We <strong>inject</strong> it through the constructor.
+<strong>Why?</strong> Because it makes the code flexible. You can "inject" a real database repository or a "fake" one for testing.</p>
+<p>The service is where we validate data. For example, before saving a student, we check if the email follows a specific pattern (Regex).</p>
+<details>
+<summary>Service - StudentService.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.services;
+
+import org.example.app.models.Student;
+import org.example.app.repositories.Repository;
+import java.util.List;
+
+public class StudentService {
+    private final Repository&lt;Student, Long&gt; studentRepository;
+
+    public StudentService(Repository&lt;Student, Long&gt; studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
+    public List&lt;Student&gt; getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public void addStudent(Student student) {
+        validateStudent(student);
+        studentRepository.save(student);
+    }
+
+    public void removeStudent(Student student) {
+        studentRepository.delete(student);
+    }
+
+    public void duplicateStudent(Student original) {
+        Student copy = new Student(original.getFirstName(), original.getLastName(), original.getEmail());
+        studentRepository.save(copy);
+    }
+
+    private void validateStudent(Student s) {
+        if (s.getFirstName() == null || s.getFirstName().isBlank()) {
+            throw new IllegalArgumentException(&quot;First name is required.&quot;);
+        }
+        if (s.getLastName() == null || s.getLastName().isBlank()) {
+            throw new IllegalArgumentException(&quot;Last name is required.&quot;);
+        }
+        if (s.getEmail() == null || !s.getEmail().matches(&quot;^[A-Za-z0-9+_.-]+@(.+)$&quot;)) {
+            throw new IllegalArgumentException(&quot;Invalid email format.&quot;);
+        }
+    }
+}
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="6-building-the-ui-with-javafx"  id="6-building-the-ui-with-javafx">6. Building the UI with JavaFX</h2>
+<h3 id="fxml-the-structure"  id="fxml-the-structure">FXML: The Structure</h3>
+<p>FXML is an XML-based language for defining layouts. It keeps your design separate from your logic. 
+-   <strong>FXMLLoader</strong>: Loads the XML file and creates Java objects for each UI element.
+-   <strong>@FXML Annotation</strong>: Links a variable in your Java Controller to an element in the FXML file (like a Button or TableView).</p>
+<h3 id="css-the-style"  id="css-the-style">CSS: The Style</h3>
+<p>Just like websites, JavaFX apps use CSS for styling. We use classes like <code>.button</code> or <code>.table-view</code> to make the app look modern (Material Design).</p>
+<ul>
+<li>Set <code>CONSTRAINED_RESIZE_POLICY</code> on tables so columns fill the width.</li>
+</ul>
+<details>
+<summary>View - main-view.fxml</summary>
+
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?import javafx.scene.control.*?&gt;
+&lt;?import javafx.scene.layout.*?&gt;
+
+&lt;VBox xmlns=&quot;http://javafx.com/javafx&quot; xmlns:fx=&quot;http://javafx.com/fxml&quot;
+      fx:controller=&quot;org.example.app.controllers.MainController&quot; spacing=&quot;10&quot; prefWidth=&quot;800&quot; prefHeight=&quot;600&quot;
+      stylesheets=&quot;@styles.css&quot;&gt;
+
+    &lt;MenuBar&gt;
+        &lt;Menu text=&quot;File&quot;&gt;
+            &lt;MenuItem text=&quot;Add New&quot; onAction=&quot;#handleAdd&quot;/&gt;
+            &lt;MenuItem text=&quot;Exit&quot; onAction=&quot;#handleExit&quot;/&gt;
+        &lt;/Menu&gt;
+    &lt;/MenuBar&gt;
+
+    &lt;HBox spacing=&quot;10&quot; alignment=&quot;CENTER_LEFT&quot; style=&quot;-fx-padding: 0 10 0 10;&quot;&gt;
+        &lt;Label text=&quot;Search:&quot;/&gt;
+        &lt;TextField fx:id=&quot;searchField&quot; promptText=&quot;Type name or email...&quot; HBox.hgrow=&quot;ALWAYS&quot;/&gt;
+    &lt;/HBox&gt;
+
+    &lt;TableView fx:id=&quot;studentTable&quot; VBox.vgrow=&quot;ALWAYS&quot;&gt;
+        &lt;columnResizePolicy&gt;
+            &lt;TableView fx:constant=&quot;CONSTRAINED_RESIZE_POLICY&quot;/&gt;
+        &lt;/columnResizePolicy&gt;
+        &lt;columns&gt;
+            &lt;TableColumn fx:id=&quot;idCol&quot; text=&quot;ID&quot; prefWidth=&quot;50&quot;/&gt;
+            &lt;TableColumn fx:id=&quot;firstNameCol&quot; text=&quot;First Name&quot; prefWidth=&quot;150&quot;/&gt;
+            &lt;TableColumn fx:id=&quot;lastNameCol&quot; text=&quot;Last Name&quot; prefWidth=&quot;150&quot;/&gt;
+            &lt;TableColumn fx:id=&quot;emailCol&quot; text=&quot;Email&quot; prefWidth=&quot;200&quot;/&gt;
+        &lt;/columns&gt;
+    &lt;/TableView&gt;
+
+    &lt;Pagination fx:id=&quot;pagination&quot; maxPageIndicatorCount=&quot;5&quot;/&gt;
+
+    &lt;HBox spacing=&quot;10&quot; alignment=&quot;CENTER_RIGHT&quot; style=&quot;-fx-padding: 10;&quot;&gt;
+        &lt;Button text=&quot;Delete Selected&quot; onAction=&quot;#handleDelete&quot; style=&quot;-fx-background-color: #ff4444; -fx-text-fill: white;&quot;/&gt;
+    &lt;/HBox&gt;
+&lt;/VBox&gt;
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>View - student-edit-view.fxml</summary>
+
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?import javafx.scene.control.*?&gt;
+&lt;?import javafx.scene.layout.*?&gt;
+&lt;?import javafx.geometry.Insets?&gt;
+
+&lt;VBox xmlns=&quot;http://javafx.com/javafx&quot; xmlns:fx=&quot;http://javafx.com/fxml&quot;
+      fx:controller=&quot;org.example.app.controllers.StudentEditController&quot; spacing=&quot;15&quot; prefWidth=&quot;400&quot;
+      stylesheets=&quot;@styles.css&quot;&gt;
+    &lt;padding&gt;
+        &lt;Insets top=&quot;20&quot; right=&quot;20&quot; bottom=&quot;20&quot; left=&quot;20&quot;/&gt;
+    &lt;/padding&gt;
+
+    &lt;Label text=&quot;Add Student&quot; style=&quot;-fx-font-size: 18; -fx-font-weight: bold;&quot;/&gt;
+
+    &lt;GridPane vgap=&quot;10&quot; hgap=&quot;10&quot;&gt;
+        &lt;Label text=&quot;First Name:&quot; GridPane.columnIndex=&quot;0&quot; GridPane.rowIndex=&quot;0&quot;/&gt;
+        &lt;TextField fx:id=&quot;firstNameField&quot; promptText=&quot;Enter first name&quot; GridPane.columnIndex=&quot;1&quot; GridPane.rowIndex=&quot;0&quot;/&gt;
+
+        &lt;Label text=&quot;Last Name:&quot; GridPane.columnIndex=&quot;0&quot; GridPane.rowIndex=&quot;1&quot;/&gt;
+        &lt;TextField fx:id=&quot;lastNameField&quot; promptText=&quot;Enter last name&quot; GridPane.columnIndex=&quot;1&quot; GridPane.rowIndex=&quot;1&quot;/&gt;
+
+        &lt;Label text=&quot;Email:&quot; GridPane.columnIndex=&quot;0&quot; GridPane.rowIndex=&quot;2&quot;/&gt;
+        &lt;TextField fx:id=&quot;emailField&quot; promptText=&quot;Enter email&quot; GridPane.columnIndex=&quot;1&quot; GridPane.rowIndex=&quot;2&quot;/&gt;
+        &lt;columnConstraints&gt;
+            &lt;ColumnConstraints /&gt;
+            &lt;ColumnConstraints hgrow=&quot;ALWAYS&quot; /&gt;
+        &lt;/columnConstraints&gt;
+    &lt;/GridPane&gt;
+
+    &lt;HBox spacing=&quot;10&quot; alignment=&quot;CENTER_RIGHT&quot;&gt;
+        &lt;Button text=&quot;Cancel&quot; onAction=&quot;#handleCancel&quot;/&gt;
+        &lt;Button text=&quot;Save&quot; onAction=&quot;#handleSave&quot; style=&quot;-fx-background-color: #3f51b5; -fx-text-fill: white;&quot;/&gt;
+    &lt;/HBox&gt;
+&lt;/VBox&gt;
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Style - styles.css</summary>
+
+
+<pre><code class="language-css">.root {
+    -fx-font-family: &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f4f4f4;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-base: #ffffff;
+    -fx-control-inner-background: #ffffff;
+    -fx-table-cell-border-color: #eeeeee;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #3f51b5;
+    -fx-size: 40;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #e8eaf6;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #c5cae9;
+    -fx-text-fill: black;
+}
+
+.button {
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
+}
+
+.text-field {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #cccccc;
+    -fx-padding: 8;
+}
+
+.text-field:focused {
+    -fx-border-color: #3f51b5;
+    -fx-border-width: 2;
+}
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="7-advanced-ui-logic"  id="7-advanced-ui-logic">7. Advanced UI Logic</h2>
+<h3 id="filteredlist-search"  id="filteredlist-search">FilteredList (Search)</h3>
+<p>Instead of querying the database every time a user types a letter, we wrap our main list in a <code>FilteredList</code>. As the user types, we change the "Predicate" (the rule) of the list, and the TableView updates instantly!</p>
+<h3 id="pagination"  id="pagination">Pagination</h3>
+<p>If you have 1000 students, you don't want to scroll forever. 
+1.  We decide on a page size (e.g., 5 rows).
+2.  The <code>Pagination</code> control provides a <code>pageIndex</code>.
+3.  We calculate: <code>fromIndex = pageIndex * pageSize</code>.
+4.  We show only that "slice" of data in the table.</p>
+<p>By adding a <code>ContextMenu</code> to a <code>TableRow</code>, we provide a better User Experience (UX). Users can right-click to perform quick actions like <strong>Duplicating</strong> a record.</p>
+<details>
+<summary>Main Controller - MainController.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.controllers;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.example.app.App;
+import org.example.app.models.Student;
+import org.example.app.services.StudentService;
+import java.io.IOException;
+
+public class MainController {
+    @FXML private TableView&lt;Student&gt; studentTable;
+    @FXML private TableColumn&lt;Student, Long&gt; idCol;
+    @FXML private TableColumn&lt;Student, String&gt; firstNameCol;
+    @FXML private TableColumn&lt;Student, String&gt; lastNameCol;
+    @FXML private TableColumn&lt;Student, String&gt; emailCol;
+    @FXML private TextField searchField;
+    @FXML private Pagination pagination;
+
+    private static final int ROWS_PER_PAGE = 5;
+    private final ObservableList&lt;Student&gt; studentList = FXCollections.observableArrayList();
+    private FilteredList&lt;Student&gt; filteredData;
+    private final StudentService studentService = App.getStudentService();
+
+    @FXML
+    public void initialize() {
+        idCol.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;id&quot;));
+        firstNameCol.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;firstName&quot;));
+        lastNameCol.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;lastName&quot;));
+        emailCol.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;email&quot;));
+
+        filteredData = new FilteredList&lt;&gt;(studentList, p -&gt; true);
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -&gt; {
+            filteredData.setPredicate(student -&gt; {
+                if (newValue == null || newValue.isEmpty()) return true;
+                String lowerCaseFilter = newValue.toLowerCase();
+                return student.getFirstName().toLowerCase().contains(lowerCaseFilter) ||
+                       student.getLastName().toLowerCase().contains(lowerCaseFilter) ||
+                       student.getEmail().toLowerCase().contains(lowerCaseFilter);
+            });
+            updatePagination();
+        });
+
+        setupContextMenu();
+        pagination.setPageFactory(this::createPage);
+        refreshData();
+    }
+
+    private void setupContextMenu() {
+        studentTable.setRowFactory(tv -&gt; {
+            TableRow&lt;Student&gt; row = new TableRow&lt;&gt;();
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem duplicateItem = new MenuItem(&quot;Duplicate&quot;);
+            duplicateItem.setOnAction(event -&gt; {
+                studentService.duplicateStudent(row.getItem());
+                refreshData();
+            });
+            MenuItem deleteItem = new MenuItem(&quot;Delete&quot;);
+            deleteItem.setOnAction(event -&gt; handleDelete());
+            contextMenu.getItems().addAll(duplicateItem, deleteItem);
+            row.contextMenuProperty().bind(
+                javafx.beans.binding.Bindings.when(row.emptyProperty())
+                .then((ContextMenu)null)
+                .otherwise(contextMenu)
+            );
+            row.setOnMouseClicked(event -&gt; {
+                if (event.getClickCount() == 2 &amp;&amp; (!row.isEmpty())) {
+                    showDetails(row.getItem());
+                }
+            });
+            return row;
+        });
+    }
+
+    private javafx.scene.Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredData.size());
+        if (fromIndex &gt;= filteredData.size() &amp;&amp; filteredData.size() &gt; 0) return new Label(&quot;No data&quot;);
+        SortedList&lt;Student&gt; sortedData = new SortedList&lt;&gt;(
+                FXCollections.observableArrayList(filteredData.subList(fromIndex, toIndex))
+        );
+        sortedData.comparatorProperty().bind(studentTable.comparatorProperty());
+        studentTable.setItems(sortedData);
+        return new Label(&quot;Page &quot; + (pageIndex + 1));
+    }
+
+    private void updatePagination() {
+        int pageCount = (int) Math.ceil((double) filteredData.size() / ROWS_PER_PAGE);
+        pagination.setPageCount(pageCount == 0 ? 1 : pageCount);
+        int currentPage = pagination.getCurrentPageIndex();
+        pagination.setPageFactory(null);
+        pagination.setPageFactory(this::createPage);
+        pagination.setCurrentPageIndex(currentPage);
+    }
+
+    private void refreshData() {
+        studentList.setAll(studentService.getAllStudents());
+        updatePagination();
+    }
+
+    @FXML
+    private void handleAdd() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/org/example/app/views/student-edit-view.fxml&quot;));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle(&quot;Add New Student&quot;);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            refreshData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleDelete() {
+        Student selected = studentTable.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, &quot;Delete student &quot; + selected.getFirstName() + &quot;?&quot;);
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            studentService.removeStudent(selected);
+            refreshData();
+        }
+    }
+
+    private void showDetails(Student s) {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle(&quot;Student Details&quot;);
+        info.setHeaderText(s.getFirstName() + &quot; &quot; + s.getLastName());
+        info.setContentText(&quot;ID: &quot; + s.getId() + &quot;\nEmail: &quot; + s.getEmail());
+        info.show();
+    }
+
+    @FXML
+    private void handleExit() { System.exit(0); }
+}
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Edit Controller - StudentEditController.java</summary>
+
+
+<pre><code class="language-java">package org.example.app.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import org.example.app.App;
+import org.example.app.models.Student;
+import org.example.app.services.StudentService;
+
+public class StudentEditController {
+    @FXML private TextField firstNameField;
+    @FXML private TextField lastNameField;
+    @FXML private TextField emailField;
+
+    private final StudentService studentService = App.getStudentService();
+
+    @FXML
+    private void handleSave() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        Student student = new Student(firstName, lastName, email);
+        try {
+            studentService.addStudent(student);
+            closeWindow();
+        } catch (IllegalArgumentException e) {
+            showError(&quot;Validation Error&quot;, e.getMessage());
+        } catch (Exception e) {
+            showError(&quot;Database Error&quot;, &quot;Could not save student to database.&quot;);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        Stage stage = (Stage) firstNameField.getScene().getWindow();
+        stage.close();
+    }
+
+    private void showError(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(&quot;Error&quot;);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+}
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Entry Point - App.java</summary>
+
+
+<pre><code class="language-java">package org.example.app;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.example.app.models.Student;
+import org.example.app.repositories.StudentRepository;
+import org.example.app.services.StudentService;
+import org.example.app.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import java.io.IOException;
+
+public class App extends Application {
+    private static StudentService studentService;
+
+    public static void main(String[] args) {
+        studentService = new StudentService(new StudentRepository());
+        seedData();
+        launch();
+    }
+
+    public static StudentService getStudentService() {
+        return studentService;
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/org/example/app/views/main-view.fxml&quot;));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        stage.setTitle(&quot;Student Management System&quot;);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private static void seedData() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long count = session.createQuery(&quot;select count(s) from Student s&quot;, Long.class).uniqueResult();
+            if (count == 0) {
+                Transaction tx = session.beginTransaction();
+                session.persist(new Student(&quot;John&quot;, &quot;Doe&quot;, &quot;john@example.com&quot;));
+                session.persist(new Student(&quot;Jane&quot;, &quot;Smith&quot;, &quot;jane@example.com&quot;));
+                tx.commit();
+            }
+        }
+    }
+
+    @Override
+    public void stop() {
+        HibernateUtil.shutdown();
+    }
+}
+</code></pre>
+
+
+</details>
+
+<hr />
+<h2 id="8-summary-of-concepts"  id="8-summary-of-concepts">8. Summary of Concepts</h2>
+<ol>
+<li><strong>Inheritance/Polymorphism</strong>: Used in Repository interfaces.</li>
+<li><strong>Encapsulation</strong>: Used in Entity models.</li>
+<li><strong>Abstraction</strong>: Hiding Hibernate details inside Repositories.</li>
+<li><strong>Composition</strong>: Controllers are composed of Services.</li>
+</ol>
+<hr />
+<h2 id="9-exercises-extend-the-application"  id="9-exercises-extend-the-application">9. Exercises: Extend the Application</h2>
+<p>Now it's your turn to apply the patterns you've learned. Follow the "Student" implementation as a template to add a new feature.</p>
+<h3 id="task-1-add-a-course-entity"  id="task-1-add-a-course-entity">Task 1: Add a "Course" Entity</h3>
+<ol>
+<li>Create a new model class <code>Course.java</code> in the <code>models</code> package.</li>
+<li>Add fields: <code>id</code> (Long), <code>name</code> (String), and <code>description</code> (String).</li>
+<li>Use Hibernate and Lombok annotations.</li>
+</ol>
+<h3 id="task-2-implement-data-access"  id="task-2-implement-data-access">Task 2: Implement Data Access</h3>
+<ol>
+<li>Create <code>CourseRepository.java</code> in the <code>repositories</code> package.</li>
+<li>Implement the <code>Repository&lt;Course, Long&gt;</code> interface.</li>
+<li>Notice how the generic interface makes this process much faster!</li>
+</ol>
+<h3 id="task-3-create-the-service-layer"  id="task-3-create-the-service-layer">Task 3: Create the Service Layer</h3>
+<ol>
+<li>Create <code>CourseService.java</code>.</li>
+<li>Add business logic: A course name must be at least 3 characters long.</li>
+<li>Inject the <code>CourseRepository</code> into this service.</li>
+</ol>
+<h3 id="task-4-expand-the-ui"  id="task-4-expand-the-ui">Task 4: Expand the UI</h3>
+<ol>
+<li>Add a new button or a <code>TabPane</code> to the <code>main-view.fxml</code>.</li>
+<li>Create a view to list and add courses.</li>
+<li>Apply the same <code>FilteredList</code> and <code>Pagination</code> patterns to the course list.</li>
+</ol>
+<h3 id="bonus-task-relationships"  id="bonus-task-relationships">Bonus Task: Relationships</h3>
+<ol>
+<li>Try to link a <strong>Student</strong> to multiple <strong>Courses</strong> (Many-to-Many relationship).</li>
+<li>How does this change your <code>StudentRepository</code>?</li>
+<li>How will you display these relationships in the TableView?</li>
+</ol>
+<p><strong>Good luck! This is the best way to master Software Architecture.</strong></p>
+        </main>
+    </div>
+
+    <footer>
+        Projekt &copy; 2026 Laboratorium Programowania Zorientowanego Obiektowo I. Wygenerowano z md i wbudowanymi zasobami.
+    </footer>
+
+    <!-- Prism Syntax Highlighting and details content support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+    <script>
+        // Theme switching logic
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = 'light';
+            let btnText = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> <span>Ciemny motyw</span>';
+            
+            if (currentTheme !== 'dark') {
+                newTheme = 'dark';
+                btnText = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> <span>Jasny motyw</span>';
+            }
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.getElementById('themeBtn').innerHTML = btnText;
+        }
+
+        // Load preferred theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('themeBtn').innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> <span>Jasny motyw</span>';
+        }
+
+        // Code Copy Buttons and nesting inside details fix
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wrap details contents nicely
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(details => {
+                const summary = details.querySelector('summary');
+                const contentNodes = Array.from(details.childNodes).filter(node => node !== summary);
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'details-content';
+                
+                contentNodes.forEach(node => {
+                    wrapper.appendChild(node);
+                });
+                
+                details.appendChild(wrapper);
+            });
+            
+            // Format exercise elements to cards
+            const exerciseH4s = document.querySelectorAll('h3#task-1-add-a-course-entity, h3#task-2-implement-data-access, h3#task-3-create-the-service-layer, h3#task-4-expand-the-ui, h3#bonus-task-relationships');
+            exerciseH4s.forEach(h => {
+                const card = document.createElement('div');
+                card.className = 'exercise-card';
+                
+                const h4 = document.createElement('h4');
+                h4.innerText = h.innerText;
+                card.appendChild(h4);
+                
+                let next = h.nextElementSibling;
+                while(next && next.tagName !== 'H3' && next.tagName !== 'H2' && !next.id.startsWith('task-') && !next.id.startsWith('bonus-')) {
+                    const current = next;
+                    next = next.nextElementSibling;
+                    card.appendChild(current);
+                }
+                
+                h.parentNode.replaceChild(card, h);
+            });
+
+            // Add Copy Button to Pre tags
+            const preBlocks = document.querySelectorAll('pre');
+            preBlocks.forEach(pre => {
+                // Create copy button
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.innerText = 'Kopiuj';
+                
+                btn.addEventListener('click', () => {
+                    const code = pre.querySelector('code').innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        btn.innerText = 'Skopiowano!';
+                        btn.style.background = 'rgba(16, 185, 129, 0.2)';
+                        btn.style.color = '#10b981';
+                        
+                        setTimeout(() => {
+                            btn.innerText = 'Kopiuj';
+                            btn.style.background = 'rgba(255, 255, 255, 0.08)';
+                            btn.style.color = '#d1d5db';
+                        }, 2000);
+                    });
+                });
+                
+                pre.appendChild(btn);
+            });
+        });
+    </script>
+</body>
+</html>

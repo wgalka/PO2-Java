@@ -5,9 +5,7 @@ title: "Lab 5 - Wprowadzenie do JSP i Servlet API"
 
 # Lab 5 - Wprowadzenie do JSP i Servlet API
 
-## Zakres: 1 zajęcie
-
-## Cel zajęć
+## Cel laboratorium
 
 Pracujemy w [IntelliJ IDEA i Maven](../srodowisko.html), w projekcie `lab5`. Jest to krótkie ćwiczenie porównawcze z aplikacją desktopową. Projekt zaliczeniowy pozostaje desktopowy.
 
@@ -112,9 +110,9 @@ Nie wkładaj bezpośrednio danych użytkownika do HTML bez odpowiedniego escapow
 3. Kiedy użyć `doGet`, a kiedy `doPost`?
 4. Gdzie powinna znajdować się logika dostępu do bazy?
 
-## Realny zakres jednego spotkania
+## Organizacja ćwiczenia
 
-Wykonaj uruchomienie WAR, `GET`, formularz `POST`, walidację, wyświetlenie wyniku i diagram przepływu. Korzystaj z wcześniej gotowego DAO lub repozytorium, jeśli model pasuje do formularza. Następnie dodaj edycję i usuwanie z wcześniejszej listy. Przygotuj warstwę persystencji przed spotkaniem, korzystając z poprzednich laboratoriów.
+Wykonaj uruchomienie WAR, `GET`, formularz `POST`, walidację, wyświetlenie wyniku i diagram przepływu. Korzystaj z wcześniej gotowego DAO lub repozytorium, jeśli model pasuje do formularza. Następnie dodaj edycję i usuwanie z wcześniejszej listy. Przygotuj warstwę persystencji z wyprzedzeniem, korzystając z poprzednich laboratoriów.
 
 ## Uruchomienie w IntelliJ bez integracji serwera w IDE
 

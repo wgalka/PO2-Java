@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 870" role="img" aria-labelledby="title desc">
+  <title id="title">Jak działają menedżery układu Swing</title>
+  <desc id="desc">Sześć schematów pokazuje zawijanie w FlowLayout, podział BorderLayout, równe komórki GridLayout, elastyczny formularz GridBagLayout, pionowe układanie BoxLayout oraz zamianę widoków CardLayout.</desc>
+  <style>
+    text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #17324d; }
+    .muted { fill: #52677d; }
+    .title { font-size: 26px; font-weight: 700; }
+    .subtitle { font-size: 14px; }
+    .card { fill: #ffffff; stroke: #d5e0eb; stroke-width: 1.5; }
+    .heading { font-size: 17px; font-weight: 700; }
+    .small { font-size: 12px; }
+    .tiny { font-size: 10px; }
+    .panel { fill: #f8fafc; stroke: #9fb3c8; stroke-width: 1.2; }
+    .region { fill: #dceafa; stroke: #9bb9d5; stroke-width: 1; }
+    .focus { fill: #c9e4fa; stroke: #6d9fc9; stroke-width: 1.2; }
+    .accent { fill: #d7f2e6; stroke: #76b697; stroke-width: 1.2; }
+    .cell { fill: #e8f1fa; stroke: #9fb3c8; stroke-width: 1; }
+    .arrow { stroke: #55738e; stroke-width: 1.8; fill: none; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#55738e"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="870" rx="18" fill="#f3f7fb"/>
+  <text class="title" x="32" y="43">Menedżer układu decyduje, gdzie trafią komponenty</text>
+  <text class="subtitle muted" x="32" y="69">Porównaj zachowanie po zmianie rozmiaru, a nie tylko początkowy wygląd okna.</text>
+
+  <!-- FlowLayout -->
+  <g transform="translate(32 94)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">FlowLayout</text>
+    <text class="small muted" x="20" y="49">Kolejność zachowana; elementy zawijają się do kolejnego wiersza.</text>
+    <text class="tiny muted" x="24" y="76">SZEROKI PANEL</text>
+    <text class="tiny muted" x="350" y="76">WĄSKI PANEL</text>
+    <rect class="panel" x="20" y="84" width="215" height="112" rx="5"/>
+    <rect class="region" x="31" y="99" width="58" height="28" rx="4"/><text class="tiny" x="60" y="117" text-anchor="middle">Dane</text>
+    <rect class="region" x="96" y="99" width="58" height="28" rx="4"/><text class="tiny" x="125" y="117" text-anchor="middle">Wykres</text>
+    <rect class="region" x="161" y="99" width="61" height="28" rx="4"/><text class="tiny" x="191" y="117" text-anchor="middle">Zapisz</text>
+    <rect class="panel" x="330" y="84" width="165" height="112" rx="5"/>
+    <rect class="region" x="342" y="99" width="55" height="28" rx="4"/><text class="tiny" x="369" y="117" text-anchor="middle">Dane</text>
+    <rect class="region" x="403" y="99" width="58" height="28" rx="4"/><text class="tiny" x="432" y="117" text-anchor="middle">Wykres</text>
+    <rect class="region" x="342" y="145" width="66" height="28" rx="4"/><text class="tiny" x="375" y="163" text-anchor="middle">Zapisz</text>
+    <text class="tiny muted" x="20" y="218">FlowLayout.LEFT: po „Wykres” brak miejsca; „Zapisz” zaczyna nowy wiersz.</text>
+  </g>
+
+  <!-- BorderLayout -->
+  <g transform="translate(568 94)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">BorderLayout</text>
+    <text class="small muted" x="20" y="49">Regiony przy krawędziach; CENTER wykorzystuje pozostałe miejsce.</text>
+    <rect class="region" x="84" y="66" width="350" height="25" rx="3"/>
+    <text class="tiny" x="259" y="83" text-anchor="middle">NORTH · pasek narzędzi</text>
+    <rect class="region" x="84" y="96" width="55" height="82" rx="3"/>
+    <text class="tiny" x="111" y="142" text-anchor="middle">WEST</text>
+    <rect class="focus" x="144" y="96" width="230" height="82" rx="3"/>
+    <text class="small" x="259" y="135" text-anchor="middle">CENTER · tabela</text>
+    <text class="tiny muted" x="259" y="153" text-anchor="middle">dostaje dodatkowe miejsce</text>
+    <path class="arrow" d="M258 164 H154"/>
+    <path class="arrow" d="M260 164 H364"/>
+    <rect class="region" x="379" y="96" width="55" height="82" rx="3"/>
+    <text class="tiny" x="406" y="142" text-anchor="middle">EAST</text>
+    <rect class="region" x="84" y="183" width="350" height="25" rx="3"/>
+    <text class="tiny" x="259" y="200" text-anchor="middle">SOUTH · status</text>
+    <text class="tiny muted" x="20" y="224">Po powiększeniu okna CENTER rozszerza się (strzałki).</text>
+  </g>
+
+  <!-- GridLayout -->
+  <g transform="translate(32 347)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">GridLayout</text>
+    <text class="small muted" x="20" y="49">Siatka regularna; każda komórka ma ten sam rozmiar.</text>
+    <g transform="translate(83 72)">
+      <rect class="cell" x="0" y="0" width="112" height="47" rx="3"/><text class="small" x="56" y="29" text-anchor="middle">1</text>
+      <rect class="cell" x="116" y="0" width="112" height="47" rx="3"/><text class="small" x="172" y="29" text-anchor="middle">2</text>
+      <rect class="cell" x="232" y="0" width="112" height="47" rx="3"/><text class="small" x="288" y="29" text-anchor="middle">3</text>
+      <rect class="cell" x="0" y="51" width="112" height="47" rx="3"/><text class="small" x="56" y="80" text-anchor="middle">4</text>
+      <rect class="cell" x="116" y="51" width="112" height="47" rx="3"/><text class="small" x="172" y="80" text-anchor="middle">5</text>
+      <rect class="cell" x="232" y="51" width="112" height="47" rx="3"/><text class="small" x="288" y="80" text-anchor="middle">6</text>
+    </g>
+    <text class="tiny muted" x="20" y="218">Przydatny np. do klawiatury kalkulatora; nie do formularza etykieta–pole.</text>
+  </g>
+
+  <!-- GridBagLayout -->
+  <g transform="translate(568 347)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">GridBagLayout</text>
+    <text class="small muted" x="20" y="49">Elastyczna siatka: komponent może zajmować kilka komórek.</text>
+    <text class="tiny muted" x="31" y="82">Zbiór</text>
+    <rect class="panel" x="95" y="63" width="372" height="31" rx="4"/>
+    <rect class="accent" x="99" y="67" width="364" height="23" rx="3"/>
+    <text class="tiny" x="112" y="83">Pole rozciąga się: weightx + fill</text>
+    <text class="tiny muted" x="31" y="122">Okres</text>
+    <rect class="panel" x="95" y="103" width="372" height="31" rx="4"/>
+    <rect class="accent" x="99" y="107" width="364" height="23" rx="3"/>
+    <text class="tiny" x="112" y="123">Pole wejściowe</text>
+    <path class="arrow" d="M225 119 H451"/>
+    <rect class="region" x="95" y="151" width="132" height="30" rx="4"/>
+    <text class="tiny" x="161" y="170" text-anchor="middle">Anuluj</text>
+    <rect class="focus" x="235" y="151" width="232" height="30" rx="4"/>
+    <text class="tiny" x="351" y="170" text-anchor="middle">Zapisz</text>
+    <text class="tiny muted" x="20" y="199">Większe okno → pole z weightx poszerza się.</text>
+    <text class="tiny muted" x="20" y="218">weightx dzieli wolne miejsce; fill określa, czy pole je wypełni.</text>
+  </g>
+
+  <!-- BoxLayout -->
+  <g transform="translate(32 600)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">BoxLayout</text>
+    <text class="small muted" x="20" y="49">Ustawia dzieci w jednym kierunku; sam nie zawija elementów.</text>
+    <text class="tiny muted" x="75" y="75">Y_AXIS · kolejność od góry do dołu</text>
+    <rect class="region" x="75" y="84" width="370" height="31" rx="4"/>
+    <text class="tiny" x="260" y="104" text-anchor="middle">1. Wybierz zbiór</text>
+    <rect class="region" x="75" y="121" width="370" height="31" rx="4"/>
+    <text class="tiny" x="260" y="141" text-anchor="middle">2. Wybierz zmienne</text>
+    <rect class="focus" x="75" y="158" width="370" height="31" rx="4"/>
+    <text class="tiny" x="260" y="178" text-anchor="middle">3. Uruchom analizę</text>
+    <path class="arrow" d="M465 88 V185"/>
+    <text class="tiny muted" x="20" y="218">Rozmiary wynikają z preferred/minimum/maximum size komponentów.</text>
+  </g>
+
+  <!-- CardLayout -->
+  <g transform="translate(568 600)">
+    <rect class="card" width="520" height="235" rx="12"/>
+    <text class="heading" x="20" y="29">CardLayout</text>
+    <text class="small muted" x="20" y="49">Widoki zajmują ten sam obszar; widoczny jest jeden naraz.</text>
+    <rect class="panel" x="32" y="69" width="176" height="112" rx="6"/>
+    <rect class="accent" x="42" y="79" width="156" height="92" rx="4"/>
+    <text class="small" x="120" y="126" text-anchor="middle">Dane</text>
+    <path class="arrow" d="M226 124 H287"/>
+    <text class="tiny muted" x="256" y="111" text-anchor="middle">cards.show()</text>
+    <rect class="panel" x="305" y="69" width="176" height="112" rx="6"/>
+    <rect class="focus" x="315" y="79" width="156" height="92" rx="4"/>
+    <text class="small" x="393" y="126" text-anchor="middle">Analiza</text>
+    <text class="tiny muted" x="20" y="218">cards.show(&quot;analiza&quot;) zamienia widok Dane na Analiza.</text>
+  </g>
+</svg>

@@ -5,9 +5,7 @@ title: "Lab 4 - Hibernate i mapowanie obiektowo-relacyjne"
 
 # Lab 4 - Hibernate i mapowanie obiektowo-relacyjne
 
-## Zakres: 2 zajęcia
-
-## Cel zajęć
+## Cel laboratorium
 
 Przygotuj projekt Maven `lab4` według [instrukcji IntelliJ IDEA](../srodowisko.html). Użyj pakietu `pl.uczelnia.lab4` we wszystkich klasach; w szczególności dopisz go do `Person.java`. Konfigurację umieść w resources, zsynchronizuj Maven i uruchom klasę `Main`.
 
@@ -193,12 +191,12 @@ Relacje powinny mieć określone zachowanie przy usuwaniu i nie powinny prowadzi
 4. Dlaczego operacje zapisu powinny odbywać się w transakcji?
 5. Co oznaczają `LAZY`, `EAGER`, `cascade` i `orphanRemoval`?
 
-## Plan pracy na dwa spotkania
+## Etapy pracy
 
-| Spotkanie | Zakres | Punkt kontrolny |
+| Etap | Zakres | Punkt kontrolny |
 |---|---|---|
-| 1 | konfiguracja, encja, stany obiektu, CRUD | ślad SQL potwierdza zapis i aktualizację |
-| 2 | relacje, HQL, transakcje i GUI | wycofanie dwóch zapisów i wyświetlenie danych po zamknięciu sesji |
+| Mapowanie i operacje podstawowe | konfiguracja, encja, stany obiektu, CRUD | ślad SQL potwierdza zapis i aktualizację |
+| Zapytania i spójność | relacje, HQL, transakcje i GUI | wycofanie dwóch zapisów i wyświetlenie danych po zamknięciu sesji |
 
 Model osób, wizyt i usług jest ćwiczeniem ORM. W projekcie ekonomicznym przenieś poznaną relację na zbiór danych, obserwacje i zapisane analizy.
 
