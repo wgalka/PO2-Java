@@ -4,8 +4,7 @@ lang: pl-PL
 url: https://po2-java.lazysolutions.pl
 baseurl: ""
 
-# Przypięcie do poprawionej wersji zapewnia powtarzalny build GitHub Pages.
-remote_theme: wgalka/instructions-jekyll-theme@98787034b11f0f730c20859c34ef9125951d56a4
+remote_theme: wgalka/instructions-jekyll-theme
 
 plugins:
   - jekyll-remote-theme
