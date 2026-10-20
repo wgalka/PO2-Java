@@ -247,7 +247,6 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
   .po2-flow-demo__toolbar {
     position: relative;
     height: 3.55rem;
-    border-block: 1px solid var(--flow-layout-edge);
     background: var(--flow-layout-bg);
     transition: height 480ms cubic-bezier(0.2, 0.75, 0.25, 1);
   }
