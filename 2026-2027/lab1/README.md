@@ -440,7 +440,7 @@ Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wie
 </style>
 
 <section class="po2-flow-demo" aria-labelledby="po2-flow-demo-title">
-  <h4 id="po2-flow-demo-title">Pasek narzędzi w aplikacji desktopowej</h4>
+  <h4 id="po2-flow-demo-title"><code>FlowLayout.LEFT</code> · pasek narzędzi</h4>
   <p class="po2-flow-demo__hint"><span class="po2-flow-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt w prawym dolnym rogu okna, aby zmienić jego szerokość.</p>
   <div class="po2-flow-demo__window" role="group" aria-label="Podgląd okna aplikacji Analiza">
     <div class="po2-flow-demo__titlebar">
