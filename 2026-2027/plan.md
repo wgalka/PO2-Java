@@ -5,9 +5,9 @@ title: "Plan laboratoriów"
 
 # Plan laboratoriów
 
-Instrukcje są blokami tematycznymi i porządkują treści zgodnie z kolejnością
-materiału. Nie przypisują blokom stałej liczby spotkań — prowadzący rozkłada
-zadania na terminy zgodnie z harmonogramem zajęć.
+Instrukcje są blokami tematycznymi uporządkowanymi zgodnie z kolejnością
+materiału. Poszczególne bloki mogą być realizowane podczas więcej niż jednego
+spotkania.
 
 Środowisko wszystkich bloków: [IntelliJ IDEA i Maven](srodowisko.html).
 Kolejność zadań i punkty kontrolne znajdują się wewnątrz instrukcji.
@@ -31,10 +31,4 @@ wchodzą w odbiór ćwiczeń i projektu; nie stanowią osobnego bloku tematyczne
    dokumentacja, demonstracja i przygotowanie do obrony.
 
 Kolejność odpowiada treściom laboratoriów z III semestru. Sześć instrukcji
-porządkuje materiał realizowany w trakcie 14 spotkań i 30 godzin laboratoryjnych.
-
-Projekt rozwijamy przez cały semestr: po poznaniu GUI wybieramy temat i szkic
-widoków, następnie dodajemy dane lokalne i trwały zapis, a w dalszej pracy
-uzupełniamy analizę oraz dokumentację. Lab 6 porządkuje integrację i obronę
-gotowej aplikacji. Konkretne terminy realizacji zadań wynikają z harmonogramu
-prowadzącego; liczba instrukcji nie wyznacza długości pojedynczego spotkania.
+porządkuje materiał realizowany podczas 14 spotkań i 30 godzin laboratoryjnych.

@@ -1,0 +1,24 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.app-root { -fx-background-color: -fx-background; }
+.page-title { -fx-font-size: 1.45em; -fx-font-weight: bold; }
+.muted { -fx-text-fill: app-muted; }
+.metric-card {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-background-radius: 10;
+    -fx-border-color: app-border;
+    -fx-border-radius: 10;
+}
+.metric-title { -fx-text-fill: app-muted; }
+.metric-value { -fx-font-size: 1.45em; -fx-font-weight: bold; }
+.status-error { -fx-text-fill: app-error; }
+.status-bar {
+    -fx-padding: 8 16 8 16;
+    -fx-background-color: -fx-control-inner-background;
+    -fx-border-color: app-border transparent transparent transparent;
+}
+.chart-plot-background { -fx-background-color: -fx-control-inner-background; }
+.axis { -fx-tick-label-fill: -fx-text-background-color; }

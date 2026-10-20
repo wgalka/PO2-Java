@@ -1,0 +1,5 @@
+Layout Explorer — Lab 2
+
+Otwórz rozpakowany folder zawierający pom.xml w IntelliJ IDEA. Ustaw JDK 27 GA
+jako Project SDK i Maven Runner, zsynchronizuj Maven i uruchom javafx:run.
+LayoutExplorer.java zawiera działającą aplikację do zmiany parametrów kontenerów.

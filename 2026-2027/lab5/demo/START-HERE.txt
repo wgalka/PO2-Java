@@ -1,0 +1,5 @@
+Projekt demonstracyjny JSP i Servlet API — Lab 5
+
+Otwórz rozpakowany folder zawierający pom.xml w IntelliJ IDEA i ustaw JDK 27 GA.
+Projekt buduje WAR do uruchomienia na Tomcat 10.1. Pracuj na kopii i wykonuj
+rozszerzenia wskazane w Lab 5.

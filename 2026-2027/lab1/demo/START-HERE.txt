@@ -1,0 +1,5 @@
+Projekt galerii Swing — Lab 1
+
+Otwórz rozpakowany folder zawierający pom.xml w IntelliJ IDEA i ustaw JDK 27 GA.
+Uruchom pl.uczelnia.lab1.LayoutGallery. Program pokazuje układy, menu i tabelę;
+źródła służą do modyfikacji przykładów z sekcji o menedżerach układu.

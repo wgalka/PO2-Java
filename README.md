@@ -1,4 +1,4 @@
-# Programowanie obiektowe - Java
+# Programowanie obiektowe w języku Java
 
 Materiały do przedmiotu **Programowanie obiektowe** dla kierunku Informatyka i ekonometria.
 

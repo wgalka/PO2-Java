@@ -1,0 +1,21 @@
+Projekt startowy JavaFX — Lab 2
+
+W IntelliJ IDEA wybierz File → Open i wskaż rozpakowany folder zawierający pom.xml.
+Ustaw JDK 27 GA jako Project SDK i Maven Runner, a następnie zsynchronizuj Maven.
+Uruchom Maven → Plugins → javafx → javafx:run.
+
+Projekt zawiera działający pulpit analizy danych: menu, zakładki, karty podsumowań,
+filtrowaną i edytowalną tabelę (wybór regionu z listy, edycja wartości i flaga
+uwzględnienia w analizie), wykres liniowy oraz przełącznik motywu. Dane startowe
+są demonstracyjne i przechowywane w pamięci; plik CSV do zadania importu znajduje się
+w src/main/resources/bezrobocie.csv. Rozwijaj aplikację w kolejnych zadaniach:
+dodaj własne filtry i miary, import CSV oraz widoki FXML; nie trzeba zaczynać od pustego okna.
+
+Klasy znajdują się w pakiecie pl.uczelnia.lab2. Observation przechowuje jeden rekord
+z właściwościami JavaFX, ObservationModel udostępnia wspólną obserwowalną kolekcję,
+a MetricCard jest własnym komponentem złożonym. Arkusze CSS w src/main/resources/css
+definiują wspólne reguły oraz dwa motywy.
+ObservationValidation udostępnia parser stopy i reguły danych do wykorzystania
+w formularzu oraz imporcie. Edytor liczbowy zatwierdza zmianę po naciśnięciu Enter,
+a Escape ją anuluje. Zmiana regionu nie może tworzyć duplikatu pary region–rok.
+Do eksperymentów z kontenerami służy osobny Layout Explorer z instrukcji Lab 2.

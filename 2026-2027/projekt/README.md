@@ -1,15 +1,21 @@
 ---
 layout: default
-title: "Wymagania projektu - Programowanie obiektowe w Javie"
+title: "Wymagania projektu - Programowanie obiektowe w języku Java"
 ---
 
-# Wymagania projektu - Programowanie obiektowe w Javie
+# Wymagania projektu - Programowanie obiektowe w języku Java
 
 Projekt jest praktycznym podsumowaniem przedmiotu **Programowanie obiektowe**. Tematem projektu ma być **desktopowa aplikacja Java** wspierająca pracę z danymi ekonomicznymi lub ekonometrycznymi, a nie ogólny system CRUD bez uzasadnienia merytorycznego.
 
-Projekt powinien pokazać, że student potrafi zaprojektować i wykonać aplikację w Javie, wykorzystać programowanie obiektowe, zbudować graficzny interfejs użytkownika, połączyć go z relacyjną bazą danych oraz udokumentować rozwiązanie. Kontekst ekonometryczny powinien być widoczny w danych, zmiennych, modelu analizy i interpretacji wyników.
+Projekt powinien pokazać, że student potrafi zaprojektować i wykonać aplikację w języku Java, wykorzystać programowanie obiektowe, zbudować graficzny interfejs użytkownika, połączyć go z relacyjną bazą danych oraz udokumentować rozwiązanie. Kontekst ekonometryczny powinien być widoczny w danych, zmiennych, modelu analizy i interpretacji wyników.
 
 ## 1. Powiązanie z efektami kształcenia
+
+Projekt należy rozwijać na bazie własnej pracy laboratoryjnej: interfejsu Swing
+z Lab 1 albo JavaFX z Lab 2 oraz JDBC/DAO z Lab 3 albo Hibernate z Lab 4.
+Należy dostosować model i serwisy do wybranego problemu, połączyć warstwy
+i rozbudować analizę. Samo zestawienie niezmienionych aplikacji demonstracyjnych
+nie spełnia wymagań projektu.
 
 | Efekt | Jak jest demonstrowany w projekcie |
 |---|---|
@@ -87,7 +93,7 @@ HiDPI i motywów](../jakosc-gui.html):
 
 Automatyczne dopasowanie do motywu systemu jest rozszerzeniem. Zmiana samego
 tła lub motywu IDE nie spełnia wymagań. Kontrolki systemowe, takie jak natywny
-wybór pliku, mogą zachować wygląd systemowy — opisz to w dokumentacji.
+wybór pliku, mogą zachować wygląd systemowy; należy opisać to w dokumentacji.
 
 ## 5. Model danych
 
@@ -134,7 +140,7 @@ erDiagram
 
 W modelu długim dopilnuj, aby obserwacja i zmienna w jednym rekordzie wartości
 należały do tego samego zbioru danych. Samo istnienie dwóch niezależnych kluczy
-obcych tego nie gwarantuje; zastosuj odpowiednie klucze złożone lub kontrolę
+obcych tego nie gwarantuje; należy zastosować odpowiednie klucze złożone lub kontrolę
 integralności w schemacie. Diagram jest punktem wyjścia do projektu, a nie kompletnym DDL.
 
 Dokładny model zależy od tematu. Można zastosować model szeroki, w którym zmienne są kolumnami, albo model długi, w którym wartości zmiennych są przechowywane w osobnej tabeli. W obu przypadkach należy uzasadnić wybór.
@@ -151,7 +157,7 @@ Wymagane są:
 
 ## 6. Wymagania dotyczące Javy i architektury
 
-Projekt musi być wykonany w Javie z użyciem Mavena i **JDK 27 GA**, z `maven.compiler.release=27`. Dla interfejsu JavaFX używaj **JavaFX 27**. Wersje i ustawienia IntelliJ określa [konfiguracja środowiska](../srodowisko.html); nie używamy wydań prerelease ani funkcji preview. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
+Projekt musi być wykonany w języku Java z użyciem Mavena i **JDK 27 GA**, z `maven.compiler.release=27`. Dla interfejsu JavaFX używaj **JavaFX 27**. Wersje i ustawienia IntelliJ określa [konfiguracja środowiska](../srodowisko.html); nie używamy wydań prerelease ani funkcji preview. Można wykorzystać Swing, JDBC, Hibernate i biblioteki pomocnicze, o ile ich użycie jest uzasadnione. Aplikacja desktopowa powinna działać po instalacji bez dostępu do Internetu; zewnętrzne źródło danych nie może być wymagane do demonstracji.
 
 Zalecany podział:
 
@@ -208,8 +214,10 @@ Projekt jest spójnym narzędziem analitycznym. Obsługuje rozbudowany model dan
 
 ## 9. Dokumentacja
 
-Przygotuj instrukcję uruchomienia w IntelliJ IDEA według [konfiguracji środowiska](../srodowisko.html).
-Diagramy zapisuj w blokach `mermaid`, a obrazy GUI wykonaj w swojej działającej aplikacji.
+Instrukcję uruchomienia należy przygotować w IntelliJ IDEA zgodnie
+z [konfiguracją środowiska](../srodowisko.html).
+Diagramy należy zapisywać w blokach `mermaid`, a zrzuty GUI wykonywać
+w działającej aplikacji.
 Scenariusz końcowego sprawdzenia zawiera [Lab 6](../lab6/README.html).
 
 Dokumentacja powinna zawierać:

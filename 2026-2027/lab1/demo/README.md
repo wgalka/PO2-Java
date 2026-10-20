@@ -5,36 +5,40 @@ title: "Galeria Swing — IntelliJ IDEA"
 
 # Galeria Swing — IntelliJ IDEA
 
-Otwórz [pom.xml](pom.xml) jako projekt Maven, wybierz JDK 27 GA i uruchom `LayoutGallery.main` z [kodu źródłowego](src/main/java/pl/uczelnia/lab1/LayoutGallery.java). Program nie wymaga zewnętrznych bibliotek.
+Gotowy projekt Maven można [pobrać jako ZIP](galeria-swing.zip), rozpakować
+i otworzyć w IntelliJ IDEA jako projekt zawierający `pom.xml`. Źródła są
+przeznaczone do uruchamiania i modyfikowania.
 
-Pierwsza zakładka pokazuje sześć menedżerów układu. Zmieniaj rozmiar okna, porównuj rozmiary komórek i przełączaj karty `dane` / `analiza`. Druga zakładka zawiera menu `Plik`, sortowalną tabelę i status. `Otwórz` wybiera plik, `Nowy` i `Zapisz` demonstrują zdarzenia — nie wykonują importu ani zapisu. Dane ekonomiczne są syntetyczne.
+Plik [pom.xml](pom.xml) należy otworzyć jako projekt Maven, wybrać JDK 27 GA
+i uruchomić `LayoutGallery.main` z [kodu źródłowego](src/main/java/pl/uczelnia/lab1/LayoutGallery.java).
+Program nie wymaga zewnętrznych bibliotek.
 
-To pokaz mechaniki layoutów, nie wzorzec ukończonej aplikacji. Używa stałej
-palety i demonstracyjnych rozmiarów. Responsywny kalkulator,
-przełączanie motywów oraz [testy HiDPI](../../jakosc-gui.html) wykonaj zgodnie
-z główną instrukcją Lab 1; renderów galerii nie traktuj jako dowodu tych testów.
+Pierwsza zakładka pokazuje sześć menedżerów układu. Zmiana rozmiaru okna
+pozwala porównać rozmiary komórek i przełączać karty `dane` / `analiza`.
+Druga zakładka zawiera menu `Plik`, sortowalną tabelę i status. `Otwórz` wybiera
+plik, a `Nowy` i `Zapisz` demonstrują zdarzenia — nie wykonują importu ani zapisu.
+Dane ekonomiczne są syntetyczne.
 
-## Jak wygenerowano ilustracje
+Galeria służy do obserwowania menedżerów układu i obsługi zdarzeń. Własny
+kalkulator należy zaprojektować i przetestować osobno: dopasować go do szerokości
+okna, zaimplementować jasny i ciemny motyw oraz wykonać [testy HiDPI](../../jakosc-gui.html).
 
-W konfiguracji uruchomienia IntelliJ ustaw **Program arguments** na `--render ../assets`, a **Working directory** na katalog `demo`. Program wyrenderuje komponenty Swing do czterech plików PNG przez `printAll`, bez otwierania okna i fotografowania pulpitu. Menu jest składane z renderu panelu i rzeczywistego `JPopupMenu`. Są to ilustracje komponentów, nie zrzuty całego systemowego okna.
-
-Alternatywnie użyj terminala z JDK w katalogu `demo`:
-
-```powershell
-javac -encoding UTF-8 --release 27 -d target/classes src/main/java/pl/uczelnia/lab1/LayoutGallery.java
-java '-Djava.awt.headless=true' -cp target/classes pl.uczelnia.lab1.LayoutGallery --render ../assets
-```
+## Demonstracje układów i menu
 
 ![Sześć układów Swing](../assets/layouts.png)
 
 ![Menu Plik i tabela danych](../assets/menu.png)
 
-Ten sam panel `FlowLayout` przy dwóch szerokościach:
+Ten sam panel `FlowLayout` przedstawiono przy dwóch szerokościach:
 
 ![FlowLayout — szeroki panel](../assets/flow-wide.png)
 
 ![FlowLayout — wąski panel](../assets/flow-narrow.png)
 
-## Ćwiczenie
+## Modyfikacja galerii Swing
 
-Zmień `GridLayout(2, 3)` na `GridLayout(3, 2)`, zmień `weightx` pól `GridBagLayout` na zero oraz oś `BoxLayout` na poziomą. Przed każdym uruchomieniem przewidź rezultat. Dodaj kartę „Raport” i przełączający ją przycisk. W oddawanym projekcie wykonaj własne zrzuty działającego GUI.
+Należy zamienić `GridLayout(2, 3)` na `GridLayout(3, 2)`, ustawić `weightx`
+pól `GridBagLayout` na zero i zmienić oś `BoxLayout` na poziomą. Przed każdym
+uruchomieniem trzeba przewidzieć rezultat. Następnie należy dodać kartę „Raport”
+i przycisk ją wyświetlający. W projekcie do oddania trzeba umieścić własne zrzuty
+działającego GUI.

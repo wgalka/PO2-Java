@@ -1,0 +1,5 @@
+Projekt demonstracyjny Hibernate — Lab 4
+
+Otwórz rozpakowany folder zawierający pom.xml w IntelliJ IDEA i ustaw JDK 27 GA.
+Uruchom pl.uczelnia.lab4.Main. Aplikacja pokazuje encje, relacje, HQL, DTO
+i GUI Swing. Pracuj na kopii projektu i wykonuj rozszerzenia wskazane w Lab 4.

@@ -1,0 +1,11 @@
+.root {
+    -fx-base: #edf1f6;
+    -fx-background: #f7f9fc;
+    -fx-control-inner-background: #ffffff;
+    -fx-text-background-color: #1f2937;
+    -fx-accent: #245fba;
+    -fx-focus-color: #245fba;
+    app-muted: #5b6878;
+    app-border: #d6dee9;
+    app-error: #b42318;
+}

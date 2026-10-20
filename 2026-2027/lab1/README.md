@@ -5,13 +5,35 @@ title: "Lab 1 - Graficzny interfejs użytkownika w Swing"
 
 # Lab 1 - Graficzny interfejs użytkownika w Swing
 
-## Przygotowanie i cel
+## Przygotowanie projektu Swing
 
-Utwórz projekt `lab1` zgodnie z [instrukcją IntelliJ IDEA](../srodowisko.html). Swing jest w JDK — nie dodawaj osobnej biblioteki. W przykładzie `Main` dopisz pakiet zgodny z projektem.
+Projektu nie trzeba tworzyć od pustego folderu. Należy pobrać [projekt startowy Swing](projekt-startowy.zip), rozpakować go i otworzyć w IntelliJ IDEA folder zawierający `pom.xml`. W [instrukcji środowiska](../srodowisko.html) opisano wybór JDK 27 GA. Plik `Main.java` zawiera działające okno, które należy rozbudowywać w kolejnych zadaniach. Swing jest częścią JDK, dlatego nie wymaga osobnej biblioteki.
 
-Swing jest częścią standardowej biblioteki Javy. W laboratorium poznajemy `JFrame`, panele, układy, podstawowe kontrolki i obsługę zdarzeń. Zbudujemy prosty kalkulator oraz przygotujemy miejsce na kolejne widoki.
+Do eksperymentów z menedżerami układu służy osobna [galeria Swing do pobrania](demo/galeria-swing.zip); jej działanie i modyfikacje opisano w [instrukcji galerii](demo/README.html).
 
-## Minimalne okno
+Swing jest częścią standardowej biblioteki Javy. W tym laboratorium należy poznać `JFrame`, panele, menedżery układu, podstawowe kontrolki i obsługę zdarzeń, a następnie zbudować prosty kalkulator oraz przygotować aplikację do przełączania widoków.
+
+## Utworzenie okna i głównego panelu (Swing)
+
+[`JFrame`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/javax/swing/JFrame.html)
+jest oknem systemowym aplikacji: udostępnia tytuł, obramowanie i
+operacje okna. Zawartość użytkowa znajduje się w jego `contentPane`. Zwykle
+zastępuje się domyślny panel głównym `JPanel`, a w nim umieszcza kolejne panele
+i kontrolki. `JPanel` nie jest oknem — grupuje elementy i przekazuje ich układ
+menedżerowi. Pasek menu przypisuje się osobno przez `setJMenuBar`.
+
+```mermaid
+flowchart TD
+    F["JFrame — okno systemowe"] -->|setJMenuBar| M["JMenuBar — menu aplikacji"]
+    F -->|setContentPane| R["rootPanel: JPanel / BorderLayout"]
+    R --> L["JLabel — treść główna"]
+    R --> A["actions: JPanel / FlowLayout"]
+    A --> B["JButton — akcja"]
+```
+
+Kolejność tworzenia jest istotna: najpierw należy przygotować korzeń widoku i
+jego potomków, następnie przypisać panel do okna, obliczyć rozmiar przez `pack()`
+i dopiero wtedy pokazać `JFrame`.
 
 ```java
 import javax.swing.*;
@@ -23,15 +45,17 @@ public class Main {
             JFrame frame = new JFrame("Lab 1");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            JPanel panel = new JPanel(new BorderLayout(8, 8));
+            JPanel rootPanel = new JPanel(new BorderLayout(8, 8));
+            JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEADING));
             JLabel label = new JLabel("Witaj w Swing", SwingConstants.CENTER);
             JButton button = new JButton("Kliknij");
             button.addActionListener(event ->
                     label.setText("Przycisk został kliknięty"));
 
-            panel.add(label, BorderLayout.CENTER);
-            panel.add(button, BorderLayout.SOUTH);
-            frame.setContentPane(panel);
+            actions.add(button);
+            rootPanel.add(label, BorderLayout.CENTER);
+            rootPanel.add(actions, BorderLayout.SOUTH);
+            frame.setContentPane(rootPanel);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
@@ -40,11 +64,11 @@ public class Main {
 }
 ```
 
-Kod interfejsu uruchamiamy w wątku zdarzeń Swing, czyli przez `SwingUtilities.invokeLater`. Układ (`BorderLayout`, `GridLayout`, `BoxLayout`) powinien odpowiadać strukturze widoku; unikaj ustawiania pozycji każdego komponentu za pomocą `setBounds`.
+Kod interfejsu należy uruchamiać w wątku zdarzeń Swing za pomocą `SwingUtilities.invokeLater`. Menedżer układu (`BorderLayout`, `GridLayout` lub `BoxLayout`) powinien odpowiadać strukturze widoku. Pozycji komponentów nie należy ustawiać ręcznie przez `setBounds`.
 
 ## Menedżery układu komponentów
 
-Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmiarów swoich dzieci. Wybierz go według struktury widoku — nie ustawiaj współrzędnych każdego przycisku ręcznie.
+Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmiarów komponentów potomnych. Menedżer należy dobierać do struktury widoku; współrzędnych przycisków nie należy ustawiać ręcznie.
 
 ![Schemat działania sześciu menedżerów układu Swing](assets/layouts-guide.svg)
 
@@ -469,10 +493,10 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 </style>
 
 <section class="po2-flow-demo" aria-labelledby="po2-flow-demo-title">
-  <h4 id="po2-flow-demo-title"><code>FlowLayout.LEFT</code> · pasek narzędzi</h4>
+<h4 id="po2-flow-demo-title">Pasek narzędzi z zawijaniem (<code>FlowLayout.LEFT</code>)</h4>
   <p class="po2-flow-demo__legend"><span class="po2-flow-demo__legend-swatch" aria-hidden="true"></span><span>Fioletowym tłem oznaczono pasek narzędzi — kontener z <code>FlowLayout.LEFT</code>. Przyciski „Dane”, „Wykres” i „Zapisz” są jego elementami.</span></p>
-  <p class="po2-flow-demo__explanation">Gdy zwężysz okno i przyciski nie zmieszczą się w jednym wierszu, „Zapisz” przejdzie na początek następnego wiersza, wyrównanego do lewej. Przyciski zachowają swój rozmiar; po poszerzeniu okna wrócą do jednego wiersza.</p>
-  <p class="po2-flow-demo__hint"><span class="po2-flow-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt w prawym dolnym rogu okna, aby zmienić jego szerokość.</p>
+  <p class="po2-flow-demo__explanation">Po zwężeniu okna, gdy przyciski nie mieszczą się w jednym wierszu, „Zapisz” przechodzi na początek następnego wiersza wyrównanego do lewej. Przyciski zachowują swój rozmiar; po poszerzeniu okna wracają do jednego wiersza.</p>
+  <p class="po2-flow-demo__hint"><span class="po2-flow-demo__hint-icon" aria-hidden="true">↔</span>Szerokość okna można zmieniać uchwytem w jego prawym dolnym rogu.</p>
   <div class="po2-flow-demo__window" role="group" aria-label="Podgląd okna aplikacji Analiza">
     <div class="po2-flow-demo__titlebar">
       <div class="po2-flow-demo__brand">
@@ -1046,15 +1070,15 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
   }
 </style>
 
-**`BoxLayout`** układa elementy wzdłuż jednej osi (`X_AXIS` albo `Y_AXIS`) i nie zawija ich do kolejnego wiersza. Rozmiar każdego dziecka zależy od jego minimalnego, preferowanego i maksymalnego rozmiaru. Użyj go np. dla pionowej listy kroków lub formularza.
+**`BoxLayout`** układa elementy wzdłuż jednej osi (`X_AXIS` albo `Y_AXIS`) i nie zawija ich do kolejnego wiersza. Rozmiar każdego komponentu zależy od jego rozmiaru minimalnego, preferowanego i maksymalnego. Układ ten można zastosować np. do pionowej listy kroków lub formularza.
 
 #### Zmień szerokość i sprawdź brak zawijania
 
 <section class="po2-layout-demo" aria-labelledby="po2-box-demo-title">
-  <h4 id="po2-box-demo-title"><code>BoxLayout.X_AXIS</code> · pasek modułów</h4>
+  <h4 id="po2-box-demo-title">Poziomy pasek modułów bez zawijania (<code>BoxLayout.X_AXIS</code>)</h4>
   <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlony panel jest kontenerem z <code>BoxLayout.X_AXIS</code>. Karty pozostają w jednym poziomym wierszu — ten układ ich nie zawija.</span></p>
-  <p class="po2-layout-demo__explanation">Zwęź okno. <code>BoxLayout.X_AXIS</code> nie przenosi elementów do kolejnego wiersza; karty w tym przykładzie zachowują stałą szerokość, a poziomy obszar przewijania pozwala dotrzeć do wszystkich.</p>
-  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna, a przy wąskim widoku przewiń pasek modułów.</p>
+  <p class="po2-layout-demo__explanation">Po zwężeniu okna <code>BoxLayout.X_AXIS</code> nie przenosi elementów do kolejnego wiersza. Karty zachowują stałą szerokość, a poziomy obszar przewijania umożliwia dotarcie do każdej z nich.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Szerokość okna zmienia uchwyt; w wąskim widoku pasek modułów można przewijać poziomo.</p>
   <div class="po2-layout-demo__window po2-layout-demo__window--box" role="group" aria-label="Podgląd BoxLayout w aplikacji Analiza">
     <div class="po2-layout-demo__titlebar">
       <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · moduły</span></div>
@@ -1073,15 +1097,15 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 
 ### Podział na obszary
 
-**`BorderLayout`** dzieli kontener na `NORTH`, `SOUTH`, `EAST`, `WEST` i `CENTER`. Pasy przy krawędziach korzystają z rozmiaru preferowanego, a `CENTER` otrzymuje pozostałe miejsce. Do każdego obszaru dodaj jeden komponent; kilka kontrolek zgrupuj najpierw w osobnym `JPanel`.
+**`BorderLayout`** dzieli kontener na `NORTH`, `SOUTH`, `EAST`, `WEST` i `CENTER`. Pasy przy krawędziach korzystają z rozmiaru preferowanego, a `CENTER` otrzymuje pozostałe miejsce. Do każdego obszaru należy dodać jeden komponent; kilka kontrolek trzeba najpierw zgrupować w osobnym `JPanel`.
 
 #### Zmień szerokość i obserwuj obszar `CENTER`
 
 <section class="po2-layout-demo" aria-labelledby="po2-border-demo-title">
-  <h4 id="po2-border-demo-title"><code>BorderLayout</code> · panel analizy</h4>
+  <h4 id="po2-border-demo-title">Panel analizy podzielony na obszary (<code>BorderLayout</code>)</h4>
   <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza panel zarządzany przez <code>BorderLayout</code>; jego pięć elementów zajmuje obszary <code>NORTH</code>, <code>SOUTH</code>, <code>EAST</code>, <code>WEST</code> i <code>CENTER</code>.</span></p>
-  <p class="po2-layout-demo__explanation">Przy zmianie szerokości pasy boczne zachowują swoje rozmiary preferowane, a główny <code>CENTER</code> dostaje pozostałe miejsce. Zwęź okno i zobacz, jak kurczy się przede wszystkim środkowy obszar — elementy nie zmieniają regionu.</p>
-  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt w prawym dolnym rogu okna.</p>
+  <p class="po2-layout-demo__explanation">Przy zmianie szerokości pasy boczne zachowują swoje rozmiary preferowane, a główny <code>CENTER</code> otrzymuje pozostałe miejsce. Węższe okno zmniejsza przede wszystkim obszar środkowy; elementy nie zmieniają regionu.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Uchwyt w prawym dolnym rogu służy do zmiany szerokości okna.</p>
   <div class="po2-layout-demo__window po2-layout-demo__window--border" role="group" aria-label="Podgląd BorderLayout w aplikacji Analiza">
     <div class="po2-layout-demo__titlebar">
       <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · obszary widoku</span></div>
@@ -1105,10 +1129,10 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 #### Zmień szerokość i porównaj komórki
 
 <section class="po2-layout-demo" aria-labelledby="po2-grid-demo-title">
-  <h4 id="po2-grid-demo-title"><code>GridLayout(2, 3)</code> · statystyki opisowe</h4>
+  <h4 id="po2-grid-demo-title">Równa siatka statystyk opisowych (<code>GridLayout(2, 3)</code>)</h4>
   <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza kontener z <code>GridLayout</code>. Sześć kart wypełnia siatkę o trzech kolumnach i dwóch wierszach.</span></p>
-  <p class="po2-layout-demo__explanation">Zwężaj i poszerzaj okno. Wszystkie komórki zmieniają szerokość jednakowo i pozostają równe; <code>GridLayout</code> nie wyróżnia pola, które powinno dostać więcej miejsca.</p>
-  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna i obserwuj sześć równych pól.</p>
+  <p class="po2-layout-demo__explanation">Podczas zwężania i poszerzania okna wszystkie komórki zmieniają szerokość jednakowo i pozostają równe. <code>GridLayout</code> nie wyróżnia pola, które powinno otrzymać więcej miejsca.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Uchwyt okna zmienia szerokość; przykład pokazuje sześć równych pól.</p>
   <div class="po2-layout-demo__window po2-layout-demo__window--grid" role="group" aria-label="Podgląd GridLayout w panelu statystyk">
     <div class="po2-layout-demo__titlebar">
       <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · statystyki</span></div>
@@ -1126,7 +1150,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
   </div>
 </section>
 
-**`GridBagLayout`** pozwala tworzyć nierówne wiersze i kolumny. `gridx`/`gridy` wskazują pozycję, `gridwidth`/`gridheight` określają liczbę zajętych komórek, `weightx`/`weighty` dzielą dodatkowe miejsce, a `fill` mówi, czy komponent ma je wypełnić. Samo `fill=HORIZONTAL` nie sprawi, że kolumna dostanie dodatkową szerokość — ustaw też `weightx`.
+**`GridBagLayout`** pozwala tworzyć nierówne wiersze i kolumny. `gridx`/`gridy` wskazują pozycję, `gridwidth`/`gridheight` określają liczbę zajętych komórek, `weightx`/`weighty` dzielą dodatkowe miejsce, a `fill` określa, czy komponent ma je wypełnić. Samo `fill=HORIZONTAL` nie sprawi, że kolumna otrzyma dodatkową szerokość; trzeba również ustawić `weightx`.
 
 ```java
 JPanel form = new JPanel(new GridBagLayout());
@@ -1144,10 +1168,10 @@ form.add(new JTextField(20), c);
 #### Zmień szerokość i obserwuj pole formularza
 
 <section class="po2-layout-demo" aria-labelledby="po2-gridbag-demo-title">
-  <h4 id="po2-gridbag-demo-title"><code>GridBagLayout</code> · parametry modelu</h4>
+  <h4 id="po2-gridbag-demo-title">Formularz parametrów modelu (<code>GridBagLayout</code>)</h4>
   <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza kontener z <code>GridBagLayout</code>. Etykiety i pola mogą mieć różne rozmiary, a pole zmiennej zajmuje dodatkową szerokość.</span></p>
-  <p class="po2-layout-demo__explanation">Zmień szerokość okna: pole formularza rośnie i kurczy się wraz z dostępnym miejscem. W przykładzie odpowiadają za to ograniczenia pola: <code>weightx = 1</code> oraz <code>fill = HORIZONTAL</code>.</p>
-  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna, aby zmienić miejsce dostępne dla pól.</p>
+  <p class="po2-layout-demo__explanation">Pole formularza rośnie i kurczy się wraz z dostępnym miejscem. Odpowiadają za to ograniczenia pola: <code>weightx = 1</code> oraz <code>fill = HORIZONTAL</code>.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Zmiana szerokości okna pokazuje, ile miejsca otrzymują pola.</p>
   <div class="po2-layout-demo__window po2-layout-demo__window--gridbag" role="group" aria-label="Podgląd formularza GridBagLayout">
     <div class="po2-layout-demo__titlebar">
       <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · parametry modelu</span></div>
@@ -1185,10 +1209,10 @@ cards.show(views, "analiza");
 #### Przełącz kartę i zobacz zmianę widoku
 
 <section class="po2-layout-demo" aria-labelledby="po2-card-demo-title">
-  <h4 id="po2-card-demo-title"><code>CardLayout</code> · widoki jednej aplikacji</h4>
+  <h4 id="po2-card-demo-title">Przełączanie widoków jednej aplikacji (<code>CardLayout</code>)</h4>
   <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlony obszar jest kontenerem <code>CardLayout</code>. Umieszczone w nim widoki zajmują to samo miejsce, ale jednocześnie widoczna jest tylko jedna karta.</span></p>
-  <p class="po2-layout-demo__explanation">Kliknij zakładkę „Dane” albo „Wyniki”. Zmienia się zawartość tego samego obszaru — nie powstaje nowe okno. Zmień też szerokość, aby sprawdzić zachowanie wybranego widoku.</p>
-  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna lub kliknij jedną z zakładek w podglądzie.</p>
+  <p class="po2-layout-demo__explanation">Wybór zakładki „Dane” albo „Wyniki” zmienia zawartość tego samego obszaru — nie powstaje nowe okno. Zmiana szerokości pozwala sprawdzić zachowanie wybranego widoku.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Zakładki przełączają widok, a uchwyt okna zmienia jego szerokość.</p>
   <div class="po2-layout-demo__window po2-layout-demo__window--card" role="group" aria-label="Interaktywny podgląd CardLayout">
     <div class="po2-layout-demo__titlebar">
       <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · widok roboczy</span></div>
@@ -1216,11 +1240,19 @@ cards.show(views, "analiza");
   </div>
 </section>
 
-W praktycznym oknie łącz kilka menedżerów, zagnieżdżając panele — np. `BorderLayout` dla głównego widoku, `GridLayout` dla klawiatury i `FlowLayout` dla przycisków akcji. Otwórz [galerię Swing](demo/README.html), zmieniaj rozmiar okna i sprawdź, który element się zawija, rozciąga lub zachowuje swój rozmiar.
+W praktycznym oknie należy łączyć menedżery przez zagnieżdżanie paneli, np. `BorderLayout` dla widoku głównego, `GridLayout` dla klawiatury i `FlowLayout` dla przycisków akcji. W [galerii Swing](demo/README.html) należy zmieniać rozmiar okna i obserwować, które elementy są zawijane, rozciągane lub zachowują swój rozmiar.
 
-Unikaj `setLayout(null)` i ręcznego `setBounds`: takie okno źle reaguje na zmianę rozmiaru, skalowanie HiDPI i dłuższe napisy.
+Nie należy stosować `setLayout(null)` i ręcznego `setBounds`: takie okno źle reaguje na zmianę rozmiaru, skalowanie HiDPI i dłuższe napisy.
 
-## Kontrolki i zdarzenia
+### Samodzielna modyfikacja układu panelu
+
+1. W galerii odszukać panel z trzema przyciskami i `FlowLayout`. Przed zmianą szerokości zapisać, które elementy powinny przejść do następnego wiersza.
+2. W kopii tego panelu zastosować `GridLayout(1, 3)`, a następnie `BoxLayout.X_AXIS`. Porównać zawijanie oraz szerokości przycisków przy tych samych rozmiarach okna.
+3. W projekcie startowym umieścić przycisk w osobnym panelu akcji. Panel główny ma korzystać z `BorderLayout`, a panel akcji z `FlowLayout.LEADING`. Dodać drugi przycisk i sprawdzić, który menedżer odpowiada za jego położenie.
+
+**Punkt kontrolny:** należy wskazać osobno menedżer panelu głównego i panelu akcji oraz wyjaśnić różnicę między rozciąganiem i zawijaniem.
+
+## Obsługa kontrolek i zdarzeń
 
 Najczęściej używane elementy to `JLabel`, `JButton`, `JTextField`, `JTextArea`, `JCheckBox`, `JComboBox`, `JTable` i `JOptionPane`.
 
@@ -1232,8 +1264,11 @@ JButton add = new JButton("Dodaj");
 
 add.addActionListener(event -> {
     try {
-        double a = Double.parseDouble(first.getText());
-        double b = Double.parseDouble(second.getText());
+        double a = Double.parseDouble(first.getText().strip().replace(',', '.'));
+        double b = Double.parseDouble(second.getText().strip().replace(',', '.'));
+        if (!Double.isFinite(a) || !Double.isFinite(b) || !Double.isFinite(a + b)) {
+            throw new NumberFormatException("Wymagane skończone liczby i wynik");
+        }
         result.setText(String.valueOf(a + b));
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(null,
@@ -1244,34 +1279,7 @@ add.addActionListener(event -> {
 
 W większej aplikacji warto oddzielić model danych i logikę obliczeń od kodu budującego widok. Sam listener powinien wywoływać metodę serwisu, a nie zawierać całą logikę biznesową.
 
-## Zadania
-
-1. Utwórz aplikację z menu `Plik` i pozycjami `Nowy`, `Otwórz`, `Zapisz`, `Wyjdź`. Każda pozycja ma wykonać działanie albo wyświetlić komunikat.
-2. Zbuduj responsywny kalkulator z przyciskami cyfr, działań, przecinka, `C` i `=`, nieedytowalnym wynikiem oraz historią. Wykonaj ćwiczenie „Responsywny kalkulator, HiDPI i dwa motywy” poniżej.
-3. Obsłuż błędny format liczby, dzielenie przez zero i próbę wykonania działania bez obu argumentów.
-4. Utwórz `JPanel` rysujący szachownicę przez przesłonięcie `paintComponent(Graphics)`. Użyj `Graphics2D` i `fillRect`.
-5. Dodaj formularz rejestracji z polami imię, nazwisko, login, hasło i powtórzenie hasła. Waliduj puste pola oraz zgodność haseł.
-6. Wyświetl listę obiektów `Student` w `JTable`. Dodaj przyciski odświeżania, usuwania i filtrowania.
-7. Zmień aplikację tak, aby każdy widok był osobnym panelem, a menu przełączało zawartość głównego panelu.
-
-## Pytania kontrolne
-
-1. Dlaczego kod Swing uruchamia się w EDT?
-2. Czym różni się `JPanel` od `JFrame`?
-3. Jaką rolę pełni layout manager?
-4. Gdzie powinna znajdować się walidacja danych i logika obliczeń?
-
-## Kolejność realizacji
-
-| Etap | Praca | Punkt kontrolny |
-|---|---|---|
-| Podstawy GUI | okno, EDT, porównanie layoutów, menu i kalkulator | zmiana rozmiaru nie ukrywa przycisków, menu reaguje |
-| Formularz | walidacja i `CardLayout` | błąd nie kasuje wpisanych danych, menu przełącza widok |
-| Dane i komponenty | tabela, filtrowanie, rysowanie i porządkowanie klas | usuwany jest właściwy rekord po sortowaniu |
-
-Zadania z listy realizuj w tej kolejności. Rejestracja i lista studentów ćwiczą kontrolki; we własnym projekcie zastosuj je do obserwacji, zmiennych i zbiorów danych ekonomicznych.
-
-## JMenu — od hierarchii do działającego menu
+## Zbudowanie menu i obsługa jego pozycji (JMenu)
 
 ```mermaid
 flowchart TD
@@ -1285,7 +1293,7 @@ flowchart TD
     D -->|APPROVE_OPTION| S["serwis importu → odświeżenie tabeli"]
 ```
 
-Fragment wstaw wewnątrz tworzenia okna, gdy zmienna `frame` już istnieje:
+Poniższy fragment należy umieścić w kodzie tworzącym okno, po utworzeniu zmiennej `frame`:
 
 ```java
 JMenuBar menuBar = new JMenuBar();
@@ -1297,7 +1305,7 @@ open.addActionListener(event -> {
     if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
         JOptionPane.showMessageDialog(frame,
                 "Wybrano: " + chooser.getSelectedFile().getName());
-        // W kolejnym etapie przekazujemy plik do serwisu importu.
+        // Anulowanie wyboru nie uruchamia tej gałęzi.
     }
 });
 JMenuItem exit = new JMenuItem("Wyjdź");
@@ -1315,48 +1323,190 @@ Efekt: u góry okna jest pasek `Plik`; rozwinięcie pokazuje pozycje menu, a `Ot
 
 ![Menu i widok danych w Swing](assets/menu.png)
 
-Ilustracje są renderami rzeczywistych komponentów Swing wygenerowanymi przez [kod galerii](demo/README.html), bez ramki systemowego okna. To nie makiety narysowane ręcznie. Galerię można uruchomić w IntelliJ, zmieniać rozmiar okna i klikać menu.
+W [galerii Swing](demo/README.html) można zmieniać rozmiar okna, porównywać menedżery układu i wypróbować menu.
 
-## Tabela, rysowanie i responsywność
+### Samodzielne powiązanie menu z widokami
 
-Model danych tabeli oddziel od widoku, np. przez `AbstractTableModel`. `JTable` umieść w `JScrollPane`. Po sortowaniu numer zaznaczonego wiersza jest indeksem widoku:
+1. Rozbudować istniejące okno o menu `Plik` z pozycjami `Nowy`, `Otwórz`, `Zapisz` i `Wyjdź`. `Nowy` ma czyścić formularz; `Otwórz` i `Zapisz` mają pokazywać wybór pliku i komunikat z wybraną ścieżką. Anulowanie nie zmienia stanu aplikacji. `Wyjdź` zamyka okno.
+2. Utworzyć raz panele „Obserwacje” i „Kalkulator” oraz umieścić je w `CardLayout` jednego głównego `JFrame`. Formularz, tabela i wykres mają należeć do panelu „Obserwacje”. Menu `Widok` ma przełączać istniejące panele przez `show`, bez tworzenia kolejnego `JFrame`.
+3. Wpisać tekst do formularza, przełączyć widok dwukrotnie i sprawdzić, że tekst pozostał. Ten sam test należy powtórzyć po dodaniu historii kalkulatora.
+
+## Budowa formularza i modelu tabeli obserwacji (Swing)
+
+Rekord opisuje jedną wartość wskaźnika w miesiącu. W osobnym pliku
+`EconomicObservation.java`, w pakiecie projektu, należy umieścić:
+
+```java
+public record EconomicObservation(String indicator, java.time.YearMonth period,
+                                  double value, String unit) {
+    public EconomicObservation {
+        indicator = java.util.Objects.requireNonNull(indicator).strip();
+        unit = java.util.Objects.requireNonNull(unit).strip();
+        java.util.Objects.requireNonNull(period);
+        if (indicator.isEmpty() || unit.isEmpty() || !Double.isFinite(value)) {
+            throw new IllegalArgumentException("Wymagane wskaźnik, jednostka i skończona wartość");
+        }
+    }
+}
+```
+
+Formularz powinien zawierać pola wskaźnika, okresu `RRRR-MM`, wartości i jednostki.
+Okres należy parsować przez `YearMonth.parse`, a liczbę po usunięciu skrajnych
+spacji i zamianie przecinka na kropkę. W listenerze należy przechwycić
+`DateTimeParseException` oraz `IllegalArgumentException` i pokazać przyczynę błędu.
+Wszystkie pola należy zweryfikować przed dodaniem rekordu; błędne dane mają
+pozostać w formularzu do poprawienia.
+
+`AbstractTableModel` udostępnia tabeli liczbę wierszy, kolumn i ich wartości.
+Jeden model należy przechowywać przez cały czas działania okna. W osobnym pliku
+`ObservationTableModel.java` należy wykorzystać następującą bazę:
+
+```java
+public class ObservationTableModel extends javax.swing.table.AbstractTableModel {
+    private final java.util.List<EconomicObservation> rows = new java.util.ArrayList<>();
+    private final String[] columns = {"Wskaźnik", "Okres", "Wartość", "Jednostka"};
+
+    @Override public int getRowCount() { return rows.size(); }
+    @Override public int getColumnCount() { return columns.length; }
+    @Override public String getColumnName(int column) { return columns[column]; }
+    @Override public Class<?> getColumnClass(int column) {
+        return switch (column) {
+            case 1 -> java.time.YearMonth.class;
+            case 2 -> Double.class;
+            default -> String.class;
+        };
+    }
+    @Override public Object getValueAt(int row, int column) {
+        EconomicObservation item = rows.get(row);
+        return switch (column) {
+            case 0 -> item.indicator();
+            case 1 -> item.period();
+            case 2 -> item.value();
+            case 3 -> item.unit();
+            default -> throw new IndexOutOfBoundsException(column);
+        };
+    }
+    public EconomicObservation getObservation(int row) { return rows.get(row); }
+    public void addObservation(EconomicObservation item) {
+        int row = rows.size();
+        rows.add(item);
+        fireTableRowsInserted(row, row);
+    }
+    public void removeObservation(int row) {
+        rows.remove(row);
+        fireTableRowsDeleted(row, row);
+    }
+}
+```
+
+Metody `fireTableRowsInserted` i `fireTableRowsDeleted` powiadamiają widok
+o zmianie danych. Samo `repaint()` nie zastępuje tych powiadomień.
+Model należy zmieniać w EDT. Typ `Double.class` umożliwia sortowanie wartości
+liczbowo zamiast porównywania napisów, np. „100” i „20”.
+
+```java
+ObservationTableModel model = new ObservationTableModel();
+JTable table = new JTable(model);
+javax.swing.table.TableRowSorter<ObservationTableModel> sorter =
+        new javax.swing.table.TableRowSorter<>(model);
+table.setRowSorter(sorter);
+JScrollPane scroll = new JScrollPane(table);
+```
+
+Model danych tabeli należy oddzielić od widoku, np. przez `AbstractTableModel`. `JTable` powinna znaleźć się w `JScrollPane`. Po sortowaniu numer zaznaczonego wiersza jest indeksem widoku:
 
 ```java
 int selected = table.getSelectedRow();
 if (selected >= 0) {
     int modelRow = table.convertRowIndexToModel(selected);
-    // Usuń rekord z modelu pod modelRow, następnie zgłoś zmianę modelu.
+    model.removeObservation(modelRow);
 }
 ```
 
-W `paintComponent` najpierw wywołaj `super.paintComponent(g)`. Rysuj według aktualnych `getWidth()` i `getHeight()`. Zmianę obrazu zlecaj przez `repaint()`, nie przez bezpośrednie wywołanie `paintComponent`.
+### Samodzielne dodawanie, filtrowanie i usuwanie obserwacji
 
-Długie odczyty pliku i zapytania do bazy wykonuj przez `SwingWorker`: `doInBackground()` pracuje w tle, a `done()` aktualizuje GUI w EDT. Nie wywołuj blokującego `get()` w listenerze przed zakończeniem zadania.
+1. Dodać formularz do panelu „Obserwacje”. Przycisk „Dodaj” ma wywoływać `model.addObservation` dopiero po poprawnej walidacji. Tabela i formularz mają korzystać z jednego modelu.
+2. Dodać filtr fragmentu nazwy wskaźnika przez własny `RowFilter` i `sorter.setRowFilter`. Dopasowanie ma ignorować wielkość liter i traktować tekst dosłownie, również nawiasy i znak `+`. „Wyczyść filtr” ma przywracać wszystkie wiersze bez ponownego wczytywania danych.
+3. Dodać przycisk „Usuń” korzystający z konwersji indeksu widoku na indeks modelu. Brak zaznaczenia ma pozostawiać dane bez zmian.
+4. Obliczać średnią widocznych obserwacji osobno dla każdej pary `(wskaźnik, jednostka)`. Widoczne rekordy należy pobierać przez `table.getRowCount()` i `convertRowIndexToModel`. Nie wolno uśredniać razem np. sprzedaży w zł i stopy bezrobocia w procentach. Dla pustego widoku należy pokazać `—`.
+5. Przeliczać podsumowanie po dodaniu, usunięciu i zmianie filtra. Dla sprzedaży `100` i `200` zł średnia ma wynosić `150` zł; dodanie stopy bezrobocia `5%` ma utworzyć osobną grupę i nie zmieniać tej średniej.
 
-## Sprawdzenie i oddanie
+**Punkt kontrolny:** sortowanie i filtrowanie nie zmieniają danych źródłowych,
+a usunięcie wskazanej obserwacji aktualizuje tabelę i odpowiednie podsumowanie.
 
-Obowiązuje również [macierz testów responsywności, HiDPI i motywów](../jakosc-gui.html).
+## Rysowanie wykresu i aktualizacja panelu (Swing)
 
-| Próba | Oczekiwany wynik |
+Własny panel rysujący należy utworzyć przez rozszerzenie `JPanel` i nadpisanie
+`paintComponent(Graphics g)`. Na początku należy wywołać `super.paintComponent(g)`.
+Do rysowania przez `Graphics2D` należy użyć kopii `g.create()` i zwolnić ją przez
+`dispose()` po zakończeniu. Metoda rysująca odczytuje stan, ale nie zmienia modelu.
+Współrzędne trzeba wyliczać z bieżących `getWidth()` i `getHeight()`.
+
+Po zmianie danych należy wywołać `repaint()`, które zleca ponowne rysowanie.
+Po dodaniu lub przeniesieniu kontrolek należy dodatkowo wywołać `revalidate()`,
+aby przeliczyć układ. Nie należy bezpośrednio wywoływać `paintComponent`.
+
+### Samodzielne rysowanie miesięcznej sprzedaży
+
+1. Dodać do panelu obserwacji wykres słupkowy jednej wybranej serii sprzedaży w zł. Do tego ćwiczenia należy użyć nieujemnych wartości i jednego rekordu na miesiąc. Wybrane obserwacje mają być uporządkowane chronologicznie.
+2. Obliczać szerokość słupków z liczby obserwacji i dostępnej szerokości. Wysokość należy skalować względem największej wartości; dla samych zer nie wolno dzielić przez zero.
+3. Dodać podpisy miesięcy i jednostkę osi. Pusty zbiór ma wyświetlać komunikat „Brak danych”. Zmiana rozmiaru okna ma przeliczać geometrię wykresu.
+4. Po dodaniu lub usunięciu obserwacji aktualizować serię i wywoływać `repaint()`. Wykres i tabela mają przedstawiać te same widoczne obserwacje wybranej serii.
+
+## Oddzielenie długiej operacji od obsługi zdarzeń (Swing)
+
+Długie odczyty pliku i obliczenia należy wykonywać przez `SwingWorker`:
+`doInBackground()` pracuje w tle, a `done()` aktualizuje GUI w EDT.
+Wynik należy odebrać przez `get()` wewnątrz `done()`, z obsługą błędu wykonania,
+przerwania i anulowania. Nie należy wywoływać blokującego `get()` w listenerze
+przed zakończeniem zadania. Kod w tle nie powinien odczytywać kontrolek;
+potrzebne dane należy wcześniej skopiować w EDT.
+
+Należy dodać przycisk uruchamiający testową operację trwającą dwie sekundy
+przez `SwingWorker`. Opóźnienie można zasymulować w `doInBackground()`.
+Na czas pracy należy zablokować przycisk i pokazać status. W `done()` trzeba
+przywrócić dostępność przycisku także po błędzie. Podczas działania należy
+sprawdzić możliwość przesuwania okna i przełączania widoków.
+
+## Rozbudowa kalkulatora o responsywność, HiDPI i dwa motywy
+
+W panelu „Kalkulator” należy rozbudować przykład dodawania dwóch liczb o klawiaturę
+cyfr, separator dziesiętny, działania `+`, `−`, `×`, `÷`, przyciski `C` i `=` oraz
+nieedytowalny wynik i historię. Logikę należy wydzielić do klasy `CalculatorModel`.
+Model powinien przechowywać bieżący tekst liczby, pierwszy argument, operator
+oraz informację, czy rozpoczęto wprowadzanie drugiego argumentu.
+
+| Działanie | Zmiana stanu |
 |---|---|
-| zmniejszenie i powiększenie okna | komponenty zachowują sensowny układ; tabela ma przewijanie |
-| puste pole, `abc`, dzielenie przez zero | czytelny błąd bez zamknięcia aplikacji |
-| liczba `2,5` w kalkulatorze | jawna obsługa polskiego separatora, np. zamiana przecinka na kropkę przed parsowaniem |
-| sortowanie tabeli i usunięcie wiersza | znika wskazany obiekt, nie obiekt z innego indeksu |
-| anulowanie wyboru pliku | dotychczasowy stan pozostaje |
+| cyfra lub separator | dopisanie do bieżącej liczby; najwyżej jeden separator |
+| operator po pierwszej liczbie | zapis pierwszego argumentu i operatora; oczekiwanie na drugi argument |
+| inny operator przed drugą liczbą | zastąpienie wybranego operatora |
+| `=` po drugiej liczbie | obliczenie, dopisanie historii, zakończenie działania |
+| `=` bez kompletu argumentów | komunikat bez dopisywania historii |
+| `C` | wyzerowanie bieżącego działania; historia pozostaje |
 
-Oddaj projekt Maven, krótki opis zastosowanych layoutów i po jednym zrzucie formularza, tabeli oraz rozwiniętego menu. Dodaj opis dwóch wykrytych błędów i sposobu ich obsługi. Zastąp dane studentów obserwacjami ekonomicznymi i pokaż średnią wybranej kolumny.
+Po wyniku wpisanie cyfry ma rozpoczynać nową liczbę, a operator ma rozpoczynać
+działanie z otrzymanym wynikiem. Przed rozpoczęciem kolejnego działania po
+wpisaniu drugiego argumentu należy zatwierdzić poprzednie przez `=`.
+Dzielenie przez zero i nieskończony wynik muszą zostać odrzucone.
 
-## Ćwiczenie: responsywny kalkulator, HiDPI i dwa motywy
+### Samodzielne powiązanie klawiatury i przycisków
 
-Rozwijaj kalkulator w kolejnych etapach. Nie jest to drugi projekt: dodajesz adaptacyjny układ, styl i testy do tej samej aplikacji.
+Należy utworzyć wspólne obiekty `Action` dla działań kalkulatora. Ten sam obiekt
+powinien obsługiwać przycisk i skrót z `InputMap`/`ActionMap` panelu kalkulatora
+w warunku `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`. Cyfry, Enter (`=`) i Escape (`C`)
+mają działać przy fokusie wewnątrz kalkulatora; wpisywanie w formularzu obserwacji
+nie może zmieniać jego stanu. Należy sprawdzić `2,5 + 3 = 5,5`, dzielenie przez
+zero, dwa separatory oraz `C` w połowie działania.
 
-1. Wynik umieść na górze, klawiaturę w `GridLayout`, a historię w przewijanym panelu. Przyciski mają wypełniać dostępne komórki.
-2. W szerokim oknie historię pokaż obok klawiatury; w wąskim przenieś ją pod klawiaturę albo udostępnij jako rozwijaną sekcję. Wybierz i uzasadnij próg szerokości, początkowo np. 600 jednostek logicznych obszaru treści.
-3. Przełączenie układu nie może zerować obliczeń ani tworzyć nowego modelu. Przenoś istniejące panele, nie dodawaj tej samej kontrolki do dwóch kontenerów.
-4. Długi wynik wyrównaj do prawej i umożliw jego odczyt/przewijanie. Nie ściskaj czcionki do nieczytelnego rozmiaru. Ustal minimalny rozmiar okna na podstawie czytelności kontrolek.
-5. Dodaj menu **Widok → Motyw → Jasny / Ciemny**, zapamiętanie wyboru i obsługę klawiatury: cyfry, Enter oraz Escape. Fokus ma pozostać widoczny w obu motywach.
-6. Wykonaj [testy 100%, 150%, 200%](../jakosc-gui.html), także dla rozwiniętego menu i komunikatu dzielenia przez zero. Zachowaj rozpoczęte działanie podczas zmiany motywu.
+### Dostosowanie układu kalkulatora
+
+1. Umieścić wynik nad klawiaturą, klawiaturę w `GridLayout`, a historię w przewijanym panelu. Przyciski powinny wypełniać dostępne komórki.
+2. W szerokim oknie wyświetlić historię obok klawiatury, a w wąskim umieścić ją pod klawiaturą albo udostępnić jako rozwijaną sekcję. Wybrać i uzasadnić próg szerokości; punktem wyjścia może być 600 jednostek logicznych obszaru treści.
+3. Zachować stan obliczeń i jeden model podczas przełączania układu. Przenosić istniejące panele, bez dodawania tej samej kontrolki do dwóch kontenerów.
+4. Wyrównać długi wynik do prawej i umożliwić jego odczyt lub przewijanie. Zachować czytelny rozmiar czcionki i ustalić minimalny rozmiar okna na podstawie czytelności kontrolek.
+5. Dodać menu **Widok → Motyw → Jasny / Ciemny**, zapamiętywanie wyboru i obsługę klawiszy: cyfr, Enter oraz Escape. Fokus powinien pozostać widoczny w obu motywach.
+6. Wykonać [testy 100%, 150% i 200%](../jakosc-gui.html), także dla rozwiniętego menu i komunikatu dzielenia przez zero. Zachować rozpoczęte działanie podczas zmiany motywu.
 
 ```mermaid
 flowchart TD
@@ -1367,11 +1517,14 @@ flowchart TD
     W --> M
 ```
 
-W `ComponentAdapter.componentResized` porównaj szerokość panelu z progiem. Zmieniaj układ tylko wtedy, gdy zmienia się wariant wąski/szeroki, po czym wywołaj `revalidate()` i `repaint()`. Nie wykonuj `pack()` przy każdym zdarzeniu — użytkownik powinien zachować kontrolę nad rozmiarem okna.
+W `ComponentAdapter.componentResized` należy porównać szerokość panelu z progiem.
+Układ należy zmieniać tylko przy przejściu między wariantem wąskim i szerokim,
+a następnie wywołać `revalidate()` i `repaint()`. Nie należy wywoływać `pack()`
+przy każdym zdarzeniu — użytkownik powinien zachować kontrolę nad rozmiarem okna.
 
 ### Motywy Swing przez Look and Feel
 
-W tym ćwiczeniu użyj FlatLaf, który udostępnia jasny i ciemny wygląd oraz obsługę HiDPI. Dodaj do `dependencies` projektu kalkulatora poniższą ustaloną wersję i zsynchronizuj Maven. Podstawowy Swing i wcześniejsza galeria nadal nie wymagają tej biblioteki. [Dokumentacja FlatLaf](https://www.formdev.com/flatlaf/).
+W ćwiczeniu należy zastosować FlatLaf, który udostępnia jasny i ciemny wygląd oraz obsługę HiDPI. Projekt startowy nie zawiera tej zależności. Przed użyciem `FlatLightLaf` i `FlatDarkLaf` należy dodać poniższy wpis do istniejącej sekcji `dependencies` w `pom.xml`, zapisać plik i wykonać **Reload All Maven Projects** w oknie Maven IntelliJ. [Dokumentacja FlatLaf](https://www.formdev.com/flatlaf/).
 
 ```xml
 <dependency>
@@ -1381,7 +1534,10 @@ W tym ćwiczeniu użyj FlatLaf, który udostępnia jasny i ciemny wygląd oraz o
 </dependency>
 ```
 
-Przed utworzeniem komponentów w EDT ustaw początkowy motyw przez `FlatLightLaf.setup()` albo `FlatDarkLaf.setup()`, zgodnie z zapisaną preferencją. Poniższą metodę umieść w klasie pomocniczej i wywołuj z listenera menu, czyli również w EDT:
+Przed utworzeniem komponentów w EDT należy ustawić początkowy motyw przez
+`FlatLightLaf.setup()` albo `FlatDarkLaf.setup()`, zgodnie z zapisaną preferencją.
+Poniższą metodę należy umieścić w klasie pomocniczej i wywoływać z listenera menu,
+a więc również w EDT:
 
 ```java
 static void setDarkTheme(boolean dark) {
@@ -1397,6 +1553,41 @@ static void setDarkTheme(boolean dark) {
 }
 ```
 
-Nie ustawiaj na każdej kontrolce stałego `Color.WHITE` ani `Color.BLACK`. Własne rysowanie odczytuje aktualne kolory z `UIManager`, np. `Panel.background` i `Label.foreground`; nie przechowuj starego koloru na zawsze. Dodatkowe role kolorów definiuj osobno dla obu motywów. [Konfiguracja kolorów FlatLaf](https://www.formdev.com/flatlaf/how-to-customize/).
+Nie należy ustawiać na każdej kontrolce stałego `Color.WHITE` ani `Color.BLACK`.
+Własne rysowanie powinno odczytywać aktualne kolory z `UIManager`, np.
+`Panel.background` i `Label.foreground`; nie należy trwale przechowywać
+nieaktualnego koloru. Dodatkowe role kolorów trzeba definiować osobno dla obu
+motywów. [Konfiguracja kolorów FlatLaf](https://www.formdev.com/flatlaf/how-to-customize/).
 
-**Odbiór ćwiczenia:** kalkulator działa w obu układach i motywach, zachowuje stan, ma czytelne przyciski i wynik przy 200%, a historia i błędy są dostępne także w najmniejszym obsługiwanym oknie. Do oddania dołącz macierz testów i cztery zrzuty zgodnie ze wspólną instrukcją.
+**Punkt kontrolny:** kalkulator działa w obu układach i motywach, zachowuje stan, ma czytelne przyciski i wynik przy 200%, a historia i błędy są dostępne także w najmniejszym obsługiwanym oknie.
+
+## Testowanie i przygotowanie projektu do oddania
+
+Należy wykonać [macierz testów responsywności, HiDPI i motywów](../jakosc-gui.html)
+oraz poniższe próby w tej samej aplikacji:
+
+| Próba | Oczekiwany wynik |
+|---|---|
+| niepoprawny okres, puste pola, `abc`, `NaN` | komunikat; rekord nie trafia do modelu |
+| sprzedaż 100 i 200 zł oraz inny wskaźnik 5% | średnia sprzedaży 150 zł, osobne podsumowanie wskaźnika procentowego |
+| filtr bez dopasowań | średnia `—`, wykres „Brak danych” |
+| sortowanie, filtr i usunięcie | znika wybrana obserwacja, podsumowanie i wykres są aktualne |
+| przełączanie kart i motywu | formularz, dane i rozpoczęte działanie pozostają |
+| `2,5 + 3 =`, dwa separatory, dzielenie przez zero | wynik 5,5 lub czytelny błąd; brak błędnego wpisu historii |
+| anulowanie wyboru pliku | dotychczasowy stan pozostaje |
+| operacja w tle | okno reaguje, ponowne uruchomienie jest możliwe po zakończeniu |
+
+Do oddania należy przygotować projekt Maven, opis zastosowanych menedżerów
+układu, raport testów oraz zrzuty formularza, tabeli, wykresu i rozwiniętego menu.
+Kalkulator należy pokazać w obu układach i motywach zgodnie z macierzą jakości GUI.
+Należy opisać dwa wykryte błędy i sposób ich obsługi.
+
+## Weryfikacja rozumienia Swing
+
+1. Dlaczego kod Swing uruchamia się w EDT, a długie zadania poza nim?
+2. Czym różni się `JPanel` od `JFrame` i gdzie przypisuje się `JMenuBar`?
+3. W jakiej kolejności przygotowuje się panele, `contentPane`, `pack()` i pokazanie okna?
+4. Czym różnią się zmiana modelu tabeli, `revalidate()` i `repaint()`?
+5. Dlaczego indeks zaznaczonego wiersza może różnić się od indeksu rekordu w modelu?
+6. Dlaczego nie należy uśredniać różnych wskaźników i jednostek?
+7. Jak wspólna `Action` zapewnia takie samo zachowanie przycisku i klawiatury?

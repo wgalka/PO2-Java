@@ -1,0 +1,5 @@
+Projekt demonstracyjny JDBC — Lab 3
+
+Otwórz rozpakowany folder zawierający pom.xml w IntelliJ IDEA i ustaw JDK 27 GA.
+Uruchom pl.uczelnia.lab3.Main. Aplikacja pokazuje bazę SQLite, DAO, transakcje
+i GUI Swing. Pracuj na kopii projektu i wykonuj rozszerzenia wskazane w Lab 3.

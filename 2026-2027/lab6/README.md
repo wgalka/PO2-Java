@@ -5,23 +5,33 @@ title: "Lab 6 - Projekt: integracja aplikacji desktopowej i obrona"
 
 # Lab 6 - Projekt: integracja aplikacji desktopowej i obrona
 
-## Cel laboratorium
+## Integracja aplikacji desktopowej i przygotowanie obrony
 
-Lab 6 domyka integrację elementów poznanych w semestrze oraz przygotowanie działającej wersji projektu. Projekt ma być desktopową aplikacją Java z GUI, relacyjną bazą danych i analizą danych ekonomicznych lub ekonometrycznych.
+Projekt ma być aplikacją desktopową w języku Java z GUI, relacyjną bazą danych oraz
+analizą danych ekonomicznych lub ekonometrycznych. Należy rozwijać projekt
+przygotowany w poprzednich laboratoriach zamiast rozpoczynać od pustego szkieletu.
+Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.html).
+Projekt należy uruchamiać i budować w [IntelliJ IDEA](../srodowisko.html).
 
-Projekt rozwijaj stopniowo od Lab 1. Lab 6 porządkuje sprawdzenie integracji i obronę przygotowanego rozwiązania. Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../projekt/README.html). Uruchamianie i budowanie wykonujemy w [IntelliJ IDEA](../srodowisko.html).
+Należy połączyć rozwijany interfejs Swing z Lab 1 albo JavaFX z Lab 2 z warstwą
+JDBC/DAO z Lab 3 albo Hibernate z Lab 4. Integracja wymaga dostosowania wspólnego
+modelu domeny i serwisów, a następnie dodania analizy i wykresów zgodnych
+z wybranym tematem. Nie trzeba stosować obu bibliotek GUI ani obu metod persystencji.
+Dane demonstracyjne i skrypt inicjalizacji należy dołączyć do repozytorium,
+np. w `src/main/resources/db/` lub `data/`. Po przygotowaniu zależności pełny
+scenariusz obrony musi działać bez Internetu i bez wywołań zewnętrznego API.
 
-## Zakres pracy
+## Integracja funkcji aplikacji
 
-1. Zdefiniuj problem ekonomiczny, użytkownika i pytanie analityczne.
-2. Przygotuj lokalny plik danych demonstracyjnych albo skrypt inicjalizujący bazę.
-3. Połącz widoki GUI z serwisem, repozytorium JDBC/Hibernate i bazą.
-4. Dodaj statystyki opisowe, wybraną metodę analizy oraz wykres.
-5. Obsłuż błędne dane, pusty wynik i brak połączenia z bazą.
-6. Przygotuj ERD, instrukcję uruchomienia, opis metody i interpretację wyników.
-7. Wykonaj demonstrację od importu danych do wyniku analizy.
+1. Zdefiniować problem ekonomiczny, użytkownika i pytanie analityczne.
+2. Przygotować lokalny plik danych demonstracyjnych albo skrypt inicjalizujący bazę.
+3. Połączyć widoki GUI z serwisem, repozytorium JDBC/Hibernate i bazą.
+4. Dodać statystyki opisowe, wybraną metodę analizy i wykres.
+5. Obsłużyć błędne dane, pusty wynik i brak połączenia z bazą.
+6. Przygotować ERD, instrukcję uruchomienia, opis metody i interpretację wyników.
+7. Zademonstrować pełny przepływ od importu danych do wyniku analizy.
 
-## Checklista przed oddaniem
+## Lista kontrolna przed oddaniem
 
 - [ ] układ adaptuje się do małego i dużego okna, a wszystkie podstawowe akcje pozostają dostępne;
 - [ ] jasny i ciemny motyw obejmują formularze, menu, dialogi, tabele oraz wykresy;
@@ -39,7 +49,7 @@ Projekt rozwijaj stopniowo od Lab 1. Lab 6 porządkuje sprawdzenie integracji i 
 - [ ] dokumentacja zawiera ERD, instrukcję użytkownika i ograniczenia;
 - [ ] student potrafi wyjaśnić przepływ danych i uruchomić testowy scenariusz.
 
-## Pytania do obrony
+## Przygotowanie odpowiedzi do obrony
 
 1. Dlaczego wybrano ten model danych i metodę analizy?
 2. Jak aplikacja reaguje na brak lub błędną wartość?
@@ -47,7 +57,7 @@ Projekt rozwijaj stopniowo od Lab 1. Lab 6 porządkuje sprawdzenie integracji i 
 4. Jakie zapytania wykonuje aplikacja i gdzie są otwierane transakcje?
 5. Jak zinterpretować najważniejszy wynik ekonomiczny?
 
-## Architektura aplikacji analitycznej
+## Podział aplikacji analitycznej na warstwy
 
 ```mermaid
 flowchart TD
@@ -96,9 +106,13 @@ erDiagram
     }
 ```
 
-To minimalny przykład szerokiego modelu. Nazwy `x` i `y` w rzeczywistym projekcie zastąp znaczeniem ekonomicznym, zapisz jednostki i dostosuj liczbę zmiennych do wymagań projektu. Dodaj unikalność identyfikującą obserwację. Analiza musi zapamiętywać filtr i wersję danych albo ich migawkę, aby późniejsza edycja zbioru nie zmieniała po cichu znaczenia zapisanego wyniku.
+To minimalny przykład szerokiego modelu. W projekcie nazwy `x` i `y` należy
+zastąpić zmiennymi o znaczeniu ekonomicznym, zapisać ich jednostki i dostosować
+liczbę do wymagań projektu. Trzeba zapewnić unikalność identyfikującą obserwację.
+Analiza powinna zapamiętywać filtr i wersję danych albo ich migawkę, aby późniejsza
+edycja zbioru nie zmieniała znaczenia zapisanego wyniku.
 
-## Scenariusz demonstracji
+## Przygotowanie scenariusza demonstracji
 
 ```mermaid
 flowchart LR
@@ -111,13 +125,20 @@ flowchart LR
     G --> H[Restart i odczyt zapisanych danych]
 ```
 
-Przygotuj demonstrację około 8–10 minut, jeśli prowadzący nie ustali innego czasu. Pokaż najpierw problem ekonomiczny i źródło lokalnego zbioru, potem pełny przepływ. Na końcu wywołaj jeden błąd danych i pokaż, że aplikacja go obsługuje. W IntelliJ miej przygotowane klasy kontrolera, serwisu, repozytorium i analizy do omówienia podczas obrony.
+Demonstracja powinna trwać około 8–10 minut, o ile prowadzący nie ustali innego
+czasu. Należy przedstawić problem ekonomiczny i źródło lokalnego zbioru, a następnie
+pełny przepływ danych. W dalszej części trzeba wywołać błąd danych i pokazać jego
+obsługę. Do omówienia podczas obrony należy przygotować w IntelliJ klasy
+kontrolera, serwisu, repozytorium i analizy.
 
-## Jak sprawdzić poprawność obliczeń
+## Weryfikacja poprawności obliczeń
 
 Przykład kontrolny OLS z jedną zmienną: `x = [1, 2, 3, 4]`, `y = [3, 5, 7, 9]`. Oczekiwany model to `y = 1 + 2x`, średnia `y = 6`, suma kwadratów reszt `SSE = 0` i `R² = 1`. Dla obliczeń zmiennoprzecinkowych porównuj z tolerancją, np. `1e-9`.
 
-Ten mały sztuczny zbiór służy sprawdzeniu implementacji, nie zastępuje danych ekonomicznych. Przy regresji wielorakiej dodaj test znanych parametrów dla pełnorządowej macierzy i test współliniowości. Nie odwracaj macierzy bez kontroli osobliwości.
+Ten mały sztuczny zbiór służy sprawdzeniu implementacji, ale nie zastępuje danych
+ekonomicznych. Przy regresji wielorakiej należy dodać test znanych parametrów
+dla pełnorządowej macierzy oraz test współliniowości. Macierzy nie należy
+odwracać bez kontroli osobliwości.
 
 | Przypadek | Oczekiwane zachowanie |
 |---|---|
@@ -129,14 +150,17 @@ Ten mały sztuczny zbiór służy sprawdzeniu implementacji, nie zastępuje dany
 | dłuższa analiza | GUI reaguje, przycisk nie uruchamia wielu analiz równolegle |
 | błąd eksportu | komunikat z możliwością wyboru innej lokalizacji |
 
-Interpretacja ma odróżniać zależność statystyczną od przyczynowości. Przy prognozie zachowaj kolejność czasu i oceniaj wynik na danych nieużytych do dopasowania. Opisz jednostki błędu i ograniczenia małego zbioru.
+Interpretacja powinna odróżniać zależność statystyczną od przyczynowości.
+Przy prognozie należy zachować kolejność czasu i oceniać wynik na danych
+niewykorzystanych do dopasowania. Trzeba opisać jednostki błędu i ograniczenia
+małego zbioru.
 
-## Pakiet do oddania
+## Przygotowanie pakietu do oddania
 
 Do materiałów GUI dołącz także [raport HiDPI i motywów](../jakosc-gui.html):
 12 przypadków, cztery zrzuty obu układów i motywów oraz opis ograniczeń sprzętowych,
-jeżeli wystąpiły. Podczas obrony pokaż zmianę szerokości i przełącz motyw
-na załadowanych danych. Stan aplikacji i wynik analizy muszą zostać zachowane.
+jeżeli wystąpiły. Podczas obrony należy pokazać zmianę szerokości i przełączyć
+motyw przy załadowanych danych. Stan aplikacji i wynik analizy muszą zostać zachowane.
 
 - projekt Maven z kodem i zasobami; `clean verify` w IntelliJ kończy się poprawnie;
 - lokalne dane demonstracyjne, opis źródła i sposobu odtworzenia bazy;
@@ -146,4 +170,7 @@ na załadowanych danych. Stan aplikacji i wynik analizy muszą zostać zachowane
 - zrzuty rzeczywistej aplikacji: tabela z filtrem, wybór analizy, wynik z wykresem, obsłużony błąd;
 - przykładowy wyeksportowany raport z interpretacją i ograniczeniami.
 
-Przed oddaniem otwórz kopię projektu z `pom.xml` w IntelliJ, przygotuj zależności i uruchom scenariusz offline. Nie dołączaj katalogów `target`, `.idea`, haseł ani przypadkowych danych prywatnych. Zdjęcia ekranu dokumentują działanie, ale nie zastępują uruchamialnego projektu.
+Przed oddaniem należy otworzyć kopię projektu z `pom.xml` w IntelliJ, przygotować
+zależności i uruchomić scenariusz offline. Katalogów `target`, `.idea`, haseł
+ani przypadkowych danych prywatnych nie należy dołączać. Zrzuty ekranu
+dokumentują działanie, ale nie zastępują uruchamialnego projektu.
