@@ -54,7 +54,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 
 #### Zmień szerokość i zobacz zawijanie
 
-Poniższy przykład jest zapisany bezpośrednio w Markdownie jako HTML i CSS — działa również w zwykłym podglądzie Markdown w VS Code, bez Liquid i JavaScriptu. Wybierz szeroki albo wąski panel. W wąskim „Zapisz” przechodzi do nowego wiersza po „Wykres”. To analogia wizualna, nie implementacja `FlowLayout`; rzeczywiste zachowanie Swinga sprawdzisz w [galerii działających komponentów](demo/README.html).
+Zmień szerokość panelu. W wąskim układzie przycisk „Zapisz” płynnie przechodzi pod „Wykres”, gdy brakuje miejsca na wspólny wiersz.
 
 <style>
   .po2-flow-demo {
@@ -135,6 +135,7 @@ Poniższy przykład jest zapisany bezpośrednio w Markdownie jako HTML i CSS —
     border: 1px solid rgba(127, 127, 127, 0.55);
     border-radius: 0.4rem;
     background: rgba(127, 127, 127, 0.06);
+    transition: width 520ms cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
   .po2-flow-demo__narrow:checked ~ .po2-flow-demo__stage .po2-flow-demo__panel {
@@ -142,22 +143,54 @@ Poniższy przykład jest zapisany bezpośrednio w Markdownie jako HTML i CSS —
   }
 
   .po2-flow-demo__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 0.6rem;
+    position: relative;
+    height: 3.2rem;
+    transition: height 520ms cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
   .po2-flow-demo__button {
-    flex: 0 0 auto;
-    min-width: 4.3rem;
-    padding: 0.4rem 0.5rem;
+    position: absolute;
+    top: 0.6rem;
+    display: flex;
+    width: 4.3rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
     border: 1px solid rgba(127, 127, 127, 0.5);
     border-radius: 0.35rem;
     background: rgba(127, 127, 127, 0.1);
-    text-align: center;
     white-space: nowrap;
+    transition: left 520ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      top 520ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .po2-flow-demo__button:nth-child(1) {
+    left: 0.6rem;
+  }
+
+  .po2-flow-demo__button:nth-child(2) {
+    left: 5.15rem;
+  }
+
+  .po2-flow-demo__button:nth-child(3) {
+    left: 9.7rem;
+  }
+
+  .po2-flow-demo__narrow:checked ~ .po2-flow-demo__stage .po2-flow-demo__actions {
+    height: 5.8rem;
+  }
+
+  .po2-flow-demo__narrow:checked ~ .po2-flow-demo__stage .po2-flow-demo__button:nth-child(3) {
+    top: 3.15rem;
+    left: 0.6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .po2-flow-demo__panel,
+    .po2-flow-demo__actions,
+    .po2-flow-demo__button {
+      transition: none;
+    }
   }
 
   .po2-flow-demo__status {
