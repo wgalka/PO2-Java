@@ -54,7 +54,7 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
 
 #### Zmień szerokość i zobacz zawijanie
 
-Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wierszu, `FlowLayout.LEFT` przeniesie „Zapisz” pod „Wykres”.
+Przyciski zachowują swój rozmiar. Gdy zwężysz okno i zabraknie miejsca w wierszu, `FlowLayout.LEFT` przeniesie „Zapisz” na początek następnego wiersza.
 
 <style>
   .po2-flow-demo {
