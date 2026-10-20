@@ -532,15 +532,600 @@ Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmi
   </div>
 </section>
 
+<style>
+  .po2-layout-demo {
+    --layout-ink: #18243a;
+    --layout-muted: #697991;
+    --layout-shell: #f4f7fc;
+    --layout-window: #ffffff;
+    --layout-titlebar: #f7f9fc;
+    --layout-line: #e2e8f1;
+    --layout-surface: #ffffff;
+    --layout-region: #ebe3f7;
+    --layout-region-edge: #d3c3e5;
+    --layout-accent: #356fe5;
+    --layout-accent-soft: #eaf1ff;
+    --layout-shadow: 0 18px 48px rgba(39, 58, 91, 0.14);
+    margin: 1.25rem 0;
+    color: var(--layout-ink);
+    color-scheme: light dark;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .po2-layout-demo {
+      --layout-ink: #e7edf7;
+      --layout-muted: #9baac0;
+      --layout-shell: #161d2b;
+      --layout-window: #1c2535;
+      --layout-titlebar: #202b3e;
+      --layout-line: #344158;
+      --layout-surface: #273349;
+      --layout-region: #332b42;
+      --layout-region-edge: #514267;
+      --layout-accent: #86aaff;
+      --layout-accent-soft: #2a3b5c;
+      --layout-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+    }
+  }
+
+  .po2-layout-demo *,
+  .po2-layout-demo *::before,
+  .po2-layout-demo *::after {
+    box-sizing: border-box;
+  }
+
+  .po2-layout-demo h4 {
+    margin: 0 0 0.4rem;
+    color: var(--layout-ink);
+  }
+
+  .po2-layout-demo__legend {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin: 0 0 0.75rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--layout-region-edge);
+    border-radius: 0.7rem;
+    background: var(--layout-region);
+    color: var(--layout-ink);
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  .po2-layout-demo__swatch {
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 auto;
+    margin-top: 0.16rem;
+    border: 1px solid var(--layout-region-edge);
+    border-radius: 0.25rem;
+    background: var(--layout-region);
+  }
+
+  .po2-layout-demo__explanation {
+    margin: 0 0 0.65rem;
+    color: var(--layout-muted);
+    font-size: 0.94em;
+    line-height: 1.55;
+  }
+
+  .po2-layout-demo__hint {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 1rem;
+    color: var(--layout-muted);
+    font-size: 0.9em;
+  }
+
+  .po2-layout-demo__hint-icon {
+    display: inline-grid;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--layout-accent-soft);
+    color: var(--layout-accent);
+    font-weight: 700;
+  }
+
+  .po2-layout-demo__window {
+    position: relative;
+    width: min(100%, 38rem);
+    min-width: 17rem;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: auto;
+    resize: horizontal;
+    border: 1px solid var(--layout-line);
+    border-radius: 0.85rem;
+    background: var(--layout-window);
+    box-shadow: var(--layout-shadow);
+    color: var(--layout-ink);
+  }
+
+  .po2-layout-demo__window--border {
+    container-name: border-window;
+    container-type: inline-size;
+  }
+
+  .po2-layout-demo__window--grid {
+    container-name: grid-window;
+    container-type: inline-size;
+  }
+
+  .po2-layout-demo__window--gridbag {
+    container-name: gridbag-window;
+    container-type: inline-size;
+  }
+
+  .po2-layout-demo__window--box {
+    container-name: box-window;
+    container-type: inline-size;
+  }
+
+  .po2-layout-demo__window--card {
+    container-name: card-window;
+    container-type: inline-size;
+  }
+
+  .po2-layout-demo__titlebar {
+    display: flex;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0.85rem;
+    border-bottom: 1px solid var(--layout-line);
+    background: var(--layout-titlebar);
+  }
+
+  .po2-layout-demo__brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--layout-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .po2-layout-demo__app-icon {
+    display: grid;
+    width: 1.45rem;
+    height: 1.45rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 0.42rem;
+    background: linear-gradient(145deg, #5f8df5, #345fc4);
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 800;
+  }
+
+  .po2-layout-demo__window-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .po2-layout-demo__window-controls {
+    display: flex;
+    height: 100%;
+    flex: 0 0 auto;
+    align-items: stretch;
+  }
+
+  .po2-layout-demo__window-control {
+    display: grid;
+    width: 2.4rem;
+    place-items: center;
+    color: var(--layout-muted);
+    font-size: 0.85rem;
+  }
+
+  .po2-layout-demo__window-control--close {
+    width: 2.7rem;
+    color: #c74c55;
+    font-size: 1.1rem;
+  }
+
+  .po2-layout-demo__status {
+    display: flex;
+    min-height: 2.35rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.55rem 0.9rem;
+    border-top: 1px solid var(--layout-line);
+    color: var(--layout-muted);
+    font-size: 0.72rem;
+  }
+
+  .po2-layout-demo__status code {
+    flex: 0 0 auto;
+  }
+
+  .po2-layout-demo__status--compact {
+    display: none;
+  }
+
+  .po2-layout-demo__board {
+    background: var(--layout-region);
+  }
+
+  .po2-layout-demo__area {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.12rem;
+    padding: 0.3rem;
+    border-radius: 0.55rem;
+    background: var(--layout-surface);
+    color: var(--layout-ink);
+    text-align: center;
+  }
+
+  .po2-layout-demo__area small {
+    color: var(--layout-muted);
+    font-size: 0.62rem;
+  }
+
+  .po2-layout-demo__border-board {
+    display: grid;
+    width: 100%;
+    height: 11rem;
+    grid-template-columns: 3.7rem minmax(0, 1fr) 3.7rem;
+    grid-template-rows: 2rem minmax(0, 1fr) 1.75rem;
+    grid-template-areas: "north north north" "west center east" "south south south";
+    gap: 0.4rem;
+    padding: 0.65rem;
+  }
+
+  .po2-layout-demo__border-north { grid-area: north; }
+  .po2-layout-demo__border-west { grid-area: west; }
+  .po2-layout-demo__border-center { grid-area: center; }
+  .po2-layout-demo__border-east { grid-area: east; }
+  .po2-layout-demo__border-south { grid-area: south; }
+
+  .po2-layout-demo__grid-board {
+    display: grid;
+    width: 100%;
+    height: 11rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding: 0.65rem;
+  }
+
+  .po2-layout-demo__grid-cell {
+    display: grid;
+    min-width: 0;
+    align-content: center;
+    justify-items: center;
+    gap: 0.15rem;
+    padding: 0.3rem;
+    border-radius: 0.6rem;
+    background: var(--layout-surface);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .po2-layout-demo__grid-cell strong {
+    font-size: 0.8rem;
+  }
+
+  .po2-layout-demo__grid-cell small {
+    color: var(--layout-muted);
+    font-size: 0.64rem;
+  }
+
+  .po2-layout-demo__gridbag-board {
+    display: grid;
+    min-height: 11rem;
+    align-content: center;
+    gap: 0.7rem;
+    padding: 0.85rem;
+  }
+
+  .po2-layout-demo__gridbag-form {
+    display: grid;
+    grid-template-columns: minmax(5rem, 7rem) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.6rem 0.7rem;
+  }
+
+  .po2-layout-demo__gridbag-label {
+    color: var(--layout-ink);
+    font-size: 0.74rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .po2-layout-demo__field {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.42rem;
+    background: var(--layout-surface);
+    color: var(--layout-ink);
+    font-size: 0.72rem;
+  }
+
+  .po2-layout-demo__field-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .po2-layout-demo__field-caret {
+    flex: 0 0 auto;
+    color: var(--layout-muted);
+  }
+
+  .po2-layout-demo__gridbag-submit {
+    grid-column: 2;
+    justify-self: start;
+    padding: 0.42rem 0.7rem;
+    border: 0;
+    border-radius: 0.45rem;
+    background: var(--layout-accent);
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .po2-layout-demo__constraint {
+    justify-self: end;
+    padding: 0.25rem 0.45rem;
+    border-radius: 999px;
+    background: var(--layout-surface);
+    color: var(--layout-muted);
+    font-size: 0.65rem;
+  }
+
+  .po2-layout-demo__box-viewport {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-color: var(--layout-muted) transparent;
+    scrollbar-width: thin;
+  }
+
+  .po2-layout-demo__box-row {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    min-height: 9rem;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.7rem;
+  }
+
+  .po2-layout-demo__box-item {
+    display: grid;
+    width: 8rem;
+    flex: 0 0 8rem;
+    align-content: center;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    border-radius: 0.6rem;
+    background: var(--layout-surface);
+  }
+
+  .po2-layout-demo__box-item small {
+    color: var(--layout-muted);
+    font-size: 0.68rem;
+  }
+
+  .po2-layout-demo__card-board {
+    position: relative;
+    min-height: 12rem;
+    padding: 0.7rem;
+    background: var(--layout-region);
+  }
+
+  .po2-layout-demo__card-choice {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .po2-layout-demo__card-tab {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    margin-right: 0.3rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.5rem;
+    color: var(--layout-muted);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 650;
+  }
+
+  .po2-layout-demo__card-choice:checked + .po2-layout-demo__card-tab {
+    background: var(--layout-surface);
+    color: var(--layout-accent);
+  }
+
+  .po2-layout-demo__card-choice:focus-visible + .po2-layout-demo__card-tab {
+    outline: 2px solid var(--layout-accent);
+    outline-offset: 2px;
+  }
+
+  .po2-layout-demo__card-pages {
+    margin-top: 0.5rem;
+  }
+
+  .po2-layout-demo__card-page {
+    display: none;
+    min-height: 8rem;
+    align-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem;
+    border-radius: 0.6rem;
+    background: var(--layout-surface);
+  }
+
+  #po2-card-data:checked ~ .po2-layout-demo__card-pages .po2-layout-demo__card-page--data,
+  #po2-card-results:checked ~ .po2-layout-demo__card-pages .po2-layout-demo__card-page--results {
+    display: grid;
+  }
+
+  .po2-layout-demo__card-page p {
+    margin: 0;
+    color: var(--layout-muted);
+    font-size: 0.75rem;
+  }
+
+  .po2-layout-demo__card-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .po2-layout-demo__card-metric {
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.45rem;
+    background: var(--layout-accent-soft);
+    color: var(--layout-accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .po2-layout-demo__card-status-data,
+  .po2-layout-demo__card-status-results {
+    display: none;
+  }
+
+  .po2-layout-demo__window--card:has(#po2-card-data:checked) .po2-layout-demo__card-status-data,
+  .po2-layout-demo__window--card:has(#po2-card-results:checked) .po2-layout-demo__card-status-results {
+    display: inline;
+  }
+
+  @container border-window (max-width: 26rem) {
+    .po2-layout-demo__status--wide { display: none; }
+    .po2-layout-demo__status--compact { display: inline; }
+  }
+
+  @container grid-window (max-width: 26rem) {
+    .po2-layout-demo__status--wide { display: none; }
+    .po2-layout-demo__status--compact { display: inline; }
+  }
+
+  @container gridbag-window (max-width: 26rem) {
+    .po2-layout-demo__status--wide { display: none; }
+    .po2-layout-demo__status--compact { display: inline; }
+  }
+
+  @container box-window (max-width: 26rem) {
+    .po2-layout-demo__status--wide { display: none; }
+    .po2-layout-demo__status--compact { display: inline; }
+  }
+
+  @media (max-width: 340px) {
+    .po2-layout-demo__window {
+      width: 100%;
+      min-width: 0;
+      resize: none;
+    }
+  }
+</style>
+
 **`BoxLayout`** układa elementy wzdłuż jednej osi (`X_AXIS` albo `Y_AXIS`) i nie zawija ich do kolejnego wiersza. Rozmiar każdego dziecka zależy od jego minimalnego, preferowanego i maksymalnego rozmiaru. Użyj go np. dla pionowej listy kroków lub formularza.
+
+#### Zmień szerokość i sprawdź brak zawijania
+
+<section class="po2-layout-demo" aria-labelledby="po2-box-demo-title">
+  <h4 id="po2-box-demo-title"><code>BoxLayout.X_AXIS</code> · pasek modułów</h4>
+  <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlony panel jest kontenerem z <code>BoxLayout.X_AXIS</code>. Karty pozostają w jednym poziomym wierszu — ten układ ich nie zawija.</span></p>
+  <p class="po2-layout-demo__explanation">Zwęź okno. <code>BoxLayout.X_AXIS</code> nie przenosi elementów do kolejnego wiersza; karty w tym przykładzie zachowują stałą szerokość, a poziomy obszar przewijania pozwala dotrzeć do wszystkich.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna, a przy wąskim widoku przewiń pasek modułów.</p>
+  <div class="po2-layout-demo__window po2-layout-demo__window--box" role="group" aria-label="Podgląd BoxLayout w aplikacji Analiza">
+    <div class="po2-layout-demo__titlebar">
+      <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · moduły</span></div>
+      <div class="po2-layout-demo__window-controls" aria-hidden="true"><span class="po2-layout-demo__window-control">&#x2013;</span><span class="po2-layout-demo__window-control">&#x25A1;</span><span class="po2-layout-demo__window-control po2-layout-demo__window-control--close">&#xD7;</span></div>
+    </div>
+    <div class="po2-layout-demo__box-viewport po2-layout-demo__board" role="group" aria-label="Poziomy pasek modułów">
+      <div class="po2-layout-demo__box-row">
+        <div class="po2-layout-demo__box-item"><strong>Dane</strong><small>Import i podgląd</small></div>
+        <div class="po2-layout-demo__box-item"><strong>Model</strong><small>Dobór zmiennych</small></div>
+        <div class="po2-layout-demo__box-item"><strong>Wyniki</strong><small>Estymacja i testy</small></div>
+      </div>
+    </div>
+    <div class="po2-layout-demo__status"><span class="po2-layout-demo__status--wide">Elementy pozostają w jednym wierszu</span><span class="po2-layout-demo__status--compact">Wąski widok · przewiń poziomo</span><code>BoxLayout.X_AXIS</code></div>
+  </div>
+</section>
 
 ### Podział na obszary
 
 **`BorderLayout`** dzieli kontener na `NORTH`, `SOUTH`, `EAST`, `WEST` i `CENTER`. Pasy przy krawędziach korzystają z rozmiaru preferowanego, a `CENTER` otrzymuje pozostałe miejsce. Do każdego obszaru dodaj jeden komponent; kilka kontrolek zgrupuj najpierw w osobnym `JPanel`.
 
+#### Zmień szerokość i obserwuj obszar `CENTER`
+
+<section class="po2-layout-demo" aria-labelledby="po2-border-demo-title">
+  <h4 id="po2-border-demo-title"><code>BorderLayout</code> · panel analizy</h4>
+  <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza panel zarządzany przez <code>BorderLayout</code>; jego pięć elementów zajmuje obszary <code>NORTH</code>, <code>SOUTH</code>, <code>EAST</code>, <code>WEST</code> i <code>CENTER</code>.</span></p>
+  <p class="po2-layout-demo__explanation">Przy zmianie szerokości pasy boczne zachowują swoje rozmiary preferowane, a główny <code>CENTER</code> dostaje pozostałe miejsce. Zwęź okno i zobacz, jak kurczy się przede wszystkim środkowy obszar — elementy nie zmieniają regionu.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt w prawym dolnym rogu okna.</p>
+  <div class="po2-layout-demo__window po2-layout-demo__window--border" role="group" aria-label="Podgląd BorderLayout w aplikacji Analiza">
+    <div class="po2-layout-demo__titlebar">
+      <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · obszary widoku</span></div>
+      <div class="po2-layout-demo__window-controls" aria-hidden="true"><span class="po2-layout-demo__window-control">&#x2013;</span><span class="po2-layout-demo__window-control">&#x25A1;</span><span class="po2-layout-demo__window-control po2-layout-demo__window-control--close">&#xD7;</span></div>
+    </div>
+    <div class="po2-layout-demo__border-board po2-layout-demo__board" role="group" aria-label="Pięć obszarów BorderLayout">
+      <div class="po2-layout-demo__area po2-layout-demo__border-north"><strong>NORTH</strong><small>filtry</small></div>
+      <div class="po2-layout-demo__area po2-layout-demo__border-west"><strong>WEST</strong><small>menu</small></div>
+      <div class="po2-layout-demo__area po2-layout-demo__border-center"><strong>CENTER</strong><small>tabela danych</small></div>
+      <div class="po2-layout-demo__area po2-layout-demo__border-east"><strong>EAST</strong><small>opcje</small></div>
+      <div class="po2-layout-demo__area po2-layout-demo__border-south"><strong>SOUTH</strong><small>status</small></div>
+    </div>
+    <div class="po2-layout-demo__status"><span class="po2-layout-demo__status--wide">CENTER wypełnia przestrzeń pozostałą po pasach</span><span class="po2-layout-demo__status--compact">CENTER zwęża się między pasami</span><code>BorderLayout</code></div>
+  </div>
+</section>
+
 ### Siatka i formularz
 
 **`GridLayout`** tworzy regularną siatkę równych komórek — nadaje się np. na klawiaturę kalkulatora. Ponieważ wszystkie pola są równe, zwykle nie jest dobrym wyborem do par etykieta–pole.
+
+#### Zmień szerokość i porównaj komórki
+
+<section class="po2-layout-demo" aria-labelledby="po2-grid-demo-title">
+  <h4 id="po2-grid-demo-title"><code>GridLayout(2, 3)</code> · statystyki opisowe</h4>
+  <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza kontener z <code>GridLayout</code>. Sześć kart wypełnia siatkę o trzech kolumnach i dwóch wierszach.</span></p>
+  <p class="po2-layout-demo__explanation">Zwężaj i poszerzaj okno. Wszystkie komórki zmieniają szerokość jednakowo i pozostają równe; <code>GridLayout</code> nie wyróżnia pola, które powinno dostać więcej miejsca.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna i obserwuj sześć równych pól.</p>
+  <div class="po2-layout-demo__window po2-layout-demo__window--grid" role="group" aria-label="Podgląd GridLayout w panelu statystyk">
+    <div class="po2-layout-demo__titlebar">
+      <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · statystyki</span></div>
+      <div class="po2-layout-demo__window-controls" aria-hidden="true"><span class="po2-layout-demo__window-control">&#x2013;</span><span class="po2-layout-demo__window-control">&#x25A1;</span><span class="po2-layout-demo__window-control po2-layout-demo__window-control--close">&#xD7;</span></div>
+    </div>
+    <div class="po2-layout-demo__grid-board po2-layout-demo__board" role="group" aria-label="Siatka trzech kolumn i dwóch wierszy">
+      <div class="po2-layout-demo__grid-cell"><small>Średnia</small><strong>4,2</strong></div>
+      <div class="po2-layout-demo__grid-cell"><small>Mediana</small><strong>3,9</strong></div>
+      <div class="po2-layout-demo__grid-cell"><small>Odch. std.</small><strong>1,1</strong></div>
+      <div class="po2-layout-demo__grid-cell"><small>Obserwacje</small><strong>120</strong></div>
+      <div class="po2-layout-demo__grid-cell"><small>R²</small><strong>0,82</strong></div>
+      <div class="po2-layout-demo__grid-cell"><small>MAE</small><strong>0,14</strong></div>
+    </div>
+    <div class="po2-layout-demo__status"><span class="po2-layout-demo__status--wide">Każdy wiersz i kolumna ma równe komórki</span><span class="po2-layout-demo__status--compact">Wszystkie sześć komórek nadal jest równych</span><code>GridLayout</code></div>
+  </div>
+</section>
 
 **`GridBagLayout`** pozwala tworzyć nierówne wiersze i kolumny. `gridx`/`gridy` wskazują pozycję, `gridwidth`/`gridheight` określają liczbę zajętych komórek, `weightx`/`weighty` dzielą dodatkowe miejsce, a `fill` mówi, czy komponent ma je wypełnić. Samo `fill=HORIZONTAL` nie sprawi, że kolumna dostanie dodatkową szerokość — ustaw też `weightx`.
 
@@ -557,6 +1142,34 @@ c.fill = GridBagConstraints.HORIZONTAL;
 form.add(new JTextField(20), c);
 ```
 
+#### Zmień szerokość i obserwuj pole formularza
+
+<section class="po2-layout-demo" aria-labelledby="po2-gridbag-demo-title">
+  <h4 id="po2-gridbag-demo-title"><code>GridBagLayout</code> · parametry modelu</h4>
+  <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlone tło oznacza kontener z <code>GridBagLayout</code>. Etykiety i pola mogą mieć różne rozmiary, a pole zmiennej zajmuje dodatkową szerokość.</span></p>
+  <p class="po2-layout-demo__explanation">Zmień szerokość okna: pole formularza rośnie i kurczy się wraz z dostępnym miejscem. W przykładzie odpowiadają za to ograniczenia pola: <code>weightx = 1</code> oraz <code>fill = HORIZONTAL</code>.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna, aby zmienić miejsce dostępne dla pól.</p>
+  <div class="po2-layout-demo__window po2-layout-demo__window--gridbag" role="group" aria-label="Podgląd formularza GridBagLayout">
+    <div class="po2-layout-demo__titlebar">
+      <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · parametry modelu</span></div>
+      <div class="po2-layout-demo__window-controls" aria-hidden="true"><span class="po2-layout-demo__window-control">&#x2013;</span><span class="po2-layout-demo__window-control">&#x25A1;</span><span class="po2-layout-demo__window-control po2-layout-demo__window-control--close">&#xD7;</span></div>
+    </div>
+    <div class="po2-layout-demo__gridbag-board po2-layout-demo__board" role="group" aria-label="Formularz z etykietami i rozszerzanymi polami">
+      <div class="po2-layout-demo__gridbag-form">
+        <span class="po2-layout-demo__gridbag-label">Zmienna:</span>
+        <span class="po2-layout-demo__field"><span class="po2-layout-demo__field-value">Sprzedaż detaliczna</span><span class="po2-layout-demo__field-caret" aria-hidden="true">⌄</span></span>
+        <span class="po2-layout-demo__gridbag-label">Okres:</span>
+        <span class="po2-layout-demo__field"><span class="po2-layout-demo__field-value">2015–2025</span><span class="po2-layout-demo__field-caret" aria-hidden="true">⌄</span></span>
+        <span class="po2-layout-demo__gridbag-label">Opóźnienie:</span>
+        <span class="po2-layout-demo__field"><span class="po2-layout-demo__field-value">1 okres</span><span class="po2-layout-demo__field-caret" aria-hidden="true">⌄</span></span>
+        <span></span><span class="po2-layout-demo__gridbag-submit">Uruchom analizę</span>
+      </div>
+      <code class="po2-layout-demo__constraint">pole: weightx = 1 · fill = HORIZONTAL</code>
+    </div>
+    <div class="po2-layout-demo__status"><span class="po2-layout-demo__status--wide">Pole otrzymuje dodatkowe miejsce</span><span class="po2-layout-demo__status--compact">Pola kurczą się, etykiety zostają obok</span><code>GridBagLayout</code></div>
+  </div>
+</section>
+
 ### Przełączanie widoków
 
 **`CardLayout`** przechowuje kilka paneli w tym samym obszarze i pokazuje jeden z nich. Przydaje się do przełączania np. widoku danych i analizy bez tworzenia kolejnych okien.
@@ -569,6 +1182,40 @@ views.add(new JPanel(), "analiza");
 // W listenerze menu:
 cards.show(views, "analiza");
 ```
+
+#### Przełącz kartę i zobacz zmianę widoku
+
+<section class="po2-layout-demo" aria-labelledby="po2-card-demo-title">
+  <h4 id="po2-card-demo-title"><code>CardLayout</code> · widoki jednej aplikacji</h4>
+  <p class="po2-layout-demo__legend"><span class="po2-layout-demo__swatch" aria-hidden="true"></span><span>Podświetlony obszar jest kontenerem <code>CardLayout</code>. Umieszczone w nim widoki zajmują to samo miejsce, ale jednocześnie widoczna jest tylko jedna karta.</span></p>
+  <p class="po2-layout-demo__explanation">Kliknij zakładkę „Dane” albo „Wyniki”. Zmienia się zawartość tego samego obszaru — nie powstaje nowe okno. Zmień też szerokość, aby sprawdzić zachowanie wybranego widoku.</p>
+  <p class="po2-layout-demo__hint"><span class="po2-layout-demo__hint-icon" aria-hidden="true">↔</span>Przeciągnij uchwyt okna lub kliknij jedną z zakładek w podglądzie.</p>
+  <div class="po2-layout-demo__window po2-layout-demo__window--card" role="group" aria-label="Interaktywny podgląd CardLayout">
+    <div class="po2-layout-demo__titlebar">
+      <div class="po2-layout-demo__brand"><span class="po2-layout-demo__app-icon" aria-hidden="true">A</span><span class="po2-layout-demo__window-title">Analiza · widok roboczy</span></div>
+      <div class="po2-layout-demo__window-controls" aria-hidden="true"><span class="po2-layout-demo__window-control">&#x2013;</span><span class="po2-layout-demo__window-control">&#x25A1;</span><span class="po2-layout-demo__window-control po2-layout-demo__window-control--close">&#xD7;</span></div>
+    </div>
+    <div class="po2-layout-demo__card-board" role="group" aria-label="Wybierz widok aplikacji">
+      <input class="po2-layout-demo__card-choice" type="radio" id="po2-card-data" name="po2-card-view" value="data" checked>
+      <label class="po2-layout-demo__card-tab" for="po2-card-data">Dane</label>
+      <input class="po2-layout-demo__card-choice" type="radio" id="po2-card-results" name="po2-card-view" value="results">
+      <label class="po2-layout-demo__card-tab" for="po2-card-results">Wyniki</label>
+      <div class="po2-layout-demo__card-pages">
+        <div class="po2-layout-demo__card-page po2-layout-demo__card-page--data">
+          <strong>Dane kwartalne · 2022–2025</strong>
+          <p>Sprzedaż detaliczna · 16 obserwacji · częstotliwość kwartalna</p>
+          <div class="po2-layout-demo__card-metrics"><span class="po2-layout-demo__card-metric">Podgląd tabeli</span><span class="po2-layout-demo__card-metric">Braki: 0</span></div>
+        </div>
+        <div class="po2-layout-demo__card-page po2-layout-demo__card-page--results">
+          <strong>Wyniki estymacji · model liniowy</strong>
+          <p>Sprzedaż = 12,4 + 0,83 × dochód</p>
+          <div class="po2-layout-demo__card-metrics"><span class="po2-layout-demo__card-metric">R² = 0,82</span><span class="po2-layout-demo__card-metric">p &lt; 0,01</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="po2-layout-demo__status"><span><span class="po2-layout-demo__card-status-data">Aktywna karta: Dane</span><span class="po2-layout-demo__card-status-results">Aktywna karta: Wyniki</span></span><code>CardLayout</code></div>
+  </div>
+</section>
 
 W praktycznym oknie łącz kilka menedżerów, zagnieżdżając panele — np. `BorderLayout` dla głównego widoku, `GridLayout` dla klawiatury i `FlowLayout` dla przycisków akcji. Otwórz [galerię Swing](demo/README.html), zmieniaj rozmiar okna i sprawdź, który element się zawija, rozciąga lub zachowuje swój rozmiar.
 
