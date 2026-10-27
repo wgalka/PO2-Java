@@ -10,7 +10,8 @@ Instrukcje do przedmiotu **Programowanie obiektowe** na kierunku
 **Informatyka i ekonometria**, III semestr, rok akademicki 2026/2027.
 Projekty należy tworzyć w IntelliJ IDEA z użyciem Mavena. Projekt semestralny
 ma postać desktopowej aplikacji Java z interfejsem graficznym i analizą danych
-ekonomicznych lub ekonometrycznych.
+ekonomicznych lub ekonometrycznych. Projekt semestralny należy wykonać samodzielnie,
+niezależnie od aplikacji rozwijanej podczas laboratoriów.
 
 ## Laboratoria
 
@@ -21,7 +22,7 @@ ekonomicznych lub ekonometrycznych.
 | Lab 3: [v1](./2026-2027/lab3/v1/README.html) · [v2](./2026-2027/lab3/v2/README.html) | JDBC: SQL, DAO, CRUD, relacje i transakcje | [Projekt do modyfikacji](./2026-2027/lab3/v1/demo/projekt-do-modyfikacji.zip) |
 | Lab 4: [v1](./2026-2027/lab4/v1/README.html) · [v2](./2026-2027/lab4/v2/README.html) | Hibernate i mapowanie obiektowo-relacyjne | [Projekt do modyfikacji](./2026-2027/lab4/v1/demo/projekt-do-modyfikacji.zip) |
 | Lab 5: [v1](./2026-2027/lab5/v1/README.html) · [v2](./2026-2027/lab5/v2/README.html) | JSP i Servlet API | [Projekt do modyfikacji](./2026-2027/lab5/v1/demo/projekt-do-modyfikacji.zip) |
-| Lab 6: [v1](./2026-2027/lab6/v1/README.html) · [v2](./2026-2027/lab6/v2/README.html) | Integracja aplikacji i obrona projektu | Kontynuacja projektu z Lab 3 lub Lab 4 |
+| Lab 6: [v1](./2026-2027/lab6/v1/README.html) · [v2](./2026-2027/lab6/v2/README.html) | Integracja aplikacji, przetwarzanie danych i dystrybucja | Kontynuacja aplikacji laboratoryjnej z Lab 3 lub Lab 4 |
 
 ## Materiały wspólne
 

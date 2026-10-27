@@ -1,17 +1,17 @@
 ---
 layout: default
-title: "Lab 6 - Projekt: integracja aplikacji desktopowej i obrona"
+title: "Lab 6 - Integracja aplikacji desktopowej i dystrybucja"
 ---
 
-# Lab 6 - Projekt: integracja aplikacji desktopowej i obrona
+# Lab 6 - Integracja aplikacji desktopowej i dystrybucja
 
-## Integracja aplikacji desktopowej i przygotowanie obrony
+## Integracja aplikacji laboratoryjnej
 
-Projekt ma być aplikacją desktopową w języku Java z GUI, relacyjną bazą danych oraz
-analizą danych ekonomicznych lub ekonometrycznych. Należy rozwijać projekt
-przygotowany w poprzednich laboratoriach zamiast rozpoczynać od pustego szkieletu.
-Pełny zakres i punktacja znajdują się w [wymaganiach projektu](../../projekt/README.html).
-Projekt należy uruchamiać i budować w [IntelliJ IDEA](../../srodowisko.html).
+Należy rozbudować aplikację desktopową w języku Java przygotowaną podczas
+poprzednich laboratoriów, łącząc GUI, relacyjną bazę danych oraz analizę danych
+ekonomicznych lub ekonometrycznych. Aplikację należy uruchamiać i budować
+w [IntelliJ IDEA](../../srodowisko.html).
+Projekt semestralny należy wykonać samodzielnie, niezależnie od tej aplikacji.
 
 Należy połączyć rozwijany interfejs Swing z Lab 1 albo JavaFX z Lab 2 z warstwą
 JDBC/DAO z Lab 3 albo Hibernate z Lab 4. Integracja wymaga dostosowania wspólnego
@@ -19,7 +19,7 @@ modelu domeny i serwisów, a następnie dodania analizy i wykresów zgodnych
 z wybranym tematem. Nie trzeba stosować obu bibliotek GUI ani obu metod persystencji.
 Dane demonstracyjne i skrypt inicjalizacji należy dołączyć do repozytorium,
 np. w `src/main/resources/db/` lub `data/`. Po przygotowaniu zależności pełny
-scenariusz obrony musi działać bez Internetu i bez wywołań zewnętrznego API.
+scenariusz sprawdzenia aplikacji musi działać bez Internetu i bez wywołań zewnętrznego API.
 
 ## Integracja funkcji aplikacji
 
@@ -31,7 +31,7 @@ scenariusz obrony musi działać bez Internetu i bez wywołań zewnętrznego API
 6. Przygotować ERD, instrukcję uruchomienia, opis metody i interpretację wyników.
 7. Zademonstrować pełny przepływ od importu danych do wyniku analizy.
 
-## Lista kontrolna przed oddaniem
+## Lista kontrolna wykonania laboratorium
 
 - [ ] układ adaptuje się do małego i dużego okna, a wszystkie podstawowe akcje pozostają dostępne;
 - [ ] domyślny tryb automatycznie dopasowuje się do motywu systemu i reaguje na jego zmianę;
@@ -54,7 +54,9 @@ scenariusz obrony musi działać bez Internetu i bez wywołań zewnętrznego API
 - [ ] pakiet uruchomiono na czystym Windows bez JDK i Internetu; sprawdzono zapis bazy w katalogu użytkownika;
 - [ ] student potrafi wyjaśnić przepływ danych i uruchomić testowy scenariusz.
 
-## Przygotowanie odpowiedzi do obrony
+## Analiza przepływu danych w aplikacji
+
+Na podstawie kodu aplikacji laboratoryjnej należy odpowiedzieć na poniższe pytania.
 
 1. Dlaczego wybrano ten model danych i metodę analizy?
 2. Jak aplikacja reaguje na brak lub błędną wartość?
@@ -111,13 +113,13 @@ erDiagram
     }
 ```
 
-To minimalny przykład szerokiego modelu. W projekcie nazwy `x` i `y` należy
+To minimalny przykład szerokiego modelu. W aplikacji laboratoryjnej nazwy `x` i `y` należy
 zastąpić zmiennymi o znaczeniu ekonomicznym, zapisać ich jednostki i dostosować
-liczbę do wymagań projektu. Trzeba zapewnić unikalność identyfikującą obserwację.
+liczbę do analizowanego zbioru. Trzeba zapewnić unikalność identyfikującą obserwację.
 Analiza powinna zapamiętywać filtr i wersję danych albo ich migawkę, aby późniejsza
 edycja zbioru nie zmieniała znaczenia zapisanego wyniku.
 
-## Przygotowanie scenariusza demonstracji
+## Sprawdzenie pełnego przepływu danych
 
 ```mermaid
 flowchart LR
@@ -130,11 +132,10 @@ flowchart LR
     G --> H[Restart i odczyt zapisanych danych]
 ```
 
-Demonstracja powinna trwać około 8–10 minut, o ile prowadzący nie ustali innego
-czasu. Należy przedstawić problem ekonomiczny i źródło lokalnego zbioru, a następnie
-pełny przepływ danych. W dalszej części trzeba wywołać błąd danych i pokazać jego
-obsługę. Do omówienia podczas obrony należy przygotować w IntelliJ klasy
-kontrolera, serwisu, repozytorium i analizy.
+Należy wykonać kolejno czynności przedstawione na diagramie i sprawdzić pełny
+przepływ danych od importu do ponownego odczytu po restarcie aplikacji.
+Następnie trzeba wywołać błąd danych i sprawdzić jego obsługę. W IntelliJ należy
+prześledzić wywołania między klasami kontrolera, serwisu, repozytorium i analizy.
 
 ## Weryfikacja poprawności obliczeń
 
@@ -160,12 +161,12 @@ Przy prognozie należy zachować kolejność czasu i oceniać wynik na danych
 niewykorzystanych do dopasowania. Trzeba opisać jednostki błędu i ograniczenia
 małego zbioru.
 
-## Przygotowanie pakietu do oddania
+## Przygotowanie pakietu aplikacji laboratoryjnej
 
 Do materiałów GUI dołącz także [raport HiDPI i motywów](../../jakosc-gui.html):
 12 kombinacji ze wskazanej macierzy, próbę zmiany motywu systemu podczas pracy
 aplikacji, cztery zrzuty obu układów i motywów oraz opis ograniczeń sprzętowych,
-jeżeli wystąpiły. Podczas obrony należy pokazać zmianę szerokości i motywu przy
+jeżeli wystąpiły. Należy sprawdzić zmianę szerokości okna i motywu przy
 załadowanych danych. Stan aplikacji i wynik analizy muszą zostać zachowane.
 
 - projekt Maven z kodem i zasobami; `clean verify` w IntelliJ kończy się poprawnie;

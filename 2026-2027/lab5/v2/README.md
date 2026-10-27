@@ -7,7 +7,7 @@ title: "Lab 5 — polecenia: portal wskaźników GUS BDL w Servlet i JSP"
 
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-[Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Wyjaśnienia Servlet/JSP (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 6: Czyszczenie danych, 4 tabele i obrona](../../lab6/v2/README.html)
+[Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Wyjaśnienia Servlet/JSP (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 6: Czyszczenie danych, 4 tabele i dystrybucja](../../lab6/v2/README.html)
 
 Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane. W ramach laboratorium powstaje osobny projekt webowy `ekopanel-web` prezentujący w przeglądarce słownik wskaźników i regionalnych przekrojów GUS BDL z wykorzystaniem wzorca MVC, przekierowania **POST-Redirect-GET (PRG)** oraz **reużywalnych komponentów widoku JSP** (wspólnych fragmentów `.jspf` i własnego znacznika `/WEB-INF/tags/kpiCard.tag`).
 
@@ -34,7 +34,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Własny znacznik kpiCard.tag i wspólne fragmenty JSP](poradnik.html#tags)**
 
 <details>
-<summary><strong>Krótka instrukcja: Tworzenie reużywalnych komponentów w JSP (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Tworzenie reużywalnych komponentów w JSP</strong></summary>
 
 W aplikacjach JSP unika się powielania kodu HTML na dwa uzupełniające sposoby:
 1. **Fragmenty nagłówka i stopki (`/WEB-INF/views/fragments/header.jspf`, `footer.jspf`)** dołączane dyrektywą `<%@ include file="..." %>` zapewniają identyczne menu nawigacyjne i przełącznik motywu na wszystkich podstronach.

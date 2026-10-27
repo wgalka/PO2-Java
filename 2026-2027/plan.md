@@ -28,8 +28,11 @@ wchodzą w odbiór ćwiczeń i projektu; nie stanowią osobnego bloku tematyczne
    relacje, HQL i transakcje.
 5. **JSP i Servlet API** — podstawy aplikacji webowej oraz prosty model MVC
    jako porównanie z aplikacją desktopową.
-6. **Integracja projektu desktopowego i obrona** — dopracowanie aplikacji,
-   dokumentacja, demonstracja i przygotowanie do obrony.
+6. **Integracja aplikacji, przetwarzanie danych i dystrybucja** — rozwijanie
+   aplikacji laboratoryjnej, weryfikacja działania, dokumentacja JavaDoc
+   i przygotowanie pakietu uruchomieniowego.
 
 Kolejność odpowiada treściom laboratoriów z III semestru. Sześć instrukcji
 porządkuje materiał realizowany podczas 14 spotkań i 30 godzin laboratoryjnych.
+Projekt semestralny należy wykonać samodzielnie, niezależnie od aplikacji
+laboratoryjnej. Obrona projektu jest odrębnym elementem zaliczenia przedmiotu.

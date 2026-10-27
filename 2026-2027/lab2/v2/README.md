@@ -39,7 +39,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: HBox/VBox (hgrow), FlowPane vs TilePane oraz StackPane](poradnik.html#panes)** · 📚 [Javadoc `javafx.scene.layout`](https://openjfx.io/javadoc/27/javafx.graphics/javafx/scene/layout/package-summary.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Dobór kontenerów układu w JavaFX (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Dobór kontenerów układu w JavaFX</strong></summary>
 
 - `BorderPane` rozdziela okno na `top` (pasek `MenuBar` i nagłówek), `center` (główna zawartość) i `bottom` (pasek statusu).
 - `HBox` i `VBox` układają elementy w wierszu lub kolumnie; dopiero dodanie atrybutu `HBox.hgrow="ALWAYS"` lub `VBox.vgrow="ALWAYS"` na wybranym dziecku przekazuje mu wolne miejsce przy powiększaniu okna.
@@ -65,7 +65,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Wzorzec fx:root dla komponentu MetricCard](poradnik.html#fxroot)** · 📚 [Wprowadzenie do FXML (`fx:root`)](https://openjfx.io/javadoc/27/javafx.fxml/javafx/fxml/doc-files/introduction_to_fxml.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Jak działa konstrukcja fx:root w JavaFX? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Jak działa konstrukcja fx:root w JavaFX?</strong></summary>
 
 Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny komponent JavaFX (`MetricCard extends VBox`), który ładuje swój układ z `/fxml/metric-card.fxml`, ustawiając `loader.setRoot(this)` oraz `loader.setController(this)`. Dzięki temu w `main-view.fxml` można wielokrotnie wstawiać `<MetricCard fx:id="meanCard" title="Średnia"/>` dokładnie tak jak wbudowane kontrolki JavaFX!
 </details>

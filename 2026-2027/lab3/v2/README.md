@@ -29,7 +29,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Relacje 3 tabel GUS BDL i klucze obce](poradnik.html#schema)**
 
 <details>
-<summary><strong>Krótka instrukcja: Schemat ERD trzech tabel GUS BDL (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Schemat ERD trzech tabel GUS BDL</strong></summary>
 
 Tabela faktów `observation` posiada dwa klucze obce wskazujące tabele słownikowe `region` oraz `indicator` z klauzulą `ON DELETE RESTRICT` (uniemożliwiającą usunięcie województwa lub wskaźnika posiadającego obserwacje):
 

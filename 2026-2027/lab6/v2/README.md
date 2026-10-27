@@ -7,11 +7,13 @@ title: "Lab 6 — polecenia: czyszczenie danych, 4 tabele, JavaDoc i pakiet jpac
 
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-[Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Etap 5: JSP](../../lab5/v2/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Wymagania projektu](../../projekt/README.html)
+[Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Etap 5: JSP](../../lab5/v2/README.html) · [Interaktywny poradnik animowany](poradnik.html)
+
+Należy kontynuować aplikację laboratoryjną `ekopanel-orm`. Projekt semestralny należy wykonać samodzielnie, niezależnie od tej aplikacji.
 
 Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane. W końcowym etapie aplikacja desktopowa z bazą Hibernate/H2 zostaje rozbudowana o **czwartą tabelę relacyjną `processing_log` (historię przetwarzania i raportów)**, polimorficzną hierarchię klas przygotowania i analizy danych ekonomicznych (**usuwanie braków danych, uzupełnianie braków średnią lub sąsiednimi latami, proste zmiany rok do roku oraz normalizacja min–max**), eksport raportów Markdown, dokumentację API JavaDoc oraz samodzielny obraz wykonawczy `jpackage`.
 
-## Zadanie 6.1. Przygotowanie projektu końcowego `ekopanel-final` i pliku z brakami danych
+## Zadanie 6.1. Przygotowanie aplikacji laboratoryjnej `ekopanel-final` i pliku z brakami danych
 
 1. Skopiować `ekopanel-orm` jako `PO2-EkoPanel/ekopanel-final`. W `pom.xml` ustawić `artifactId=ekopanel-final`, `version=1.0.0` oraz `build/finalName=ekopanel-final-1.0.0`.
 2. Upewnić się, że w katalogu `data/` znajduje się plik [observations-braki.csv](../../dane/observations-braki.csv) (wchodzący również w skład [gus-bdl-dane.zip](../../dane/gus-bdl-dane.zip)), który zawiera **3 puste wartości (braki danych)** w roku `2022`:
@@ -28,7 +30,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Polimorficzne czyszczenie braków danych — Usuwanie, Średnia, Sąsiednie lata](poradnik.html#cleaning)**
 
 <details>
-<summary><strong>Krótka instrukcja: Wzory imputacji braków, średniej ważonej i normalizacji (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Wzory imputacji braków, średniej ważonej i normalizacji</strong></summary>
 
 Każdy z poniższych wzorów matematycznych należy zaimplementować samodzielnie jako pętlę `for` operującą na `BigDecimal` (`RoundingMode.HALF_UP`):
 
@@ -63,7 +65,7 @@ Każdy z poniższych wzorów matematycznych należy zaimplementować samodzielni
 ## Zadanie 6.3. Rozbudowa bazy do 4 tabel (`processing_log`), zakładka czyszczenia danych i eksport raportów
 
 <details>
-<summary><strong>Krótka instrukcja: Pełny schemat ERD 4 tabel w bazie H2 (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Pełny schemat ERD 4 tabel w bazie H2</strong></summary>
 
 Czwarta tabela `processing_log` przechowuje historię wykonanych operacji czyszczenia/przetwarzania danych wraz z kluczami obcymi do wybranego regionu i wskaźnika GUS oraz migawką przetworzonych danych (`snapshot_csv`):
 

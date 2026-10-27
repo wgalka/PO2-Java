@@ -36,7 +36,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 📚 [Javadoc `java.math.BigDecimal`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/math/BigDecimal.html) · [Javadoc `RoundingMode`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/math/RoundingMode.html) · [Javadoc `java.lang.Record`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/lang/Record.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Dlaczego ceny, płace i wskaźniki przechowujemy w BigDecimal, a nie w double? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Dlaczego ceny, płace i wskaźniki przechowujemy w BigDecimal, a nie w double?</strong></summary>
 
 Typ `double` zapisuje liczby w systemie dwójkowym (IEEE 754), przez co ułamki dziesiętne takie jak `0.1` czy `0.2` nie mają dokładnej reprezentacji binarnej (`0.1 + 0.2` daje `0.30000000000000004`). Przy sumowaniu wielu kwot w `PLN` lub stóp procentowych błędy zaokrągleń kumulują się.
 
@@ -127,7 +127,7 @@ Interfejs repozytorium oddziela logikę aplikacji od sposobu składowania danych
 🎬 **[Otwórz animowaną miniinstrukcję: Porównanie FlowLayout, GridLayout, BoxLayout oraz CardLayout](poradnik.html#layouts)** · 📚 [Javadoc `BorderLayout`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/java/awt/BorderLayout.html) · [Javadoc `CardLayout`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/java/awt/CardLayout.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Jak współpracują menedżery układu w oknie Swing? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Jak współpracują menedżery układu w oknie Swing?</strong></summary>
 
 Kontener `JPanel` deleguje rozmieszczanie dzieci do obiektu `LayoutManager`:
 - `FlowLayout` ustawia kontrolki w wierszu z ich naturalnym rozmiarem (`getPreferredSize()`) i zawija je do kolejnego wiersza, gdy brakuje szerokości.
@@ -167,7 +167,7 @@ flowchart TB
 🎬 **[Otwórz animowaną miniinstrukcję: Reużywalny komponent KpiCardPanel](poradnik.html#kpicard)** · 📚 [Javadoc `JPanel`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/javax/swing/JPanel.html) · [Javadoc `MathContext`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/math/MathContext.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Jak groźnie wyglądające wzory z symbolem sumy Σ zamieniają się w prostą pętlę for na BigDecimal? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Jak groźnie wyglądające wzory z symbolem sumy Σ zamieniają się w prostą pętlę for na BigDecimal?</strong></summary>
 
 W zapisie matematycznym znak $\sum_{i=1}^{n}$ oznacza po prostu: **„zainicjuj zmienną `sum = BigDecimal.ZERO`, przejdź pętlą `for` po wszystkich $n$ elementach i w każdym kroku dodaj kolejny składnik przez `sum = sum.add(...)`”**.
 
@@ -213,7 +213,7 @@ Każdy ze znaków sumy $\sum_{i=1}^{n}$ należy zaimplementować samodzielnie ja
 🎬 **[Otwórz animowaną miniinstrukcję: GridBagLayout i indeksy JTable](poradnik.html#gridbag)** · 📚 [Javadoc `GridBagLayout`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/java/awt/GridBagLayout.html) · [Javadoc `JTable`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/javax/swing/JTable.html)
 
 <details>
-<summary><strong>Krótka instrukcja: Dlaczego w GridBagLayout ustawiamy weightx oraz fill? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Dlaczego w GridBagLayout ustawiamy weightx oraz fill?</strong></summary>
 
 W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągania. Dopiero kombinacja `gbc.weightx = 1.0` (przydział dodatkowej szerokości kolumnie) oraz `gbc.fill = GridBagConstraints.HORIZONTAL` (rozciągnięcie komponentu wewnątrz komórki) sprawia, że pola formularza rosną wraz z oknem, podczas gdy etykiety w kolumnie 0 (`weightx = 0`, `fill = NONE`) zachowują stałą szerokość.
 </details>

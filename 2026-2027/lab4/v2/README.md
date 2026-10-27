@@ -71,7 +71,7 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Cykl życia encji i mapowanie 3 encji GUS](poradnik.html#lifecycle)**
 
 <details>
-<summary><strong>Krótka instrukcja: Relacje @ManyToOne i @OneToMany pomiędzy trzema encjami (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Relacje @ManyToOne i @OneToMany pomiędzy trzema encjami</strong></summary>
 
 `ObservationEntity` jest stroną właścicielską dwóch relacji `@ManyToOne(fetch = FetchType.LAZY, optional = false)`:
 - `@JoinColumn(name = "region_code", nullable = false)` wskazuje `RegionEntity`

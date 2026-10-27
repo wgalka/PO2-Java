@@ -11,11 +11,11 @@ Projekt powinien pokazać, że student potrafi zaprojektować i wykonać aplikac
 
 ## 1. Powiązanie z efektami kształcenia
 
-Projekt należy rozwijać na bazie własnej pracy laboratoryjnej: interfejsu Swing
-z Lab 1 albo JavaFX z Lab 2 oraz JDBC/DAO z Lab 3 albo Hibernate z Lab 4.
-Należy dostosować model i serwisy do wybranego problemu, połączyć warstwy
-i rozbudować analizę. Samo zestawienie niezmienionych aplikacji demonstracyjnych
-nie spełnia wymagań projektu.
+Projekt należy wykonać samodzielnie, niezależnie od aplikacji rozwijanej
+podczas laboratoriów. Należy wykorzystać poznane technologie: Swing albo
+JavaFX oraz JDBC/DAO albo Hibernate. Model danych, serwisy i analizę należy
+zaprojektować dla własnego problemu ekonomicznego. Wykonanie zadań
+laboratoryjnych nie zastępuje realizacji projektu semestralnego.
 
 | Efekt | Jak jest demonstrowany w projekcie |
 |---|---|
@@ -219,7 +219,8 @@ Instrukcję uruchomienia należy przygotować w IntelliJ IDEA zgodnie
 z [konfiguracją środowiska](../srodowisko.html).
 Diagramy należy zapisywać w blokach `mermaid`, a zrzuty GUI wykonywać
 w działającej aplikacji.
-Scenariusz końcowego sprawdzenia zawiera [Lab 6 (v1)](../lab6/v1/README.html) oraz [Lab 6 (v2 — polecenia)](../lab6/v2/README.html).
+Scenariusz sprawdzenia należy przygotować dla własnego projektu, uwzględniając
+jego dane, funkcje i oczekiwane wyniki.
 
 Dokumentacja powinna zawierać:
 
