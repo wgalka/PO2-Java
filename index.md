@@ -15,14 +15,30 @@ niezależnie od aplikacji rozwijanej podczas laboratoriów.
 
 ## Laboratoria
 
+Każde laboratorium ma dwie wersje: v1 z objaśnieniami oraz v2 skoncentrowaną
+na zadaniach.
+
+### v1 – Laboratoria z objaśnieniami
+
 | Lab | Temat | Projekt do otwarcia w IntelliJ IDEA |
 |---|---|---|
-| Lab 1: [v1](./2026-2027/lab1/v1/README.html) · [v2](./2026-2027/lab1/v2/README.html) | Swing: układy, formularze, tabele i rysowanie | [Projekt startowy](./2026-2027/lab1/v1/projekt-startowy.zip), [galeria układów](./2026-2027/lab1/v1/demo/galeria-swing.zip) |
-| Lab 2: [v1](./2026-2027/lab2/v1/README.html) · [v2](./2026-2027/lab2/v2/README.html) | JavaFX: scena, formularze, wykresy i FXML/MVC | [Projekt startowy](./2026-2027/lab2/v1/projekt-startowy.zip), [Layout Explorer](./2026-2027/lab2/v1/demo/layout-explorer.zip) |
-| Lab 3: [v1](./2026-2027/lab3/v1/README.html) · [v2](./2026-2027/lab3/v2/README.html) | JDBC: SQL, DAO, CRUD, relacje i transakcje | [Projekt do modyfikacji](./2026-2027/lab3/v1/demo/projekt-do-modyfikacji.zip) |
-| Lab 4: [v1](./2026-2027/lab4/v1/README.html) · [v2](./2026-2027/lab4/v2/README.html) | Hibernate i mapowanie obiektowo-relacyjne | [Projekt do modyfikacji](./2026-2027/lab4/v1/demo/projekt-do-modyfikacji.zip) |
-| Lab 5: [v1](./2026-2027/lab5/v1/README.html) · [v2](./2026-2027/lab5/v2/README.html) | JSP i Servlet API | [Projekt do modyfikacji](./2026-2027/lab5/v1/demo/projekt-do-modyfikacji.zip) |
-| Lab 6: [v1](./2026-2027/lab6/v1/README.html) · [v2](./2026-2027/lab6/v2/README.html) | Integracja aplikacji, przetwarzanie danych i dystrybucja | Kontynuacja aplikacji laboratoryjnej z Lab 3 lub Lab 4 |
+| [Lab 1](./2026-2027/lab1/v1/README.html) | Swing: układy, formularze, tabele i rysowanie | [Projekt startowy](./2026-2027/lab1/v1/projekt-startowy.zip), [galeria układów](./2026-2027/lab1/v1/demo/galeria-swing.zip) |
+| [Lab 2](./2026-2027/lab2/v1/README.html) | JavaFX: scena, formularze, wykresy i FXML/MVC | [Projekt startowy](./2026-2027/lab2/v1/projekt-startowy.zip), [Layout Explorer](./2026-2027/lab2/v1/demo/layout-explorer.zip) |
+| [Lab 3](./2026-2027/lab3/v1/README.html) | JDBC: SQL, DAO, CRUD, relacje i transakcje | [Projekt do modyfikacji](./2026-2027/lab3/v1/demo/projekt-do-modyfikacji.zip) |
+| [Lab 4](./2026-2027/lab4/v1/README.html) | Hibernate i mapowanie obiektowo-relacyjne | [Projekt do modyfikacji](./2026-2027/lab4/v1/demo/projekt-do-modyfikacji.zip) |
+| [Lab 5](./2026-2027/lab5/v1/README.html) | JSP i Servlet API | [Projekt do modyfikacji](./2026-2027/lab5/v1/demo/projekt-do-modyfikacji.zip) |
+| [Lab 6](./2026-2027/lab6/v1/README.html) | Integracja aplikacji, przetwarzanie danych i dystrybucja | Kontynuacja aplikacji laboratoryjnej z Lab 3 lub Lab 4 |
+
+### v2 – Laboratoria skoncentrowane na zadaniach
+
+| Lab | Temat |
+|---|---|
+| [Lab 1](./2026-2027/lab1/v2/README.html) | Swing: układy, formularze, tabele i rysowanie |
+| [Lab 2](./2026-2027/lab2/v2/README.html) | JavaFX: scena, formularze, wykresy i FXML/MVC |
+| [Lab 3](./2026-2027/lab3/v2/README.html) | JDBC: SQL, DAO, CRUD, relacje i transakcje |
+| [Lab 4](./2026-2027/lab4/v2/README.html) | Hibernate i mapowanie obiektowo-relacyjne |
+| [Lab 5](./2026-2027/lab5/v2/README.html) | JSP i Servlet API |
+| [Lab 6](./2026-2027/lab6/v2/README.html) | Integracja aplikacji, przetwarzanie danych i dystrybucja |
 
 ## Materiały wspólne
 
