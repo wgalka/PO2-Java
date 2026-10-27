@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 3 (JDBC i SQLite) — Interaktywne miniinstrukcje</title>
+<style>
+:root{color-scheme:light dark;--bg:#f1f5f9;--surface:#ffffff;--text:#0f172a;--muted:#475569;--line:#cbd5e1;--accent:#0f766e;--soft:#ccfbf1;--form:#dbeafe;--warn:#fef3c7}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f8fafc;--muted:#94a3b8;--line:#334155;--accent:#5eead4;--soft:#134e4a;--form:#1e3a5f;--warn:#78350f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:auto;padding:24px}h1{font-size:1.55rem;margin:0 0 .35rem}h2{font-size:1.15rem;margin:0 0 .5rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;align-items:center}
+button,select{font:inherit;padding:8px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+button[aria-pressed=true]{background:var(--soft);border-color:var(--accent)}
+.canvas-wrap{overflow:auto;padding:12px 0}
+.canvas{position:relative;width:760px;height:300px;background:var(--surface);border:2px dashed var(--line);border-radius:12px}
+.item{position:absolute;padding:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--accent);border-radius:8px;background:var(--soft);transition:all .55s ease;font-size:13px}
+.item.alt{background:var(--form)}.item.warn{background:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin:0;font-family:ui-monospace,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--soft);font-size:13px;margin-bottom:6px}
+.note{color:var(--muted);font-size:14px}a{color:var(--accent)}
+@media(max-width:760px){main{padding:12px}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<span class="badge">Lab 3 · JDBC i SQLite · Interaktywny poradnik</span>
+<h1>Schemat 3 tabel GUS, PreparedStatement, JOIN oraz transakcje atomowe</h1>
+<div class="tools">
+  <label for="topic">Zagadnienie:</label>
+  <select id="topic"></select>
+  <button id="prev" type="button">Poprzedni krok</button>
+  <button id="next" type="button">Następny krok</button>
+</div>
+<h2 id="title"></h2>
+<p id="status" aria-live="polite"></p>
+<div class="canvas-wrap"><div class="canvas" id="canvas" role="img"></div></div>
+<div class="cols">
+  <section class="card"><h2>Wzorzec SQL / JDBC</h2><pre id="code"></pre></section>
+  <section class="card"><h2>Kluczowe zasady</h2><ol id="steps"></ol><p><a id="docs" target="_blank" rel="noopener">Dokumentacja JDBC (java.sql)</a></p></section>
+</div>
+<p><a href="README.html">← Powrót do instrukcji Lab 3 (v2)</a></p>
+</main>
+<script>
+'use strict';
+const api = 'https://docs.oracle.com/en/java/javase/27/docs/api/java.sql/java/sql/';
+const topics = [
+  {id:'schema', name:'1. Relacje 3 tabel: region (1:N) observation (N:1) indicator', docs:api+'Connection.html',
+   code:'PRAGMA foreign_keys = ON;\n-- observation posiada dwa klucze obce:\n-- region_code REFERENCES region(code) ON DELETE RESTRICT\n-- indicator_code REFERENCES indicator(code) ON DELETE RESTRICT\n-- UNIQUE(region_code, indicator_code, observed_year)',
+   steps:['Tabela słownikowa region (5 województw GUS: kod, nazwa, makroregion).','Tabela słownikowa indicator (3 wskaźniki GUS: kod, nazwa, jednostka, kategoria).','Tabela faktów observation (75 rekordów powiązanych kluczami obcymi z region i indicator).'],
+   render(step, c){
+     add(c,'Tabela: region\nPK: code (PL82..PL41)\nname, macroregion',16,40,210,120);
+     add(c,'Tabela: observation\nPK: id\nFK: region_code\nFK: indicator_code\nobserved_year, val, included',265,30,230,150,step===2?'warn':'alt');
+     add(c,'Tabela: indicator\nPK: code (UNEMP_RATE..)\nname, unit, category',534,40,210,120);
+     return 'Krok '+(step+1)+'/3 · Każda obserwacja musi wskazywać istniejący region oraz istniejący wskaźnik GUS.';
+   }},
+  {id:'tx', name:'2. Transakcja atomowa (setAutoCommit(false) + batch + rollback)', docs:api+'PreparedStatement.html',
+   code:'conn.setAutoCommit(false);\ntry {\n  // DELETE + PreparedStatement.addBatch() / executeBatch()\n  conn.commit();\n} catch (Exception ex) {\n  conn.rollback();\n  throw ex;\n}',
+   steps:['Krok 1: setAutoCommit(false) rozpoczyna transakcję obejmującą słowniki i obserwacje.','Krok 2: Jeśli którykolwiek wiersz naruszy CHECK lub FK, baza zgłasza SQLException.','Krok 3: conn.rollback() przywraca dokładnie 75 poprzednich obserwacji bez częściowego zapisu.'],
+   render(step, c){
+     add(c,'Stan początkowy\n75 poprawnych obserwacji w bazie',20,40,220,120);
+     add(c,step===1?'Błąd w wierszu 76!\nval = -5 lub brak klucza PL99':'Transakcja w toku\nDELETE + INSERT batch',270,40,220,120,step===1?'warn':'alt');
+     add(c,step===2?'Po rollback()\nNadal 75 oryginalnych obserwacji':'Po commit()\nNowy spójny zestaw danych',520,40,220,120);
+     return 'Krok '+(step+1)+'/3 · Atomowość transakcji JDBC chroni bazę przed częściowym nadpisaniem.';
+   }}
+];
+const sel = document.querySelector('#topic'), canvas = document.querySelector('#canvas');
+let step = 0;
+topics.forEach(t => { const o = document.createElement('option'); o.value = t.id; o.textContent = t.name; sel.append(o); });
+function add(parent, text, x, y, w, h, cls=''){
+  const d = document.createElement('div'); d.className = 'item'+(cls?' '+cls:''); d.style.whiteSpace='pre-line';
+  d.textContent = text; parent.append(d);
+  requestAnimationFrame(()=>Object.assign(d.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'}));
+}
+function render(){
+  const t = topics.find(x=>x.id===sel.value) || topics[0];
+  canvas.replaceChildren();
+  document.querySelector('#title').textContent = t.name;
+  document.querySelector('#code').textContent = t.code;
+  document.querySelector('#docs').href = t.docs;
+  document.querySelector('#steps').replaceChildren(...t.steps.map(s=>{const li=document.createElement('li');li.textContent=s;return li;}));
+  document.querySelector('#status').textContent = t.render(step, canvas);
+}
+document.querySelector('#next').onclick = ()=>{ step=(step+1)%3; render(); };
+document.querySelector('#prev').onclick = ()=>{ step=(step+2)%3; render(); };
+sel.onchange = ()=>{ step=0; history.replaceState(null,'','#'+sel.value); render(); };
+if(topics.some(t=>t.id===location.hash.slice(1))) sel.value = location.hash.slice(1);
+render();
+</script>
+</body>
+</html>

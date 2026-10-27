@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 2 (JavaFX i FXML) — Interaktywne miniinstrukcje</title>
+<style>
+:root{color-scheme:light dark;--bg:#f1f5f9;--surface:#ffffff;--text:#0f172a;--muted:#475569;--line:#cbd5e1;--accent:#0f766e;--soft:#ccfbf1;--form:#dbeafe;--warn:#fef3c7}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f8fafc;--muted:#94a3b8;--line:#334155;--accent:#5eead4;--soft:#134e4a;--form:#1e3a5f;--warn:#78350f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:auto;padding:24px}h1{font-size:1.55rem;margin:0 0 .35rem}h2{font-size:1.15rem;margin:0 0 .5rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;align-items:center}
+button,select{font:inherit;padding:8px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button[aria-pressed=true]{background:var(--soft);border-color:var(--accent)}
+.canvas-wrap{overflow:auto;padding:12px 0}
+.canvas{position:relative;width:760px;height:320px;background:var(--surface);border:2px dashed var(--line);border-radius:12px;transition:width .55s ease,height .55s ease}
+.item{position:absolute;padding:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--accent);border-radius:8px;background:var(--soft);transition:all .55s ease;font-size:13px;overflow:hidden}
+.item.alt{background:var(--form)}.item.warn{background:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin:0;font-family:ui-monospace,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--soft);font-size:13px;margin-bottom:6px}
+.note{color:var(--muted);font-size:14px}a{color:var(--accent)}
+@media(max-width:760px){main{padding:12px}.cols{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.canvas,.item{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<span class="badge">Lab 2 · JavaFX 27 i FXML · Interaktywny poradnik</span>
+<h1>Kontenery JavaFX, komponenty fx:root, FilteredList/SortedList i okna Stage</h1>
+<p class="note">Przełączaj kroki animacji, aby prześledzić działanie układów JavaFX, reużywalnych kart FXML oraz wiązań właściwości.</p>
+<div class="tools">
+  <label for="topic">Zagadnienie:</label>
+  <select id="topic"></select>
+  <button id="prev" type="button">Poprzedni krok</button>
+  <button id="next" type="button">Następny krok</button>
+  <button id="play" type="button" aria-pressed="false">Odtwarzaj animację</button>
+</div>
+<h2 id="title"></h2>
+<p id="status" aria-live="polite"></p>
+<div class="canvas-wrap"><div class="canvas" id="canvas" role="img"></div></div>
+<div class="cols">
+  <section class="card"><h2>Deklaracja FXML / Kod JavaFX</h2><pre id="code"></pre></section>
+  <section class="card"><h2>Co sprawdzić w ćwiczeniu</h2><ol id="steps"></ol><p><a id="docs" target="_blank" rel="noopener">Dokumentacja JavaFX 27</a></p></section>
+</div>
+<p><a href="README.html">← Powrót do instrukcji Lab 2 (v2)</a></p>
+</main>
+<script>
+'use strict';
+const fx = 'https://openjfx.io/javadoc/27/';
+const topics = [
+  {id:'panes', name:'1. HBox/VBox (hgrow), FlowPane vs TilePane oraz StackPane', docs:fx+'javafx.graphics/javafx/scene/layout/package-summary.html',
+   code:'<StackPane>\n  <SplitPane fx:id="dataSplit"/>\n  <VBox fx:id="loadingOverlay" visible="false" managed="false">\n    <ProgressIndicator/>\n  </VBox>\n</StackPane>',
+   steps:['Krok 1 (HBox z HBox.hgrow="ALWAYS"): pole filtra rozciąga się, a przyciski zachowują naturalny rozmiar.','Krok 2 (TilePane vs FlowPane): TilePane nadaje wszystkim 4 kartom MetricCard identyczny rozmiar kafelka i zawija je przy zwężeniu.','Krok 3 (StackPane): nakładka z ProgressIndicator leży na wierzchu widoku danych i nie przesuwa układu, gdy ma visible=false i managed=false.'],
+   render(step, c){
+     const w = step===1 ? 420 : 740; c.style.width = w+'px';
+     if(step===0){
+       add(c,'Label: Filtr',14,24,100,44); add(c,'TextField (HBox.hgrow="ALWAYS")',122,24,470,44,'alt'); add(c,'Wyczyść',600,24,120,44);
+       return 'Krok 1/3 · HBox.hgrow="ALWAYS" przekazuje wolną przestrzeń polu tekstowemu.';
+     }
+     if(step===1){
+       ['Liczba: 25','Średnia: 4,73 %','Mediana: 4,30 %','Odch.: 1,66 p.p.'].forEach((t,i)=>add(c,t,14+(i%2)*196,20+Math.floor(i/2)*96,184,82,i%2?'alt':''));
+       return 'Krok 2/3 · TilePane przy szerokości 420 px układa kafelki MetricCard w siatkę 2×2.';
+     }
+     add(c,'Warstwa 0 w StackPane: SplitPane (Formularz + TableView)',14,20,712,260);
+     add(c,'Warstwa 1 w StackPane: Nakładka ProgressIndicator\n(visible=true, managed=true podczas Task)',220,90,300,120,'warn');
+     return 'Krok 3/3 · StackPane nakłada wskaźnik pracy w tle nad tabelą danych.';
+   }},
+  {id:'fxroot', name:'2. Reużywalny komponent MetricCard (fx:root + własny FXML)', docs:fx+'javafx.fxml/javafx/fxml/FXMLLoader.html',
+   code:'// metric-card.fxml: <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1">\npublic final class MetricCard extends VBox {\n  public MetricCard() {\n    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/metric-card.fxml"));\n    loader.setRoot(this);\n    loader.setController(this);\n    loader.load();\n  }\n}',
+   steps:['Wzorzec fx:root łączy klasę Javy dziedziczącą po VBox z szablonem /fxml/metric-card.fxml.','W main-view.fxml umieszczamy 4 egzemplarze <MetricCard fx:id="meanCard" title="Średnia"/>.','Zmiana stylu .metric-card w base.css od razu zmienia wygląd wszystkich 4 kart.'],
+   render(step, c){
+     c.style.width = '740px';
+     add(c,'Szablon /fxml/metric-card.fxml\n<fx:root type="VBox">\n  titleLabel + valueLabel + unitLabel',20,30,260,130,'alt');
+     ['countCard (N = 25)','meanCard (4,73 %)','medianCard (4,30 %)','sdCard (1,66 p.p.)'].forEach((t,i)=>{
+       add(c,t,320+(i%2)*200,30+Math.floor(i/2)*110,188,92,step===2?'warn':'');
+     });
+     return 'Krok '+(step+1)+'/3 · Jeden plik FXML i jedna klasa MetricCard obsługują cztery karty podsumowań.';
+   }},
+  {id:'lists', name:'3. Łańcuch: ObservableList → FilteredList → SortedList → TableView', docs:fx+'javafx.base/javafx/collections/transformation/FilteredList.html',
+   code:'ObservableList<Observation> masterRows = FXCollections.observableArrayList();\nFilteredList<Observation> filtered = new FilteredList<>(masterRows, r -> true);\nSortedList<Observation> sorted = new SortedList<>(filtered);\nsorted.comparatorProperty().bind(table.comparatorProperty());\ntable.setItems(sorted);',
+   steps:['masterRows przechowuje wszystkie 75 obserwacji GUS wczytanych z serwisu.','FilteredList filtruje rekordy według wybranego wskaźnika (np. UNEMP_RATE), regionu i pola wyszukiwania.','SortedList wiąże swój komparator z nagłówkiem TableView, a karty MetricCard i wykres czytają z filtered!'],
+   render(step, c){
+     c.style.width = '740px';
+     add(c,'masterRows\n(75 obserwacji GUS)',16,40,160,100);
+     add(c,'FilteredList\n(np. UNEMP_RATE: 25 wierszy)',196,40,170,100,'alt');
+     add(c,'SortedList\n(powiązana z kolumną TableView)',386,40,170,100);
+     add(c,'TableView + MetricCard + LineChart',576,40,148,100,'warn');
+     return 'Krok '+(step+1)+'/3 · Zmiana predykatu FilteredList automatycznie odświeża tabelę, karty KPI oraz wykres.';
+   }},
+  {id:'windows', name:'4. Nawigacja widoków i modalne okno Stage z osobnym FXML', docs:fx+'javafx.graphics/javafx/stage/Stage.html',
+   code:'FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/region-details.fxml"));\nStage dialog = new Stage();\ndialog.initOwner(root.getScene().getWindow());\ndialog.initModality(Modality.WINDOW_MODAL);\ndialog.setScene(new Scene(loader.load(), 560, 420));\ndialog.showAndWait();',
+   steps:['MenuBar (Plik, Widok, Motyw) ze skrótami klawiszowymi steruje głównym oknem.','Podwójne kliknięcie wiersza lub pozycja menu kontekstowego otwiera nowe okno Stage z /fxml/region-details.fxml.','Nowy Stage ma ustawionego właściciela (initOwner), modalność WINDOW_MODAL i te same arkusze CSS motywu.'],
+   render(step, c){
+     c.style.width = '740px';
+     add(c,'Główne okno Stage (main-view.fxml + MainController)\nMenuBar: Plik (Ctrl+O) | Widok | Motyw (Systemowy/Jasny/Ciemny)',16,16,708,280);
+     if(step>=1){
+       add(c,'Drugi Stage (region-details.fxml + RegionDetailsController)\ninitModality(WINDOW_MODAL) · Porównanie 3 wskaźników GUS dla regionu PL82',140,80,460,180,'warn');
+     }
+     return 'Krok '+(step+1)+'/3 · Osobny plik FXML i kontroler dla okna szczegółów regionu.';
+   }}
+];
+const sel = document.querySelector('#topic'), canvas = document.querySelector('#canvas');
+let step = 0, timer = null;
+topics.forEach(t => { const o = document.createElement('option'); o.value = t.id; o.textContent = t.name; sel.append(o); });
+function add(parent, text, x, y, w, h, cls=''){
+  const d = document.createElement('div'); d.className = 'item'+(cls?' '+cls:''); d.style.whiteSpace='pre-line';
+  d.textContent = text; parent.append(d);
+  requestAnimationFrame(()=>Object.assign(d.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'}));
+}
+function render(){
+  const t = topics.find(x=>x.id===sel.value) || topics[0];
+  canvas.replaceChildren();
+  document.querySelector('#title').textContent = t.name;
+  document.querySelector('#code').textContent = t.code;
+  document.querySelector('#docs').href = t.docs;
+  document.querySelector('#steps').replaceChildren(...t.steps.map(s=>{const li=document.createElement('li');li.textContent=s;return li;}));
+  document.querySelector('#status').textContent = t.render(step, canvas);
+}
+function stop(){ clearInterval(timer); timer=null; const b=document.querySelector('#play'); b.textContent='Odtwarzaj animację'; b.setAttribute('aria-pressed','false'); }
+document.querySelector('#next').onclick = ()=>{ stop(); step=(step+1)%3; render(); };
+document.querySelector('#prev').onclick = ()=>{ stop(); step=(step+2)%3; render(); };
+sel.onchange = ()=>{ stop(); step=0; history.replaceState(null,'','#'+sel.value); render(); };
+document.querySelector('#play').onclick = ()=>{
+  if(timer){ stop(); return; }
+  const b=document.querySelector('#play'); b.textContent='Zatrzymaj'; b.setAttribute('aria-pressed','true');
+  timer = setInterval(()=>{ step=(step+1)%3; render(); }, 2200);
+};
+if(topics.some(t=>t.id===location.hash.slice(1))) sel.value = location.hash.slice(1);
+render();
+</script>
+</body>
+</html>

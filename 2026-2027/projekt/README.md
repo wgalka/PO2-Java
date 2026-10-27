@@ -47,19 +47,16 @@ Przykładowe pytania ekonomiczne:
 
 Nie wystarczy zapisać rekordów w tabeli. Aplikacja musi umożliwiać wykonanie analizy i interpretację jej wyników.
 
-## 3. Wymagany zakres analizy
+## 3. Wymagany zakres przetwarzania i analizy danych
 
 Każdy projekt musi zawierać:
 
-- zmienną objaśnianą oraz co najmniej dwie zmienne objaśniające albo jasno uzasadniony model jednowymiarowy;
-- statystyki opisowe: minimum, maksimum, średnia, mediana lub kwartyle, odchylenie standardowe;
-- macierz korelacji albo inną uzasadnioną analizę zależności;
-- co najmniej jedną metodę ekonometryczną, np. regresję liniową OLS, analizę szeregu czasowego, model panelowy, indeks, ranking wielokryterialny lub analizę dynamiki;
+- obsługę i czyszczenie danych wejściowych, np. wykrywanie i usuwanie braków wartości, uzupełnianie braków średnią lub interpolacją z sąsiednich okresów albo filtrowanie wartości odstających;
+- statystyki opisowe: minimum, maksimum, średnia, mediana, odchylenie standardowe;
+- co najmniej jedną prostą operację analityczną na danych ekonomicznych, np. obliczenie zmian i dynamiki rok do roku (r/r), normalizację wskaźników (min–max), budowę prostego rankingu regionów lub porównanie podgrup;
 - prezentację wyników na wykresie i w tabeli;
-- krótką interpretację ekonomiczną parametrów, zależności i ograniczeń modelu;
-- możliwość powtórzenia analizy dla wybranego zakresu czasu, regionu lub grupy obserwacji.
-
-Jeżeli projekt wykorzystuje regresję, należy podać co najmniej równanie modelu, znaki i interpretację parametrów, współczynnik dopasowania oraz podstawową miarę błędu. Jeżeli wykorzystywany jest szereg czasowy, należy uwzględnić kolejność obserwacji, zmianę w czasie i sposób oceny prognozy. Jeżeli projekt wykorzystuje ranking lub indeks, należy opisać normalizację, wagi i wpływ zmiany wag na wynik.
+- krótki opis zastosowanego sposobu przygotowania danych, jednostek miary i ograniczeń zbioru;
+- możliwość powtórzenia operacji dla wybranego zakresu czasu, regionu lub grupy obserwacji.
 
 ## 4. Minimalna funkcjonalność aplikacji
 
@@ -74,7 +71,10 @@ Aplikacja powinna zapewniać:
 7. wyświetlenie wyników w tabeli i na wykresie;
 8. zapis lub eksport wyników analizy;
 9. komunikaty o błędach, pustych wynikach i niepoprawnych danych;
-10. instrukcję uruchomienia oraz przykładowy scenariusz użycia.
+10. instrukcję uruchomienia oraz przykładowy scenariusz użycia;
+11. samodzielny pakiet uruchomieniowy do demonstracji offline: obraz aplikacji
+    `app-image` albo instalator Windows `.exe`, zawierający wymagane biblioteki
+    i środowisko Java.
 
 Operacje CRUD mogą być częścią aplikacji, ale nie mogą być jej jedynym celem. Formularz do ręcznego dodawania rekordów bez analizy nie spełnia wymagań projektu.
 
@@ -85,15 +85,16 @@ HiDPI i motywów](../jakosc-gui.html):
 
 - adaptacyjny układ dla wąskiego i szerokiego okna, bez utraty podstawowych akcji;
 - czytelny interfejs przy skali systemowej 100%, 150% i 200%, także z większą czcionką;
-- jasny i ciemny motyw przełączany podczas działania, obejmujący również dialogi i wykresy;
+- domyślny tryb automatycznie dopasowujący się do motywu systemu, także po jego zmianie podczas pracy; ręczny wybór jasnego lub ciemnego wariantu obejmujący również dialogi i wykresy;
 - zachowanie danych, filtrów i wyniku przy zmianie układu lub motywu oraz zapis preferencji;
 - spójne odstępy, wyrównanie, ostre ikony, czytelne stany zaznaczenia i fokusu;
 - nieblokujące GUI podczas importu, zapytań i obliczeń;
 - raport z macierzy testów i zrzuty rzeczywistej aplikacji.
 
-Automatyczne dopasowanie do motywu systemu jest rozszerzeniem. Zmiana samego
-tła lub motywu IDE nie spełnia wymagań. Kontrolki systemowe, takie jak natywny
-wybór pliku, mogą zachować wygląd systemowy; należy opisać to w dokumentacji.
+Wybrany tryb należy zapamiętać: przy ustawieniu ręcznym aplikacja wraca do niego
+po restarcie, a tryb systemowy ponownie odczytuje preferencję systemu. Kontrolki
+systemowe, takie jak natywny wybór pliku, mogą zachować wygląd systemowy; należy
+opisać to w dokumentacji.
 
 ## 5. Model danych
 
@@ -207,8 +208,8 @@ Projekt jest spójnym narzędziem analitycznym. Obsługuje rozbudowany model dan
 | Baza danych | Poprawność i złożoność schematu, relacje, integralność, dane ekonometryczne i zapytania | 10 |
 | Struktura i jakość kodu | OOP, podział na pakiety, biblioteki, logika analizy, walidacja, wyjątki i poprawność działania | 20 |
 | Użyte technologie | JavaFX - 10 pkt., Hibernate - 10 pkt., Swing - 5 pkt., JDBC - 5 pkt.; maksymalnie 20 pkt. | 20 |
-| Interfejs użytkownika | Adaptacyjny układ i dostępność akcji — 5; HiDPI i skalowanie tekstu — 4; pełne jasny/ciemny motywy — 4; spójność wizualna i czytelność tabel/wykresów — 4; płynność działania i komunikaty — 3 | 20 |
-| Dokumentacja | Problem ekonomiczny, źródła danych, opis zmiennych, model, metoda, uruchomienie i instrukcja użytkownika | 10 |
+| Interfejs użytkownika | Adaptacyjny układ i dostępność akcji — 5; HiDPI i skalowanie tekstu — 4; automatyczne dopasowanie motywu systemu i pełne warianty jasny/ciemny — 4; spójność wizualna i czytelność tabel/wykresów — 4; płynność działania i komunikaty — 3 | 20 |
+| Dokumentacja | Problem ekonomiczny, źródła danych, opis zmiennych, model i metoda; instrukcja użytkownika i uruchomienia; komentarze JavaDoc w kodzie i wygenerowana dokumentacja API; opis pakietu uruchomieniowego | 10 |
 | Obrona projektu | Prezentacja działania, wyjaśnienie kodu, bazy, metody i interpretacji wyników | 20 |
 | **Razem** |  | **100** |
 
@@ -231,7 +232,14 @@ Dokumentacja powinna zawierać:
 7. przykładowe wyniki z interpretacją ekonomiczną;
 8. instrukcję instalacji i uruchomienia;
 9. instrukcję użytkownika z opisem ekranów;
-10. ograniczenia rozwiązania i możliwe rozszerzenia.
+10. ograniczenia rozwiązania i możliwe rozszerzenia;
+11. dokumentację kodu źródłowego w komentarzach JavaDoc dla publicznych
+    i chronionych klas oraz metod pakietów modelu, serwisów, repozytoriów
+    i analizy; opis ma wyjaśniać kontrakt API, parametry, wynik i wyjątki;
+12. wygenerowaną dokumentację HTML API, dostarczoną w katalogu
+    `docs/javadoc/` albo jako osobny katalog w pakiecie projektu;
+13. opis sposobu utworzenia obrazu aplikacji lub instalatora, wymaganej wersji
+    JDK podczas budowania oraz lokalizacji danych użytkownika.
 
 ## 10. Obrona
 
@@ -244,7 +252,9 @@ Podczas obrony student powinien:
 5. pokazać przepływ danych od GUI przez serwis/repozytorium do bazy;
 6. wyjaśnić wybrane zapytanie SQL albo mapowanie Hibernate;
 7. odpowiedzieć, co stanie się przy braku danych, duplikacie i błędnym typie;
-8. wykonać drobną zmianę, np. dodać filtr, zmienną, statystykę albo kolumnę raportu.
+8. wykonać drobną zmianę, np. dodać filtr, zmienną, statystykę albo kolumnę raportu;
+9. wskazać komentarze JavaDoc w kodzie i otworzyć wygenerowaną stronę API;
+10. uruchomić pakiet aplikacji na komputerze bez JDK oraz bez Internetu.
 
 Brak orientacji we własnym kodzie, brak możliwości uruchomienia projektu albo brak interpretacji wyników może znacząco obniżyć ocenę z obrony.
 

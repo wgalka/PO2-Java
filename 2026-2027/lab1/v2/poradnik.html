@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 1 (Swing) — Interaktywne miniinstrukcje</title>
+<style>
+:root{color-scheme:light dark;--bg:#f1f5f9;--surface:#ffffff;--text:#0f172a;--muted:#475569;--line:#cbd5e1;--accent:#0f766e;--soft:#ccfbf1;--form:#dbeafe;--warn:#fef3c7}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f8fafc;--muted:#94a3b8;--line:#334155;--accent:#5eead4;--soft:#134e4a;--form:#1e3a5f;--warn:#78350f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:auto;padding:24px}h1{font-size:1.55rem;margin:0 0 .35rem}h2{font-size:1.15rem;margin:0 0 .5rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;align-items:center}
+button,select{font:inherit;padding:8px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button[aria-pressed=true]{background:var(--soft);border-color:var(--accent)}
+.canvas-wrap{overflow:auto;padding:12px 0}
+.canvas{position:relative;width:760px;height:320px;background:var(--surface);border:2px dashed var(--line);border-radius:12px;transition:width .55s ease,height .55s ease}
+.item{position:absolute;padding:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--accent);border-radius:8px;background:var(--soft);transition:all .55s ease;font-size:13px;overflow:hidden}
+.item.alt{background:var(--form)}.item.warn{background:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin:0;font-family:ui-monospace,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--soft);font-size:13px;margin-bottom:6px}
+.note{color:var(--muted);font-size:14px}a{color:var(--accent)}
+@media(max-width:760px){main{padding:12px}.cols{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.canvas,.item{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<span class="badge">Lab 1 · Swing · Interaktywny poradnik</span>
+<h1>Układy komponentów, nawigacja, własne komponenty i wątek EDT</h1>
+<p class="note">Wybierz zagadnienie z listy lub przełączaj kroki animacji, aby zobaczyć zachowanie kontenerów Swing i przepływ zdarzeń.</p>
+<div class="tools">
+  <label for="topic">Zagadnienie:</label>
+  <select id="topic"></select>
+  <button id="prev" type="button">Poprzedni krok</button>
+  <button id="next" type="button">Następny krok</button>
+  <button id="play" type="button" aria-pressed="false">Odtwarzaj animację</button>
+</div>
+<h2 id="title"></h2>
+<p id="status" aria-live="polite"></p>
+<div class="canvas-wrap"><div class="canvas" id="canvas" role="img"></div></div>
+<div class="cols">
+  <section class="card"><h2>Wzorzec w kodzie Swing</h2><pre id="code"></pre></section>
+  <section class="card"><h2>Co sprawdzić w ćwiczeniu</h2><ol id="steps"></ol><p><a id="docs" target="_blank" rel="noopener">Dokumentacja API JDK 27</a></p></section>
+</div>
+<p><a href="README.html">← Powrót do instrukcji Lab 1 (v2)</a></p>
+</main>
+<script>
+'use strict';
+const api = 'https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/';
+const topics = [
+  {id:'layouts', name:'1. Porównanie: FlowLayout vs GridLayout vs BoxLayout', docs:api+'java/awt/FlowLayout.html',
+   code:'// FlowLayout: zachowuje preferredSize i zawija wiersze\nJPanel flow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));\n// GridLayout: wymusza identyczny rozmiar wszystkich komórek\nJPanel grid = new JPanel(new GridLayout(1, 3, 8, 8));\n// BoxLayout: układa w jednej osi bez zawijania\nJPanel box = new JPanel();\nbox.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));',
+   steps:['Krok 1 (FlowLayout w wąskim oknie): przyciski zachowują naturalną szerokość i przechodzą do kolejnego wiersza.','Krok 2 (GridLayout 1×3): wszystkie 3 przyciski mają identyczną szerokość równą 1/3 kontenera.','Krok 3 (BoxLayout Y_AXIS): elementy tworzą pionową kolumnę od góry do dołu.'],
+   render(step, c){
+     const w = step===0 ? 380 : 720; c.style.width = w+'px';
+     if(step===0){
+       add(c,'Dane (120px)',14,20,120,44); add(c,'Wykres (120px)',142,20,120,44); add(c,'Kalkulator (120px) — zawinięty',14,74,180,44,'alt');
+       return 'Krok 1/3 · FlowLayout przy szerokości 380 px zawija trzeci przycisk do drugiego wiersza.';
+     }
+     if(step===1){
+       add(c,'Dane',14,20,224,48); add(c,'Wykres',248,20,224,48,'alt'); add(c,'Kalkulator',482,20,224,48);
+       return 'Krok 2/3 · GridLayout(1, 3, 8, 8) dzieli szerokość równo między 3 komórki.';
+     }
+     add(c,'Nowa',14,20,220,44); add(c,'Zapisz',14,74,220,44,'alt'); add(c,'Usuń',14,128,220,44);
+     return 'Krok 3/3 · BoxLayout(Y_AXIS) układa elementy pionowo bez zawijania.';
+   }},
+  {id:'border-card', name:'2. BorderLayout + CardLayout (przełączanie widoków)', docs:api+'java/awt/CardLayout.html',
+   code:'JPanel root = new JPanel(new BorderLayout(12, 12));\nCardLayout cards = new CardLayout();\nJPanel centerCards = new JPanel(cards);\ncenterCards.add(dataPanel, "DATA");\ncenterCards.add(chartPanel, "CHART");\ncenterCards.add(calcPanel, "CALCULATOR");\nroot.add(centerCards, BorderLayout.CENTER);\ncards.show(centerCards, "CHART");',
+   steps:['NORTH i SOUTH zachowują preferowaną wysokość, a CENTER wypełnia całą resztę okna.','CardLayout przechowuje trzy panele w tym samym obszarze CENTER i przełącza je przez show().','Stan formularza i filtra w DATA nie ginie po przełączeniu na CHART i z powrotem.'],
+   render(step, c){
+     c.style.width = '740px';
+     add(c,'NORTH · Nagłówek + Pasek kart KPI + Nawigacja',12,12,716,58);
+     const names = ['CENTER · Karta DATA (Formularz + Tabela GUS)','CENTER · Karta CHART (Wykres wybranego wskaźnika)','CENTER · Karta CALCULATOR (Kalkulator zmian i dynamiki)'];
+     add(c,names[step],12,78,716,184,step===1?'alt':step===2?'warn':'');
+     add(c,'SOUTH · Pasek statusu: Gotowe.',12,270,716,38);
+     return 'Krok '+(step+1)+'/3 · Aktywna karta w CardLayout: '+['DATA','CHART','CALCULATOR'][step]+'.';
+   }},
+  {id:'gridbag', name:'3. GridBagLayout (etykiety + rozciągane pola formularza)', docs:api+'java/awt/GridBagLayout.html',
+   code:'GridBagConstraints gbc = new GridBagConstraints();\ngbc.insets = new Insets(4, 4, 4, 4);\ngbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0; gbc.fill = GridBagConstraints.NONE;\nform.add(new JLabel("Województwo:"), gbc);\ngbc.gridx = 1; gbc.weightx = 1.0; gbc.fill = GridBagConstraints.HORIZONTAL;\nform.add(regionCombo, gbc);',
+   steps:['Kolumna 0 (weightx = 0, fill = NONE): etykiety mają stałą szerokość dopasowaną do tekstu.','Kolumna 1 (weightx = 1.0, fill = HORIZONTAL): pola tekstowe i listy rozwijane przejmują dodatkową szerokość.','Gdy weightx = 0 również w kolumnie 1 (Krok 3), pola nie rozszerzają się przy powiększeniu panelu.'],
+   render(step, c){
+     const w = step===1 ? 740 : 520; c.style.width = w+'px';
+     const fieldW = step===2 ? 160 : (w - 160);
+     ['Rok','Województwo','Wskaźnik GUS','Wartość'].forEach((lbl,i)=>{
+       add(c,lbl,14,20+i*64,120,46);
+       add(c,['2024','PL82 — Podkarpackie','UNEMP_RATE (%)','6,10'][i],144,20+i*64,fieldW,46,'alt');
+     });
+     return step===2 ? 'Krok 3/3 · Błąd: weightx=0 i fill=NONE — pola nie rosną z formularzem.' : 'Krok '+(step+1)+'/3 · Kolumna 1 ma weightx=1.0 i fill=HORIZONTAL.';
+   }},
+  {id:'kpicard', name:'4. Reużywalny komponent KpiCardPanel i okno JDialog', docs:api+'javax/swing/JDialog.html',
+   code:'public final class KpiCardPanel extends JPanel {\n  private final JLabel titleLabel = new JLabel();\n  private final JLabel valueLabel = new JLabel();\n  private final JLabel unitLabel = new JLabel();\n  public void setMetric(String value, String unit) {\n    valueLabel.setText(value);\n    unitLabel.setText(unit);\n  }\n}',
+   steps:['Jedna klasa KpiCardPanel tworzy 4 karty w GridLayout(1, 4, 8, 8): Liczba, Średnia, Mediana, Odchylenie.','Zmiana wybranego wskaźnika GUS aktualizuje wartości i jednostkę (% lub PLN) we wszystkich 4 instancjach.','Kliknięcie „Szczegóły regionu” otwiera modalne okno JDialog przypisane do właściciela (MainFrame).'],
+   render(step, c){
+     c.style.width = '740px';
+     const unit = step===1 ? 'PLN' : '%';
+     const vals = step===1 ? ['25','6 520,00','6 490,00','1 180,45'] : ['25','4,73','4,30','1,66'];
+     ['Liczba (N)','Średnia','Mediana','Odchylenie std.'].forEach((t,i)=>{
+       add(c,t+'\n'+vals[i]+' '+unit,14+i*180,20,168,90,i%2?'alt':'');
+     });
+     if(step===2){
+       add(c,'Modalny JDialog (setModal(true))\nSzczegóły województwa: PL82 Podkarpackie (Makroregion Wschodni)\n[Zamknij (Esc)]',140,130,460,160,'warn');
+       return 'Krok 3/3 · Modalny JDialog wyświetla przekrojowe podsumowanie 3 wskaźników GUS dla wybranego regionu.';
+     }
+     return 'Krok '+(step+1)+'/3 · Cztery instancje tej samej klasy KpiCardPanel dla jednostki '+unit+'.';
+   }},
+  {id:'edt', name:'5. Wątek EDT, SwingWorker i konwersja indeksu JTable', docs:api+'javax/swing/SwingWorker.html',
+   code:'int viewRow = table.getSelectedRow();\nif (viewRow >= 0) {\n  int modelRow = table.convertRowIndexToModel(viewRow);\n  Observation selected = tableModel.getRow(modelRow);\n}',
+   steps:['Krok 1: Po posortowaniu lub przefiltrowaniu JTable wiersz 0 na ekranie nie jest wierszem 0 w modelu!','Krok 2: convertRowIndexToModel(viewRow) tłumaczy indeks widoku na indeks w ObservationTableModel.','Krok 3: SwingWorker wczytuje 3 pliki CSV w tle (doInBackground), a tabelę aktualizuje wyłącznie w done() na wątku EDT.'],
+   render(step, c){
+     c.style.width = '740px';
+     if(step<2){
+       add(c,'Widok JTable (posortowany malejąco)\nWiersz widoku 0 → PL82 (9,10 %)',20,30,320,110);
+       add(c,'convertRowIndexToModel(0) == 14',260,160,220,44,'warn');
+       add(c,'ObservationTableModel (lista w pamięci)\nIndeks 14 → id=15, PL82 (9,10 %)',390,30,320,110,'alt');
+       return 'Krok '+(step+1)+'/3 · Mapowanie indeksu wiersza widoku na indeks modelu tabeli.';
+     }
+     add(c,'Wątek roboczy SwingWorker\ndoInBackground(): czytanie regions.csv, indicators.csv, observations.csv',20,40,330,140,'alt');
+     add(c,'Wątek EDT (done())\nservice.replaceAll() + tableModel.setRows() + odświeżenie kart KPI',380,40,330,140);
+     return 'Krok 3/3 · Odczyt plików odbywa się poza EDT, a aktualizacja komponentów Swing w done().';
+   }}
+];
+const sel = document.querySelector('#topic'), canvas = document.querySelector('#canvas');
+let step = 0, timer = null;
+topics.forEach(t => { const o = document.createElement('option'); o.value = t.id; o.textContent = t.name; sel.append(o); });
+function add(parent, text, x, y, w, h, cls=''){
+  const d = document.createElement('div'); d.className = 'item'+(cls?' '+cls:''); d.style.whiteSpace='pre-line';
+  d.textContent = text; parent.append(d);
+  requestAnimationFrame(()=>Object.assign(d.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'}));
+}
+function render(){
+  const t = topics.find(x=>x.id===sel.value) || topics[0];
+  canvas.replaceChildren();
+  document.querySelector('#title').textContent = t.name;
+  document.querySelector('#code').textContent = t.code;
+  document.querySelector('#docs').href = t.docs;
+  document.querySelector('#steps').replaceChildren(...t.steps.map(s=>{const li=document.createElement('li');li.textContent=s;return li;}));
+  const msg = t.render(step, canvas);
+  document.querySelector('#status').textContent = msg;
+}
+function stop(){ clearInterval(timer); timer=null; const b=document.querySelector('#play'); b.textContent='Odtwarzaj animację'; b.setAttribute('aria-pressed','false'); }
+document.querySelector('#next').onclick = ()=>{ stop(); step=(step+1)%3; render(); };
+document.querySelector('#prev').onclick = ()=>{ stop(); step=(step+2)%3; render(); };
+sel.onchange = ()=>{ stop(); step=0; history.replaceState(null,'','#'+sel.value); render(); };
+document.querySelector('#play').onclick = ()=>{
+  if(timer){ stop(); return; }
+  const b=document.querySelector('#play'); b.textContent='Zatrzymaj'; b.setAttribute('aria-pressed','true');
+  timer = setInterval(()=>{ step=(step+1)%3; render(); }, 2200);
+};
+if(topics.some(t=>t.id===location.hash.slice(1))) sel.value = location.hash.slice(1);
+render();
+</script>
+</body>
+</html>

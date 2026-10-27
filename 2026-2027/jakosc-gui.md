@@ -13,10 +13,16 @@ Wymagania obowiązują w ćwiczeniach GUI Lab 1–4 i w projekcie końcowym. Lab
 - **HiDPI:** interfejs pozostaje czytelny i ostry przy skalowaniu systemowym. Jednostka logiczna layoutu nie musi odpowiadać jednemu fizycznemu pikselowi monitora.
 - **Responsywność działania:** odczyt pliku, zapytanie i analiza nie blokują wątku GUI. Powiększanie okna nie rozwiązuje blokowania aplikacji.
 
-Zmiana motywu IntelliJ nie zmienia automatycznie motywu tworzonej aplikacji.
-Aplikacja powinna udostępniać osobny wybór **Jasny / Ciemny**. Dopasowanie do
-motywu systemu jest rozszerzeniem; sam motyw systemowy nie gwarantuje ciemnego
-wyglądu Swing ani JavaFX.
+Aplikacja powinna domyślnie działać w trybie **Systemowy**: dopasowywać jasny lub
+ciemny wygląd do ustawień systemu i reagować na ich zmianę podczas pracy. Menu
+motywu powinno też pozwalać wybrać **Jasny** lub **Ciemny**; taki wybór ręczny
+obowiązuje do powrotu do trybu **Systemowy**. Należy zapamiętać wybrany tryb.
+
+JavaFX 27 udostępnia preferencję systemową przez
+[`Platform.Preferences.colorSchemeProperty()`](https://openjfx.io/javadoc/27/javafx.graphics/javafx/application/Platform.Preferences.html),
+która aktualizuje się, gdy system zgłosi zmianę. FlatLaf dostarcza jasną i ciemną
+paletę, ale nie monitoruje przenośnie motywu systemu; aplikacja Swing musi
+zapewnić taki odczyt dla wspieranej platformy.
 
 ## Wymagany wygląd
 
@@ -27,7 +33,7 @@ wyglądu Swing ani JavaFX.
 5. Preferować ikony wektorowe lub warianty rastrowe o większej rozdzielczości. Samo powiększenie małego PNG nie zapewnia ostrości. Własne rysowanie w Swing należy wykonywać na kopii `Graphics2D`, zachowując otrzymaną transformację i wywołując `dispose()` tylko na kopii.
 6. Motyw powinien obejmować menu, okna dialogowe, pola, zaznaczenie tabeli, tooltipy, fokus klawiatury, tekst nieaktywny i wykresy; samo zmienienie tła głównego panelu nie wystarcza.
 7. Kolor nie powinien być jedynym nośnikiem informacji: błąd wymaga tekstu, a serie wykresu — etykiet i rozróżnialnych symboli lub stylów linii. Stałego czarnego tekstu nie należy umieszczać na tle zależnym od motywu.
-8. Przełączenie motywu powinno zachować dane formularza, wynik, filtr i zaznaczenie. Wybór należy zapamiętać między uruchomieniami, np. przez `java.util.prefs.Preferences`.
+8. Zmiana motywu — automatyczna lub ręczna — powinna zachować dane formularza, wynik, filtr i zaznaczenie. Należy zapamiętać tryb `SYSTEM`, `LIGHT` albo `DARK`, np. przez `java.util.prefs.Preferences`, a nie sam kolor wynikający z aktualnych ustawień systemu.
 
 ## Macierz testów
 
@@ -42,6 +48,12 @@ Należy wykonać wszystkie kombinacje poniżej — 12 przypadków dla aplikacji 
 | 100% | wynik + uwagi | wynik + uwagi | wynik + uwagi | wynik + uwagi |
 | 150% | wynik + uwagi | wynik + uwagi | wynik + uwagi | wynik + uwagi |
 | 200% | wynik + uwagi | wynik + uwagi | wynik + uwagi | wynik + uwagi |
+
+W kolumnach **Jasny** i **Ciemny** aplikacja musi mieć wybrany tryb
+**Systemowy**. Dodatkowo należy zmienić motyw systemu podczas działania
+aplikacji i sprawdzić, że interfejs reaguje bez restartu. Po ręcznym wybraniu
+jasnego lub ciemnego wariantu zmiana ustawienia systemowego nie powinna go
+nadpisywać; powrót do **Systemowego** ponownie włącza automatyczne dopasowanie.
 
 Wąskie okno oznacza zadeklarowany minimalny użyteczny rozmiar; szerokie — rozmiar
 powyżej progu przełączenia układu. W raporcie należy zapisać wymiary logiczne

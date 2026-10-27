@@ -20,7 +20,8 @@ wchodzą w odbiór ćwiczeń i projektu; nie stanowią osobnego bloku tematyczne
 1. **Swing: graficzny interfejs użytkownika** — okna, menedżery układu,
    formularze, walidacja, tabele, komponenty i rysowanie.
 2. **JavaFX: nowoczesny interfejs użytkownika** — konfiguracja projektu,
-   scena, kontrolki, formularze, `TableView`, wykresy, FXML i MVC.
+   scena, kontrolki, formularze, `TableView`, FXML i MVC, import CSV,
+   statystyki, wykresy, CSS oraz praca poza wątkiem GUI.
 3. **JDBC i relacyjne bazy danych** — połączenie, SQL, `PreparedStatement`,
    DAO, CRUD, relacje, transakcje i integracja z GUI.
 4. **Hibernate i mapowanie obiektowo-relacyjne** — encje, konfiguracja ORM,

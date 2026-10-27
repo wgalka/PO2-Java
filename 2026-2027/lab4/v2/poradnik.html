@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 4 (Hibernate ORM) — Interaktywne miniinstrukcje</title>
+<style>
+:root{color-scheme:light dark;--bg:#f1f5f9;--surface:#ffffff;--text:#0f172a;--muted:#475569;--line:#cbd5e1;--accent:#0f766e;--soft:#ccfbf1;--form:#dbeafe;--warn:#fef3c7}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f8fafc;--muted:#94a3b8;--line:#334155;--accent:#5eead4;--soft:#134e4a;--form:#1e3a5f;--warn:#78350f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:auto;padding:24px}h1{font-size:1.55rem;margin:0 0 .35rem}h2{font-size:1.15rem;margin:0 0 .5rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;align-items:center}
+button,select{font:inherit;padding:8px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.canvas-wrap{overflow:auto;padding:12px 0}
+.canvas{position:relative;width:760px;height:280px;background:var(--surface);border:2px dashed var(--line);border-radius:12px}
+.item{position:absolute;padding:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--accent);border-radius:8px;background:var(--soft);transition:all .55s ease;font-size:13px}
+.item.alt{background:var(--form)}.item.warn{background:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin:0;font-family:ui-monospace,Consolas,monospace}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--soft);font-size:13px;margin-bottom:6px}
+a{color:var(--accent)}@media(max-width:760px){main{padding:12px}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<span class="badge">Lab 4 · Hibernate 7.4 i JPA · Interaktywny poradnik</span>
+<h1>Cykl życia encji, mapowanie 3 encji GUS oraz problem N+1 vs JOIN FETCH</h1>
+<div class="tools">
+  <label for="topic">Zagadnienie:</label>
+  <select id="topic"></select>
+  <button id="prev" type="button">Poprzedni krok</button>
+  <button id="next" type="button">Następny krok</button>
+</div>
+<h2 id="title"></h2>
+<p id="status" aria-live="polite"></p>
+<div class="canvas-wrap"><div class="canvas" id="canvas" role="img"></div></div>
+<div class="cols">
+  <section class="card"><h2>Wzorzec JPA / HQL</h2><pre id="code"></pre></section>
+  <section class="card"><h2>Co zaobserwować</h2><ol id="steps"></ol><p><a id="docs" target="_blank" rel="noopener">Dokumentacja Hibernate ORM</a></p></section>
+</div>
+<p><a href="README.html">← Powrót do instrukcji Lab 4 (v2)</a></p>
+</main>
+<script>
+'use strict';
+const topics = [
+  {id:'lifecycle', name:'1. Stany encji: Transient → Managed (Dirty Checking) → Detached', docs:'https://docs.hibernate.org/orm/7.4/introduction/html_single/',
+   code:'// W otwartej sesji i transakcji:\nObservationEntity entity = session.find(ObservationEntity.class, id);\nentity.setValue(6.0); // Dirty checking wykryje zmianę przy commit()!\ntx.commit();\nsession.close(); // Po zamknięciu sesji encja jest Detached',
+   steps:['Transient: obiekt utworzony przez new, jeszcze nieznany sesji Hibernate.','Managed: po persist() lub find() — modyfikacja pola w transakcji automatycznie generuje UPDATE przy commit().','Detached: po session.close() zmiany obiektu w pamięci nie trafiają do bazy.'],
+   render(step, c){
+     add(c,'1. Transient\nnew ObservationEntity(...)',16,50,210,120,step===0?'warn':'');
+     add(c,'2. Managed (w Session)\nDirty Checking → automatyczny UPDATE',265,50,230,120,step===1?'warn':'alt');
+     add(c,'3. Detached (po close())\nBez śledzenia zmian, bezpieczne DTO dla GUI',534,50,210,120,step===2?'warn':'');
+     return 'Krok '+(step+1)+'/3 · Aktywny stan: '+['Transient','Managed','Detached'][step]+'.';
+   }},
+  {id:'nplus1', name:'2. Problem N+1 przy LAZY vs JOIN FETCH dla 3 encji', docs:'https://docs.hibernate.org/orm/7.4/introduction/html_single/',
+   code:'// Zamiast osobnych SELECT dla region i indicator:\nselect o from ObservationEntity o\njoin fetch o.region\njoin fetch o.indicator\nwhere o.indicator.code = :code\norder by o.year, o.region.code',
+   steps:['Bez JOIN FETCH odczyt o.getRegion().getName() w pętli wywołuje dodatkowe zapytania SQL dla powiązanych encji.','Z JOIN FETCH Hibernate pobiera ObservationEntity razem z RegionEntity i IndicatorEntity w jednym zapytaniu JOIN.','Przed zamknięciem sesji mapujemy encje na rekord DTO Observation, unikając LazyInitializationException w JavaFX.'],
+   render(step, c){
+     if(step===0){
+       add(c,'Zapytanie główne:\nSELECT * FROM observation',20,30,280,90,'warn');
+       add(c,'Dodatkowe zapytania N+1:\nSELECT * FROM region WHERE code=?\nSELECT * FROM indicator WHERE code=?',340,30,380,140,'warn');
+       return 'Krok 1/3 · Domyślne leniwe dociąganie w pętli generuje serię dodatkowych zapytań.';
+     }
+     add(c,'Pojedyncze zapytanie HQL z JOIN FETCH:\nObservationEntity + RegionEntity + IndicatorEntity',20,40,420,120,'alt');
+     add(c,'Mapowanie w sesji:\nentity.toDto() → List<Observation>',470,40,260,120);
+     return 'Krok '+(step+1)+'/3 · JOIN FETCH pobiera komplet powiązanych obiektów jednym zapytaniem SQL.';
+   }}
+];
+const sel = document.querySelector('#topic'), canvas = document.querySelector('#canvas');
+let step = 0;
+topics.forEach(t => { const o = document.createElement('option'); o.value = t.id; o.textContent = t.name; sel.append(o); });
+function add(parent, text, x, y, w, h, cls=''){
+  const d = document.createElement('div'); d.className = 'item'+(cls?' '+cls:''); d.style.whiteSpace='pre-line';
+  d.textContent = text; parent.append(d);
+  requestAnimationFrame(()=>Object.assign(d.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'}));
+}
+function render(){
+  const t = topics.find(x=>x.id===sel.value) || topics[0];
+  canvas.replaceChildren();
+  document.querySelector('#title').textContent = t.name;
+  document.querySelector('#code').textContent = t.code;
+  document.querySelector('#docs').href = t.docs;
+  document.querySelector('#steps').replaceChildren(...t.steps.map(s=>{const li=document.createElement('li');li.textContent=s;return li;}));
+  document.querySelector('#status').textContent = t.render(step, canvas);
+}
+document.querySelector('#next').onclick = ()=>{ step=(step+1)%3; render(); };
+document.querySelector('#prev').onclick = ()=>{ step=(step+2)%3; render(); };
+sel.onchange = ()=>{ step=0; history.replaceState(null,'','#'+sel.value); render(); };
+if(topics.some(t=>t.id===location.hash.slice(1))) sel.value = location.hash.slice(1);
+render();
+</script>
+</body>
+</html>
