@@ -70,28 +70,12 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny komponent JavaFX (`MetricCard extends VBox`), który ładuje swój układ z `/fxml/metric-card.fxml`, ustawiając `loader.setRoot(this)` oraz `loader.setController(this)`. Dzięki temu w `main-view.fxml` można wielokrotnie wstawiać `<MetricCard fx:id="meanCard" title="Średnia"/>` dokładnie tak jak wbudowane kontrolki JavaFX!
 </details>
 
-1. Utworzyć plik `src/main/resources/fxml/metric-card.fxml`:
-
-   ```xml
-   <?xml version="1.0" encoding="UTF-8"?>
-   <?import javafx.scene.control.Label?>
-   <?import javafx.scene.layout.VBox?>
-   <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1"
-            styleClass="metric-card" spacing="4">
-       <Label fx:id="titleLabel" styleClass="metric-title"/>
-       <Label fx:id="valueLabel" text="—" styleClass="metric-value"/>
-       <Label fx:id="subtitleLabel" text=" " styleClass="metric-subtitle"/>
-   </fx:root>
-   ```
-
+1. Utworzyć plik `src/main/resources/fxml/metric-card.fxml` oparty na korzeniu `<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" styleClass="metric-card" spacing="4">` zawierający trzy etykiety `Label`: `titleLabel` (`styleClass="metric-title"`), `valueLabel` (`styleClass="metric-value"`, domyślnie `"—"`) oraz `subtitleLabel` (`styleClass="metric-subtitle"`).
 2. Utworzyć klasę `fx/MetricCard extends VBox`:
-   - W konstruktorze utworzyć `FXMLLoader(getClass().getResource("/fxml/metric-card.fxml"))`, wywołać `setRoot(this)`, `setController(this)` oraz `load()`.
-   - Dodać właściwość JavaFX `StringProperty title` (z getterem `getTitle()`, setterem `setTitle(String)` powiązanym z `titleLabel.textProperty()`) oraz metodę `public void setMetric(String valueText, String subtitleText)`.
-3. W `main-view.fxml` zaimportować `<?import pl.uczelnia.ekopanel.fx.MetricCard?>` i wewnątrz `TilePane fx:id="kpiPane"` umieścić **cztery instancje**:
-   - `<MetricCard fx:id="countCard" title="Liczba obserwacji"/>`
-   - `<MetricCard fx:id="meanCard" title="Średnia"/>`
-   - `<MetricCard fx:id="medianCard" title="Mediana"/>`
-   - `<MetricCard fx:id="sdCard" title="Odchylenie std."/>`
+   - W konstruktorze załadować `/fxml/metric-card.fxml` przez `FXMLLoader` z ustawionym `setRoot(this)` oraz `setController(this)`.
+   - Zdefiniować właściwość `StringProperty title` (metody `getTitle()`, `setTitle(String)`, `titleProperty()`) powiązaną z `titleLabel.textProperty()` oraz metodę `public void setMetric(String valueText, String subtitleText)`.
+3. W `main-view.fxml` zaimportować `pl.uczelnia.ekopanel.fx.MetricCard` i wewnątrz `TilePane fx:id="kpiPane"` umieścić **cztery instancje** odpowiadające liczbie obserwacji, średniej ($\bar{x}$), medianie ($Me$) oraz odchyleniu ($s$ / $d$).
+4. **Sprawdzenie komponentu na warunkach brzegowych:** wywołać na karcie `setMetric("—", "Brak danych")` dla pustego filtra (np. wpisując w `filterField` ciąg `xyz`) oraz sprawdzić zachowanie długiego napisu `6 562,80 PLN` przy zwężeniu okna do `480 px` — karty w `TilePane` mają zawijać się do dwóch wierszy bez ucinania liczb.
 
 **Wynik:** cztery karty KPI w nagłówku są instancjami jednego reużywalnego komponentu FXML.
 
@@ -129,6 +113,8 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 
 **Wynik:** filtrowanie po wskaźniku `UNEMP_RATE` dla załadowanego pakietu 75 obserwacji pokazuje 25 wierszy w tabeli i wartości `N = 25`, `4,73 %`, `4,30 %`, `1,66 p.p. (d = 1,23 p.p.)` na kartach `MetricCard`; przełączenie na `AVG_WAGE` zmienia karty na `N = 25`, `6 562,80 PLN`, `6 490,00 PLN`, `1 298,97 PLN (d = 1 046,91 PLN)`.
 
+![Główne okno aplikacji w JavaFX 27 (motyw jasny) z 4 komponentami MetricCard, formularzem i tabelą](assets/ekopanel-fx-main.png)
+
 ## Zadanie 2.6. Drugie okno `Stage` ładowane z `/fxml/region-details.fxml`
 
 🎬 **[Otwórz animowaną miniinstrukcję: Otwieranie modalnego okna Stage z osobnego FXML](poradnik.html#windows)** · 📚 [Javadoc `Stage`](https://openjfx.io/javadoc/27/javafx.graphics/javafx/stage/Stage.html)
@@ -140,6 +126,8 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 2. W `MainController.onShowRegionDetails()` załadować `/fxml/region-details.fxml` przez `FXMLLoader`, przekazać dane wybranego `Region` do `RegionDetailsController`, utworzyć nowy `Stage`, ustawić `initOwner(root.getScene().getWindow())`, `initModality(Modality.WINDOW_MODAL)`, przypisać aktywne arkusze CSS motywu do nowej sceny i wywołać `showAndWait()`.
 
 **Wynik:** aplikacja wykorzystuje dwa niezależne widoki FXML i dwa kontrolery oraz reużywa komponent `MetricCard` w obu oknach.
+
+![Drugie okno Stage ładowane z osobnego pliku region-details.fxml prezentujące przekrój województwa PL82](assets/ekopanel-fx-dialog.png)
 
 ## Zadanie 2.7. Asynchroniczny import w `Task`, wykres wieloseryjny `LineChart` i kalkulator
 
@@ -155,5 +143,7 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 2. W `MainController.initialize()` nasłuchiwać `root.widthProperty()`: poniżej `760 px` przełączać `dataSplit` na `Orientation.VERTICAL` (dzielnik `0.45`), a od `760 px` na `Orientation.HORIZONTAL` (dzielnik `0.32`).
 3. Zaimplementować `fx/ThemeManager` wykorzystujący [`Platform.getPreferences().colorSchemeProperty()`](https://openjfx.io/javadoc/27/javafx.graphics/javafx/application/Platform.Preferences.html) dla trybu `SYSTEM` oraz zapis w `Preferences`. Aktualizować arkusze CSS zarówno głównej sceny, jak i otwartych okien `Stage` / `Alert`.
 4. Wykonać [macierz 12 prób DPI i motywów](../../jakosc-gui.html) oraz zapisać wnioski w `docs/lab2.md`.
+
+![Główne okno aplikacji w JavaFX 27 przełączone do motywu ciemnego (dark.css)](assets/ekopanel-fx-dark.png)
 
 **Do oddania:** projekt `ekopanel-fx`, pliki `main-view.fxml`, `metric-card.fxml`, `region-details.fxml`, arkusze CSS, dane GUS BDL, `docs/lab2.md` i zrzuty ekranu.

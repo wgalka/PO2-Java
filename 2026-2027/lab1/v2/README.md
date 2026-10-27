@@ -160,6 +160,8 @@ flowchart TB
 
 **Wynik:** przyciski przełączają 3 widoki w obrębie jednego okna bez tworzenia nowych ramek `JFrame`.
 
+![Ćwiczenie menedżerów układu w Swing — połączenie BorderLayout, FlowLayout, GridBagLayout i CardLayout](assets/layout-sandbox.png)
+
 ## Zadanie 1.5. Zbudowanie reużywalnego komponentu `KpiCardPanel` i implementacja wzorów statystycznych na `BigDecimal`
 
 🎬 **[Otwórz animowaną miniinstrukcję: Reużywalny komponent KpiCardPanel](poradnik.html#kpicard)** · 📚 [Javadoc `JPanel`](https://docs.oracle.com/en/java/javase/27/docs/api/java.desktop/javax/swing/JPanel.html) · [Javadoc `MathContext`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/math/MathContext.html)
@@ -177,66 +179,32 @@ Dla $n$ obserwacji $x_1, x_2, \dots, x_n$ obliczamy:
 3. **Przeciętne odchylenie bezwzględne $d$ oraz odchylenie standardowe z próby $s$:**
    $$d = \frac{1}{n} \sum_{i=1}^{n} \left|x_i - \bar{x}\right|, \qquad s = \sqrt{\frac{1}{n - 1} \sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2}$$
 
-W języku Java oba wzory z sumą realizuje jedna krótka pętla `for`:
-```java
-BigDecimal sumAbsDiff = BigDecimal.ZERO;
-BigDecimal sumSqDiff = BigDecimal.ZERO;
-for (BigDecimal x : values) {
-    BigDecimal diff = x.subtract(mean);           // (x_i - średnia)
-    sumAbsDiff = sumAbsDiff.add(diff.abs());      // + |x_i - średnia|
-    sumSqDiff = sumSqDiff.add(diff.multiply(diff)); // + (x_i - średnia)^2
-}
-BigDecimal mad = sumAbsDiff.divide(BigDecimal.valueOf(n), 2, RoundingMode.HALF_UP);
-BigDecimal variance = sumSqDiff.divide(BigDecimal.valueOf(n - 1), MathContext.DECIMAL64);
-BigDecimal sampleSd = variance.sqrt(MathContext.DECIMAL64).setScale(2, RoundingMode.HALF_UP);
-```
+Każdy ze znaków sumy $\sum_{i=1}^{n}$ należy zaimplementować samodzielnie jako pętlę `for` akumulującą obiekt `BigDecimal` (`sum = sum.add(...)`), używając metod `subtract`, `abs`, `multiply`, `divide(..., RoundingMode.HALF_UP)` oraz `sqrt(MathContext.DECIMAL64)`.
 </details>
 
-1. Utworzyć klasę `swing/KpiCardPanel extends JPanel`:
-
-   ```java
-   package pl.uczelnia.ekopanel.swing;
-
-   import java.awt.*;
-   import javax.swing.*;
-
-   public final class KpiCardPanel extends JPanel {
-       private final JLabel titleLabel = new JLabel();
-       private final JLabel valueLabel = new JLabel("—");
-       private final JLabel subtitleLabel = new JLabel(" ");
-
-       public KpiCardPanel(String title) {
-           setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-           setBorder(BorderFactory.createEmptyBorder(10, 12, 10, 12));
-           titleLabel.setText(title);
-           titleLabel.setFont(titleLabel.getFont().deriveFont(Font.PLAIN, 12f));
-           valueLabel.setFont(valueLabel.getFont().deriveFont(Font.BOLD, 18f));
-           subtitleLabel.setFont(subtitleLabel.getFont().deriveFont(Font.PLAIN, 11f));
-           add(titleLabel);
-           add(Box.createVerticalStrut(4));
-           add(valueLabel);
-           add(Box.createVerticalStrut(2));
-           add(subtitleLabel);
-       }
-
-       public void setMetric(String formattedValue, String subtitle) {
-           valueLabel.setText(formattedValue);
-           subtitleLabel.setText(subtitle);
-       }
-   }
-   ```
-
-2. W górnej części okna (`NORTH`, pod tytułem aplikacji i przyciskami nawigacji) umieścić kontener `JPanel(new GridLayout(1, 4, 8, 8))` i dodać do niego **cztery instancje** tej samej klasy `KpiCardPanel`:
+1. Utworzyć własny reużywalny komponent `swing/KpiCardPanel extends JPanel`:
+   - W konstruktorze `public KpiCardPanel(String title)` skonfigurować pionowy układ `BoxLayout(this, BoxLayout.Y_AXIS)`, obramowanie z marginesem wewnętrznym `10 × 12 px` oraz trzy wewnętrzne etykiety `JLabel`: tytuł karty (`12 pt`), pogrubioną wartość główną (`18 pt`, początkowo `"—"`) i podtytuł (`11 pt`).
+   - Dodać publiczną metodę `public void setMetric(String formattedValue, String subtitle)` aktualizującą wartość oraz podtytuł karty.
+2. W górnej części okna (`NORTH`, pod tytułem aplikacji i przyciskami nawigacji) umieścić kontener `JPanel(new GridLayout(1, 4, 8, 8))` i dodać do niego **cztery instancje** klasy `KpiCardPanel`:
    - `countCard = new KpiCardPanel("Liczba obserwacji")`
    - `meanCard = new KpiCardPanel("Średnia (x̄)")`
    - `medianCard = new KpiCardPanel("Mediana (Me)")`
    - `sdCard = new KpiCardPanel("Odchylenie (s / d)")`
-3. Utworzyć rekord `model/Statistics(int count, BigDecimal min, BigDecimal max, BigDecimal mean, BigDecimal median, BigDecimal sampleSd, BigDecimal meanAbsDeviation)` oraz serwis `service/StatisticsService` z metodą `calculate(List<Observation> rows)`:
-   - Uwzględniać wyłącznie obserwacje z `included() == true` i niepustą wartością `value() != null`.
-   - Dla pustej listy zwracać `count = 0` i pozostałe pola `null`.
-   - Posortować listę wartości `List<BigDecimal>` metodą `Comparator.naturalOrder()`.
-   - Obliczyć średnią ze skalą roboczą `4` (`RoundingMode.HALF_UP`) na potrzeby pętli odchyleń, a zwracaną średnią, medianę, `sampleSd` i `meanAbsDeviation` zaokrąglić do skali `2` (`setScale(2, RoundingMode.HALF_UP)`). Dla `count == 1` zwrócić `sampleSd = null`.
-4. Dodać w `MainFrame` metodę `refreshKpiCards()`, która oblicza statystyki dla aktualnie wybranego wskaźnika (i filtra regionu), formatuje liczby typu `BigDecimal` w `Locale.forLanguageTag("pl-PL")`, dopisuje jednostkę wskaźnika (`%` lub `PLN`, a dla odchylenia stopy bezrobocia `p.p.`) i aktualizuje 4 instancje `KpiCardPanel` (w podtytule czwartej karty wyświetlać `d = ...` — przeciętne odchylenie bezwzględne).
+3. Utworzyć rekord `model/Statistics(int count, BigDecimal min, BigDecimal max, BigDecimal mean, BigDecimal median, BigDecimal sampleSd, BigDecimal meanAbsDeviation)` oraz klasę `service/StatisticsService` z metodą `public Statistics calculate(List<Observation> rows)`:
+   - Odfiltrować wyłącznie obserwacje z `included() == true` i `value() != null`.
+   - Samodzielnie zaimplementować pętle obliczające $\bar{x}$, $Me$, $d$ oraz $s$ zgodnie ze wzorami powyżej (średnią roboczą przed obliczeniem odchyleń wyznaczyć ze skalą `4`, a wyniki końcowe zaokrąglić do skali `2` z `RoundingMode.HALF_UP`).
+4. **Weryfikacja i testy warunków brzegowych (`service/StatisticsCheck.java`):** utworzyć klasę z metodą `main()`, wywołać `StatisticsService.calculate(...)` dla poniższych przypadków brzegowych i porównać wyniki przez `BigDecimal.compareTo`:
+
+   | Przypadek testowy (wejście) | Oczekiwany wynik `Statistics` |
+   |---|---|
+   | Pusta lista `List.of()` | `count = 0`, `min = null`, `max = null`, `mean = null`, `median = null`, `sampleSd = null`, `meanAbsDeviation = null` |
+   | Lista z 1 rekordem mająca `included = false` | `count = 0` i wszystkie miary równe `null` (rekord wykluczony z analizy) |
+   | Pojedyncza obserwacja (`value = 5.50`, `included = true`) | `count = 1`, `min = 5.50`, `max = 5.50`, `mean = 5.50`, `median = 5.50`, **`sampleSd = null`** (dzielnik $n - 1 = 0$), `meanAbsDeviation = 0.00` |
+   | Dwie obserwacje (`2.00` oraz `4.00`) | `count = 2`, `mean = 3.00`, `median = 3.00`, `sampleSd = 1.41` ($\sqrt{2}$), `meanAbsDeviation = 1.00` |
+   | Trzy identyczne wartości (`7.25`, `7.25`, `7.25`) | `count = 3`, `mean = 7.25`, `median = 7.25`, `sampleSd = 0.00`, `meanAbsDeviation = 0.00` |
+   | 5 lat `PL82` dla `UNEMP_RATE` (`9.10, 8.20, 7.50, 6.80, 6.10`) | `count = 5`, `min = 6.10`, `max = 9.10`, `mean = 7.54`, `median = 7.50`, `sampleSd = 1.17`, `meanAbsDeviation = 0.89` |
+
+5. Dodać w `MainFrame` metodę `refreshKpiCards()`, która wywołuje przetestowany `StatisticsService` i aktualizuje 4 instancje `KpiCardPanel`.
 
 **Wynik:** cztery karty KPI korzystają z jednej klasy komponentu i prezentują wyniki dokładnych obliczeń `BigDecimal`.
 
@@ -277,6 +245,8 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 
 **Wynik:** tabela prezentuje złączone dane obserwacji, województw i jednostek wskaźników GUS, a formularz korzysta z list rozwijanych słowników.
 
+![Docelowy wygląd głównego okna aplikacji EkoPanel w Swing z kartami KpiCardPanel, formularzem GridBagLayout i tabelą JTable](assets/ekopanel-swing-main.png)
+
 ## Zadanie 1.7. Operacje CRUD, filtrowanie wielokryterialne i konwersja indeksów
 
 🎬 **[Otwórz animowaną miniinstrukcję: Konwersja indeksu wiersza JTable przy sortowaniu i filtrze](poradnik.html#edt)**
@@ -302,6 +272,8 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 2. Podpiąć przycisk `Szczegóły regionu…` (oraz dwukrotne kliknięcie wiersza tabeli) do otwarcia `RegionDetailsDialog` dla regionu aktualnie zaznaczonego w tabeli lub wybranego w `regionCombo`. Rozmiar dialogu ustawić na `640 × 340` i wywołać `setLocationRelativeTo(this)`.
 
 **Wynik:** użytkownik może otworzyć modalne okno przekrojowe wybranego województwa i zamknąć je przyciskiem lub klawiszem `Escape`.
+
+![Modalne okno szczegółów regionu (RegionDetailsDialog) prezentujące 3 karty KPI oraz przekrój lat 2020–2024](assets/ekopanel-swing-dialog.png)
 
 ## Zadanie 1.9. Rozbudowane menu (`JMenuBar`, skróty klawiszowe, mnemoniki i `JPopupMenu`)
 
@@ -356,6 +328,8 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 4. Dla wartości startowych `4520,00` i `6980,00` (płaca w Podkarpackiem 2020 vs 2024) sprawdzić wynik: `Przyrost: +2460,00; tempo zmian: +54,42 %; indeks dynamiki: 154,42 %`. Dla `9,10` i `6,10` sprawdzić wynik: `Przyrost: -3,00; tempo zmian: -32,97 %; indeks dynamiki: 67,03 %`.
 
 **Wynik:** wykres prezentuje przebieg dowolnego z 3 wskaźników GUS dla wybranego województwa.
+
+![Wykres szeregu czasowego w komponencie RateChartPanel z zaznaczoną linią średniej arytmetycznej BigDecimal](assets/ekopanel-swing-chart.png)
 
 ## Zadanie 1.12. Responsywny podział okna, motywy (`SYSTEM`, `LIGHT`, `DARK`) i weryfikacja
 

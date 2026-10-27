@@ -121,50 +121,24 @@ Z kolei `RegionEntity` i `IndicatorEntity` mogą udostępniać kolekcje `@OneToM
 🎬 **[Otwórz animowaną miniinstrukcję: Problem N+1 przy LAZY vs JOIN FETCH dla 3 encji](poradnik.html#nplus1)**
 
 1. Utworzyć `orm/HibernateObservationRepository implements ObservationRepository` przyjmujące `SessionFactory` w konstruktorze.
-2. W `findAllObservations()` zastosować HQL z `join fetch` dla obu powiązanych encji słownikowych:
-
-   ```java
-   session.createQuery("""
-       select o from ObservationEntity o
-       join fetch o.region
-       join fetch o.indicator
-       order by o.year, o.region.code, o.indicator.code
-       """, ObservationEntity.class).getResultList();
-   ```
-
+2. W `findAllObservations()` samodzielnie napisać zapytanie HQL pobierające `ObservationEntity` wraz z obiema powiązanymi encjami słownikowymi (`region` oraz `indicator`) za pomocą klauzuli `join fetch`, posortowane po roku, kodzie regionu i kodzie wskaźnika. Wewnątrz sesji zmapować encje na rekordy DTO `Observation`.
 3. W `save()`, `delete()` oraz `replaceDataset(...)` otwierać własną sesję i transakcję; w razie błędu wywoływać `tx.rollback()` i rzucać `DataAccessException`.
-4. **Pomiar problemu `N+1` w `OrmCheck`:**
+4. **Pomiar problemu `N+1` i testy warunków brzegowych w `OrmCheck`:**
    - Zaimportować pakiet 75 obserwacji GUS.
    - W nowej sesji wyczyścić statystyki (`factory.getStatistics().clear()`), wykonać zwykłe `from ObservationEntity o` (bez `join fetch`) i w pętli odczytać `o.getRegion().getName()` oraz `o.getIndicator().getUnit()`. Zapisać wartość `getPrepareStatementCount()` (zapytanie główne + dodatkowe zapytania dociągające `RegionEntity` i `IndicatorEntity`).
-   - W kolejnej sesji powtórzyć odczyt z `join fetch o.region join fetch o.indicator` i potwierdzić, że `getPrepareStatementCount()` wynosi dokładnie **`1`**.
+   - W kolejnej sesji powtórzyć odczyt przez `findAllObservations()` (z `join fetch`) i potwierdzić, że `getPrepareStatementCount()` wynosi dokładnie **`1`**.
+   - Sprawdzić warunek brzegowy zamkniętej sesji: po wywołaniu `findAllObservations()` i zamknięciu sesji odczytać wszystkie pola zwróconych rekordów DTO — nie może wystąpić `LazyInitializationException`.
 
 **Wynik:** `join fetch` eliminuje problem `N+1` przy pobieraniu obserwacji wraz ze słownikami GUS.
 
 ## Zadanie 4.5. Projekcje DTO w HQL i agregacja po 3 encjach
 
-1. W `HibernateObservationRepository` zaimplementować `findSummariesByRegion(String regionCode)` przy użyciu projekcji konstruktorowej HQL:
-
-   ```java
-   session.createQuery("""
-       select new pl.uczelnia.ekopanel.model.RegionIndicatorSummary(
-           r.code, r.name, r.macroregion,
-           i.code, i.name, i.unit,
-           count(o.id), avg(o.value), min(o.value), max(o.value)
-       )
-       from ObservationEntity o
-       join o.region r
-       join o.indicator i
-       where r.code = :regionCode and o.included = true
-       group by r.code, r.name, r.macroregion, i.code, i.name, i.unit
-       order by i.code
-       """, RegionIndicatorSummary.class)
-       .setParameter("regionCode", regionCode)
-       .getResultList();
-   ```
-
-2. W `OrmCheck` sprawdzić dla `PL82` zgodność wyników z etapem JDBC (`UNEMP_RATE` średnia `7,54 %`, `AVG_WAGE` średnia `5616,00 PLN`, `INV_PER_CAPITA` średnia `6460,00 PLN`).
+1. W `HibernateObservationRepository` zaimplementować `findSummariesByRegion(String regionCode)` przy użyciu projekcji konstruktorowej HQL (`select new pl.uczelnia.ekopanel.model.RegionIndicatorSummary(...)`), łącząc `ObservationEntity`, `RegionEntity` i `IndicatorEntity`, filtrując po `:regionCode` oraz `o.included = true` i grupując po polach regionu oraz wskaźnika.
+2. W `OrmCheck` przetestować metodę dla `PL82` (zgodność z wynikami z Lab 3: `UNEMP_RATE` średnia `7,54 %`, `AVG_WAGE` średnia `5616,00 PLN`, `INV_PER_CAPITA` średnia `6460,00 PLN`) oraz dla nieistniejącego kodu `PL00` (oczekiwać pustej listy).
 
 **Wynik:** projekcja HQL bezpośrednio tworzy obiekty DTO dla okna szczegółów regionu bez ładowania pełnych kolekcji encji.
+
+![Widok projekcji DTO (RegionIndicatorSummaryDto) oraz miar statystycznych i średniej ważonej BigDecimal w Hibernate ORM](assets/ekopanel-orm-dto.png)
 
 ## Zadanie 4.6. Podłączenie `HibernateObservationRepository` do JavaFX i zamknięcie `SessionFactory`
 

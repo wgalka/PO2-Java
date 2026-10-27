@@ -28,80 +28,35 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 🎬 **[Otwórz animowaną miniinstrukcję: Polimorficzne czyszczenie braków danych — Usuwanie, Średnia, Sąsiednie lata](poradnik.html#cleaning)**
 
 <details>
-<summary><strong>Krótka instrukcja: Jak zapisać wzory imputacji, średniej ważonej i normalizacji jako zwykłe pętle for na BigDecimal? (kliknij, aby rozwinąć)</strong></summary>
+<summary><strong>Krótka instrukcja: Wzory imputacji braków, średniej ważonej i normalizacji (kliknij, aby rozwinąć)</strong></summary>
 
-Każdy z poniższych wzorów matematycznych przekłada się bezpośrednio na prostą pętlę `for` operującą na `BigDecimal` (`RoundingMode.HALF_UP`):
+Każdy z poniższych wzorów matematycznych należy zaimplementować samodzielnie jako pętlę `for` operującą na `BigDecimal` (`RoundingMode.HALF_UP`):
 
-1. **Uzupełnianie braku średnią grupową (`MeanImputationProcessor`)** dla województwa $r$ i wskaźnika $k$ po zbiorze lat $T_{r,k}$ posiadających wartość:
+1. **Uzupełnianie braku średnią grupową (`MeanImputationProcessor`)** dla województwa $r$ i wskaźnika $k$ po zbiorze lat $T_{r,k}$ posiadających niepustą wartość:
    $$\hat{x}_{r,k} = \frac{1}{|T_{r,k}|} \sum_{t \in T_{r,k}} x_{r,k,t}$$
-   W kodzie Java:
-   ```java
-   BigDecimal sum = BigDecimal.ZERO;
-   int count = 0;
-   for (Observation row : groupRows) {
-       if (row.value() != null) {
-           sum = sum.add(row.value());
-           count++;
-       }
-   }
-   BigDecimal imputed = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
-   ```
-
-2. **Interpolacja liniowa z sąsiednich lat (`NeighborInterpolationProcessor`)** dla brakującego roku $t$:
+2. **Interpolacja liniowa z sąsiednich lat (`NeighborInterpolationProcessor`)** dla brakującego roku $t$ (gdy brakuje jednego z sąsiadów, czyli na krańcu szeregu $t = t_{\min}$ lub $t = t_{\max}$, przyjąć wartość najbliższego dostępnego sąsiada):
    $$\hat{x}_{r,k,t} = \frac{x_{r,k,t-1} + x_{r,k,t+1}}{2}$$
-   W kodzie Java: `prev.add(next).divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP)`.
-
-3. **Średnia ważona $\bar{x}_w$** (np. przypisująca większe wagi nowszym rocznikom $w = (1, 1, 2, 2, 3)$ dla lat 2020–2024):
+3. **Średnia ważona $\bar{x}_w$** (dla wag dodatnich $w_1, w_2, \dots, w_n$, np. $w = (1, 1, 2, 2, 3)$ dla kolejnych lat 2020–2024):
    $$\bar{x}_w = \frac{\sum_{i=1}^{n} w_i \cdot x_i}{\sum_{i=1}^{n} w_i}$$
-   W kodzie Java:
-   ```java
-   BigDecimal weightedSum = BigDecimal.ZERO;
-   BigDecimal weightTotal = BigDecimal.ZERO;
-   for (int i = 0; i < n; i++) {
-       weightedSum = weightedSum.add(weights.get(i).multiply(values.get(i)));
-       weightTotal = weightTotal.add(weights.get(i));
-   }
-   BigDecimal weightedMean = weightedSum.divide(weightTotal, 2, RoundingMode.HALF_UP);
-   ```
-
 4. **Przyrost rok do roku $\Delta_t$, dynamika względna $r_t$ oraz normalizacja min–max $z_i \in [0, 1]$:**
    $$\Delta_t = x_t - x_{t-1}, \qquad r_t = \frac{x_t - x_{t-1}}{x_{t-1}} \cdot 100\%, \qquad z_i = \frac{x_i - x_{\min}}{x_{\max} - x_{\min}}$$
 </details>
 
-1. Utworzyć pakiet `pl.uczelnia.ekopanel.analysis` oraz rekordy wynikowe oparte na `BigDecimal`:
-
-   ```java
-   package pl.uczelnia.ekopanel.analysis;
-
-   import java.math.BigDecimal;
-   import java.util.List;
-   import pl.uczelnia.ekopanel.model.Observation;
-
-   public record SeriesRow(int year, String regionCode, String indicatorCode,
-                           BigDecimal value, BigDecimal yoyDiff, BigDecimal yoyPercent,
-                           BigDecimal normalizedMinMax, boolean imputed) {}
-
-   public record ProcessingResult(
-       String strategyName, int inputCount, int missingCount,
-       int outputCount, BigDecimal arithmeticMean, BigDecimal weightedMean,
-       List<Observation> cleanedObservations,
-       List<SeriesRow> seriesRows, String summaryText
-   ) {}
-   ```
-
+1. Utworzyć pakiet `pl.uczelnia.ekopanel.analysis` oraz rekordy wynikowe `SeriesRow(int year, String regionCode, String indicatorCode, BigDecimal value, BigDecimal yoyDiff, BigDecimal yoyPercent, BigDecimal normalizedMinMax, boolean imputed)` i `ProcessingResult(String strategyName, int inputCount, int missingCount, int outputCount, BigDecimal arithmeticMean, BigDecimal weightedMean, List<Observation> cleanedObservations, List<SeriesRow> seriesRows, String summaryText)`.
 2. Utworzyć abstrakcyjną klasę bazową `AbstractDataProcessor`:
-   - Publiczna finalna metoda szablonowa `public final ProcessingResult process(List<Observation> input)` sprawdza, czy lista nie jest `null`/pusta, tworzy niemodyfikowalną kopię `List.copyOf(input)`, zlicza rekordy z `row.value() == null`, wywołuje metodę abstrakcyjną `protected abstract List<Observation> handleMissing(List<Observation> rows)`, a następnie wspólne pomocnicze `buildSeriesRows(...)` wyliczające na `BigDecimal` średnią zwykłą $\bar{x}$, średnią ważoną $\bar{x}_w$ (z wagami $w_t = t - t_{\min} + 1$ lub $(1, 1, 2, 2, 3)$), zmianę r/r (`yoyDiff`, `yoyPercent`) oraz normalizację min–max (`normalizedMinMax` ze skalą `4`, a gdy `max.compareTo(min) == 0`, zwracające `BigDecimal.ZERO`).
-3. Utworzyć trzy podklasy dziedziczące po `AbstractDataProcessor`:
-   - `DropMissingProcessor` — pomija wszystkie rekordy, w których `row.value() == null`.
-   - `MeanImputationProcessor` — dla każdego rekordu z `row.value() == null` oblicza w pętli `for` średnią arytmetyczną `BigDecimal` (`scale = 2`, `RoundingMode.HALF_UP`) z poprawnych obserwacji o tym samym `(regionCode, indicatorCode)` i tworzy nowy rekord `Observation` z wyliczoną wartością oraz `included = true`.
-   - `NeighborInterpolationProcessor` — uzupełnia brak w roku $t$ średnią z roku $t-1$ i $t+1$ dla tego samego `(regionCode, indicatorCode)`.
-4. Utworzyć klasę kontrolną `analysis/ProcessorCheck.java` i zweryfikować dokładne wartości `BigDecimal` po wczytaniu `data/observations-braki.csv` (75 wierszy, w tym 3 braki w roku 2022):
+   - Publiczna finalna metoda szablonowa `public final ProcessingResult process(List<Observation> input)` weryfikuje wejście, tworzy kopię `List.copyOf(input)`, zlicza braki (`row.value() == null`), wywołuje `protected abstract List<Observation> handleMissing(List<Observation> rows)`, a następnie wspólne pomocnicze `buildSeriesRows(...)` wyliczające na `BigDecimal` średnią zwykłą $\bar{x}$, średnią ważoną $\bar{x}_w$ (wagi $w_t = t - t_{\min} + 1$ lub przekazana lista wag), zmiany r/r (`yoyDiff`, `yoyPercent`) oraz normalizację min–max (`normalizedMinMax` ze skalą `4`).
+3. Samodzielnie zaimplementować trzy podklasy dziedziczące po `AbstractDataProcessor`: `DropMissingProcessor`, `MeanImputationProcessor` oraz `NeighborInterpolationProcessor`.
+4. **Weryfikacja i testy warunków brzegowych (`analysis/ProcessorCheck.java`):** w metodzie `main()` wywołać wszystkie trzy procesory dla poniższych przypadków brzegowych oraz dla pliku `data/observations-braki.csv`:
 
-   | Strategia (`AbstractDataProcessor`) | Wynik dla 3 braków z roku 2022 (`BigDecimal`, `HALF_UP`) |
+   | Przypadek testowy / Warunek brzegowy | Oczekiwane zachowanie / wynik (`BigDecimal`, `HALF_UP`) |
    |---|---|
-   | **`DropMissingProcessor`** | `inputCount = 75`, `missingCount = 3`, `outputCount = 72` (rekordy z `value == null` usunięte) |
-   | **`MeanImputationProcessor`** | `outputCount = 75`; uzupełnione wartości w roku 2022: `PL82 / UNEMP_RATE` = **`7,55 %`**, `PL82 / AVG_WAGE` = **`5650,00 PLN`**, `PL21 / INV_PER_CAPITA` = **`8162,50 PLN`** |
-   | **`NeighborInterpolationProcessor`** | `outputCount = 75`; uzupełnione wartości w roku 2022: `PL82 / UNEMP_RATE` = **`7,50 %`** (średnia z `8,20` i `6,80`), `PL82 / AVG_WAGE` = **`5550,00 PLN`** (średnia z `4920,00` i `6180,00`), `PL21 / INV_PER_CAPITA` = **`8125,00 PLN`** (średnia z `7300,00` i `8950,00`); średnia ważona `PL82 / AVG_WAGE` dla wag $(1,1,2,2,3)$ po uzupełnieniu `5480,00` wynosi **`5966,67 PLN`** |
+   | Wejście `null` lub pusta lista `List.of()` | `IllegalArgumentException("Brak danych wejściowych do przetworzenia.")` |
+   | Wszystkie obserwacje danej pary `(region, indicator)` mają `value == null` w `MeanImputationProcessor` | `IllegalArgumentException("Brak wartości odniesienia dla PL82 / UNEMP_RATE.")` (dzielnik $|T_{r,k}| = 0$) |
+   | Brak na początku szeregu (`2020 = null`, `2021 = 8.20`) w `NeighborInterpolationProcessor` | Uzupełnienie wartością najbliższego sąsiada `8,20` bez `IndexOutOfBoundsException` |
+   | Szereg stały (`5.00, 5.00, 5.00`) podczas normalizacji min–max ($x_{\max} = x_{\min}$) | `normalizedMinMax = 0.0000` (brak dzielenia przez zero!), `yoyDiff = 0.00`, `yoyPercent = 0.00` |
+   | `DropMissingProcessor` na `observations-braki.csv` | `inputCount = 75`, `missingCount = 3`, `outputCount = 72` |
+   | `MeanImputationProcessor` na `observations-braki.csv` | Uzupełnione braki w roku 2022: `PL82 / UNEMP_RATE` = **`7,55 %`**, `PL82 / AVG_WAGE` = **`5650,00 PLN`**, `PL21 / INV_PER_CAPITA` = **`8162,50 PLN`** |
+   | `NeighborInterpolationProcessor` na `observations-braki.csv` | Uzupełnione braki w roku 2022: `PL82 / UNEMP_RATE` = **`7,50 %`**, `PL82 / AVG_WAGE` = **`5550,00 PLN`**, `PL21 / INV_PER_CAPITA` = **`8125,00 PLN`**; średnia ważona `PL82 / AVG_WAGE` dla wag $(1,1,2,2,3)$ przy pełnych danych = **`5966,67 PLN`** |
 
 **Wynik:** hierarchia klas demonstruje klasę abstrakcyjną, dziedziczenie i polimorfizm na prostych, praktycznych operacjach czyszczenia danych i obliczania zmian r/r.
 
@@ -145,6 +100,8 @@ erDiagram
 4. Utworzyć `io/ReportExporter.java` zapisujący raport z przeprowadzonego czyszczenia i tabeli zmian r/r do pliku Markdown (`*.md`).
 
 **Wynik:** baza H2 składa się z 4 powiązanych tabel, a użytkownik może jednym kliknięciem oczyścić braki danych, obejrzeć zmiany r/r i zapisać migawkę w bazie.
+
+![Zakładka przygotowania i dynamiki danych prezentująca uzupełnione braki z 2022 roku, zmiany r/r i normalizację min–max](assets/ekopanel-final-cleaning.png)
 
 ## Zadanie 6.4. Test wydajności dla 15 000 obserwacji, dokumentacja JavaDoc i obraz `jpackage`
 

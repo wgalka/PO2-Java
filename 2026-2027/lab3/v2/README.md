@@ -137,29 +137,21 @@ erDiagram
 
 ## Zadanie 3.5. Zapytania analityczne `JOIN` łączące wszystkie 3 tabele
 
-1. Dodać w `JdbcObservationRepository` (i `ObservationService`) metodę `List<RegionIndicatorSummary> findSummariesByRegion(String regionCode)` wykonującą zapytanie łączące 3 tabele:
-
-   ```sql
-   SELECT r.code AS region_code, r.name AS region_name, r.macroregion,
-          i.code AS indicator_code, i.name AS indicator_name, i.unit,
-          COUNT(o.id) AS n, AVG(o.val) AS mean_val, MIN(o.val) AS min_val, MAX(o.val) AS max_val
-   FROM region r
-   CROSS JOIN indicator i
-   LEFT JOIN observation o
-     ON o.region_code = r.code AND o.indicator_code = i.code AND o.included = 1
-   WHERE r.code = ?
-   GROUP BY r.code, r.name, r.macroregion, i.code, i.name, i.unit
-   ORDER BY i.code
-   ```
-
-2. Przy odczycie `AVG`, `MIN`, `MAX` sprawdzać `rs.wasNull()`, aby brak obserwacji zwracał `null` zamiast `0.0`.
-3. W `DatabaseCheck` wywołać metodę dla `PL82` i potwierdzić wyniki złączenia 3 tabel:
-   - `AVG_WAGE` (`PLN`): `n = 5`, średnia `5616,00`, min `4520,00`, max `6980,00`
-   - `INV_PER_CAPITA` (`PLN`): `n = 5`, średnia `6460,00`, min `5400,00`, max `7650,00`
-   - `UNEMP_RATE` (`%`): `n = 5`, średnia `7,54`, min `6,10`, max `9,10`
+1. Dodać w `JdbcObservationRepository` (i `ObservationService`) metodę `List<RegionIndicatorSummary> findSummariesByRegion(String regionCode)`:
+   - Samodzielnie ułożyć parametryzowane zapytanie SQL łączące tabele `region`, `indicator` oraz `observation` (`LEFT JOIN` dla obserwacji z `o.included = 1`), grupujące wyniki po regionie i wskaźniku oraz wyliczające `COUNT(o.id)`, `AVG(o.val)`, `MIN(o.val)` i `MAX(o.val)` posortowane po kodzie wskaźnika.
+2. Przy odczycie `AVG`, `MIN`, `MAX` sprawdzać `rs.wasNull()`, aby brak obserwacji (np. gdy wszystkie obserwacje danego wskaźnika mają `included = 0`) zwracał `null` zamiast `0.00`.
+3. **Testy weryfikacyjne i warunki brzegowe (`DatabaseCheck`):**
+   - Wywołać `findSummariesByRegion("PL82")` dla załadowanych 75 obserwacji i potwierdzić wyniki złączenia 3 tabel:
+     - `AVG_WAGE` (`PLN`): `n = 5`, średnia `5616,00`, min `4520,00`, max `6980,00`
+     - `INV_PER_CAPITA` (`PLN`): `n = 5`, średnia `6460,00`, min `5400,00`, max `7650,00`
+     - `UNEMP_RATE` (`%`): `n = 5`, średnia `7,54`, min `6,10`, max `9,10`
+   - Wywołać `findSummariesByRegion("PL99")` (nieistniejący kod regionu) — oczekiwać pustej listy `List.of()` bez wyjątku SQL.
+   - Odznaczyć `included = false` dla wszystkich 5 lat `PL82 / UNEMP_RATE` i ponownie wywołać `findSummariesByRegion("PL82")` — wiersz `UNEMP_RATE` nadal ma się pojawić (dzięki `LEFT JOIN`), lecz z `n = 0` oraz `mean = null`, `min = null`, `max = null`. Przywrócić `included = true`.
 4. Sprawdzić ochronę klucza obcego `ON DELETE RESTRICT`: w `DatabaseCheck` spróbować wykonać `DELETE FROM region WHERE code = 'PL82'` — oczekiwać wyjątku klucza obcego SQLite.
 
 **Wynik:** jedno zapytanie SQL `JOIN` po 3 tabelach zasila okno szczegółów regionu (`RegionDetailsController`).
+
+![Widok podsumowania złączenia SQL JOIN po 3 tabelach (region, indicator, observation) z miarami BigDecimal](assets/ekopanel-jdbc-summary.png)
 
 ## Zadanie 3.6. Integracja repozytorium JDBC z oknem JavaFX poza wątkiem GUI
 

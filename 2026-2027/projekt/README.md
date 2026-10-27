@@ -219,7 +219,7 @@ Instrukcję uruchomienia należy przygotować w IntelliJ IDEA zgodnie
 z [konfiguracją środowiska](../srodowisko.html).
 Diagramy należy zapisywać w blokach `mermaid`, a zrzuty GUI wykonywać
 w działającej aplikacji.
-Scenariusz końcowego sprawdzenia zawiera [Lab 6](../lab6/README.html).
+Scenariusz końcowego sprawdzenia zawiera [Lab 6 (v1)](../lab6/v1/README.html) oraz [Lab 6 (v2 — polecenia)](../lab6/v2/README.html).
 
 Dokumentacja powinna zawierać:
 
