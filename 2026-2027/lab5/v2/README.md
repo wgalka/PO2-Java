@@ -5,7 +5,6 @@ title: "Lab 5 — polecenia: portal wskaźników GUS BDL w Servlet i JSP"
 
 # Lab 5. Zbudowanie aplikacji webowej GUS BDL w Servlet 6.0 i JSP 3.1
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Wyjaśnienia Servlet/JSP (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 6: Czyszczenie danych, 4 tabele i dystrybucja](../../lab6/v2/README.html)
 

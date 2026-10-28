@@ -5,7 +5,6 @@ title: "Lab 1 — polecenia: EkoPanel GUS BDL w Swing"
 
 # Lab 1. Zbudowanie panelu danych GUS BDL w Swing
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Wyjaśnienia Swing (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Pakiet danych GUS BDL](../../dane/gus-bdl-dane.zip) · [Etap 2: JavaFX i FXML](../../lab2/v2/README.html)
 

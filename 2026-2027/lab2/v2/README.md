@@ -5,7 +5,6 @@ title: "Lab 2 — polecenia: EkoPanel GUS BDL w JavaFX i FXML"
 
 # Lab 2. Przeniesienie aplikacji GUS BDL do JavaFX 27 i FXML
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Etap 1: Swing](../../lab1/v2/README.html) · [Wyjaśnienia JavaFX (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 3: JDBC](../../lab3/v2/README.html)
 

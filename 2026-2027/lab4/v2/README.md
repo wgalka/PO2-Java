@@ -5,7 +5,6 @@ title: "Lab 4 — polecenia: mapowanie 3 encji GUS BDL w Hibernate ORM"
 
 # Lab 4. Zastąpienie repozytorium JDBC przez Hibernate ORM (3 encje GUS BDL)
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Etap 3: JDBC](../../lab3/v2/README.html) · [Wyjaśnienia Hibernate (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 5: JSP i Servlet API](../../lab5/v2/README.html)
 

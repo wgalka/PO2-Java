@@ -5,7 +5,6 @@ title: "Lab 3 — polecenia: baza 3 tabel GUS BDL w JDBC i SQLite"
 
 # Lab 3. Podłączenie relacyjnej bazy 3 tabel GUS BDL przez JDBC
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Etap 2: JavaFX i FXML](../../lab2/v2/README.html) · [Wyjaśnienia JDBC (v1)](../v1/README.html) · [Interaktywny poradnik animowany](poradnik.html) · [Etap 4: Hibernate ORM](../../lab4/v2/README.html)
 

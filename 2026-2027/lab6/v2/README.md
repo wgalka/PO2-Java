@@ -5,7 +5,6 @@ title: "Lab 6 — polecenia: czyszczenie danych, 4 tabele, JavaDoc i pakiet jpac
 
 # Lab 6. Czyszczenie i przetwarzanie danych GUS BDL (4 tabele), JavaDoc i dystrybucja
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 [Etap 4: Hibernate ORM](../../lab4/v2/README.html) · [Etap 5: JSP](../../lab5/v2/README.html) · [Interaktywny poradnik animowany](poradnik.html)
 
