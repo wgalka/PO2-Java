@@ -17,23 +17,12 @@ Materiały do przedmiotu **Programowanie obiektowe** dla kierunku Informatyka i 
 
 ### Semestr III - GUI i dostęp do danych
 
-Instrukcje są pogrupowane tematycznie. Sześć dokumentów porządkuje materiał
+Instrukcje są pogrupowane tematycznie. Sześć laboratoriów porządkuje materiał
 semestru obejmującego 14 spotkań i 30 godzin zajęć laboratoryjnych.
-Każde laboratorium ma dwie wersje: v1 z objaśnieniami oraz v2 skoncentrowaną
-na zadaniach.
+Poniżej znajduje się lista laboratoriów v2, skoncentrowanych na zadaniach.
+Wersje v1 z objaśnieniami umieszczono na końcu strony.
 Projekt semestralny należy wykonać samodzielnie, niezależnie od aplikacji
 rozwijanej podczas laboratoriów.
-
-### v1 – Laboratoria z objaśnieniami
-
-| Lab | Temat | Status |
-|---|---|---|
-| [Lab 1](./2026-2027/lab1/v1/README.md) | Swing: okna, menedżery układu, formularze, tabele i rysowanie | Dostępne |
-| [Lab 2](./2026-2027/lab2/v1/README.md) | JavaFX: scena, formularze, tabele, wykresy i FXML/MVC | Dostępne |
-| [Lab 3](./2026-2027/lab3/v1/README.md) | JDBC: SQL, DAO, CRUD, relacje, transakcje i GUI | Dostępne |
-| [Lab 4](./2026-2027/lab4/v1/README.md) | Hibernate: encje, relacje, HQL i transakcje | Dostępne |
-| [Lab 5](./2026-2027/lab5/v1/README.md) | JSP i Servlet API | Dostępne |
-| [Lab 6](./2026-2027/lab6/v1/README.md) | Integracja aplikacji, przetwarzanie danych i dystrybucja | Dostępne |
 
 ### v2 – Laboratoria skoncentrowane na zadaniach
 
@@ -48,3 +37,14 @@ rozwijanej podczas laboratoriów.
 
 - [Plan laboratoriów](./2026-2027/plan.md)
 - [Wymagania projektu i kryteria oceny](./2026-2027/projekt/README.md)
+
+### v1 – Laboratoria z objaśnieniami
+
+| Lab | Temat | Status |
+|---|---|---|
+| [Lab 1](./2026-2027/lab1/v1/README.md) | Swing: okna, menedżery układu, formularze, tabele i rysowanie | Dostępne |
+| [Lab 2](./2026-2027/lab2/v1/README.md) | JavaFX: scena, formularze, tabele, wykresy i FXML/MVC | Dostępne |
+| [Lab 3](./2026-2027/lab3/v1/README.md) | JDBC: SQL, DAO, CRUD, relacje, transakcje i GUI | Dostępne |
+| [Lab 4](./2026-2027/lab4/v1/README.md) | Hibernate: encje, relacje, HQL i transakcje | Dostępne |
+| [Lab 5](./2026-2027/lab5/v1/README.md) | JSP i Servlet API | Dostępne |
+| [Lab 6](./2026-2027/lab6/v1/README.md) | Integracja aplikacji, przetwarzanie danych i dystrybucja | Dostępne |
