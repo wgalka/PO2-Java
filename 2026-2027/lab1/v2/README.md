@@ -15,6 +15,9 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 
 1. Utworzyć katalog roboczy `PO2-EkoPanel` i rozpakować [projekt startowy Swing](../v1/projekt-startowy.zip) do `PO2-EkoPanel/ekopanel-swing`.
 2. Otworzyć `pom.xml` w IntelliJ IDEA i ustawić **JDK 27 GA** (poziom języka 27 bez preview) według [konfiguracji środowiska](../../srodowisko.html).
+
+   ![Plik pom.xml w katalogu ekopanel-swing i opcja Open with (Otwórz za pomocą) w Eksploratorze Windows](assets/otwieranie-pom-xml.png)
+
 3. Uruchomić `pl.uczelnia.lab1.Main.main()`, kliknąć `Przywitaj` i sprawdzić zmianę etykiety na `Interfejs reaguje na zdarzenie`.
 4. W `pom.xml` zmienić `artifactId` na `ekopanel-swing`. Do sekcji `dependencies` dodać bibliotekę [FlatLaf 3.7](https://www.formdev.com/flatlaf/) (pozostawiając istniejącą zależność `jSystemThemeDetector` 3.9):
 
