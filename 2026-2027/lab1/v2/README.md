@@ -82,7 +82,7 @@ W obliczeniach ekonomicznych i finansowych stosuje się `java.math.BigDecimal` w
    ```
 
 2. Utworzyć `service/Numbers.java` z metodą `public static BigDecimal parseDecimal(String text)`:
-   - Oczyścić tekst przez `text.strip().replace(" ", "").replace(',', '.')`, utworzyć `new BigDecimal(cleaned)` i ujednolicić skalę przez `.setScale(2, RoundingMode.HALF_UP)`.
+   - Oczyścić tekst przez `text.strip().replace(" ", "").replace(',', '.')`, utworzyć `new BigDecimal(cleaned)` i ustawić dwie cyfry po przecinku przez `.setScale(2, RoundingMode.HALF_UP)`.
    - `NumberFormatException` lub `NullPointerException` zamienić na `IllegalArgumentException("Wartość musi być poprawną liczbą dziesiętną.")`.
 3. Utworzyć `service/ObservationValidator.java` z metodą `public static void validate(int year, String regionCode, String indicatorCode, BigDecimal value, Indicator indicator)`. Porównania zakresu wykonywać przez `compareTo`:
 
