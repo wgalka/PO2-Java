@@ -27,6 +27,11 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
    ```
 
 5. Wykonać **Reload All Maven Projects**. Utworzyć pakiety: `pl.uczelnia.ekopanel.model`, `.repository`, `.service`, `.io`, `.swing`.
+
+   **Wynik:** w panelu **Project** widoczne są pakiety `io`, `model`, `repository`, `service` i `swing` wewnątrz `pl.uczelnia.ekopanel`, jak na poniższym zrzucie. Pakiety należy utworzyć w katalogu `src/main/java` projektu `ekopanel-swing`.
+
+   ![Układ pakietów pl.uczelnia.ekopanel w panelu Project w IntelliJ IDEA](assets/struktura-pakietow-intellij.png)
+
 6. Pobrać [gus-bdl-dane.zip](../../dane/gus-bdl-dane.zip) (lub pojedyncze pliki: [regions.csv](../../dane/regions.csv), [indicators.csv](../../dane/indicators.csv), [observations.csv](../../dane/observations.csv), [observations-bledne.csv](../../dane/observations-bledne.csv), [observations-duplikat.csv](../../dane/observations-duplikat.csv), [observations-brak-klucza.csv](../../dane/observations-brak-klucza.csv)) i rozpakować do katalogu `PO2-EkoPanel/ekopanel-swing/data/`.
 
 **Wynik:** projekt kompiluje się w JDK 27 GA, a katalog `data/` zawiera 3 pliki słownikowo-faktowe GUS BDL (5 województw, 3 wskaźniki, 75 obserwacji z lat 2020–2024) oraz 3 pliki testowe z błędami w wierszu 77.
