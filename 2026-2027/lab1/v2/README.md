@@ -54,7 +54,23 @@ W obliczeniach ekonomicznych i finansowych stosuje się `java.math.BigDecimal` w
 3. **Porównywanie wartości przez `a.compareTo(b)` zamiast `a.equals(b)`:** metoda `equals` zwraca `false` dla `new BigDecimal("5.5")` i `new BigDecimal("5.50")` (różna skala), natomiast `compareTo` zwraca `0`.
 </details>
 
+**Czym jest rekord w Javie?** Rekord (`record`) jest specjalnym rodzajem klasy służącym do przechowywania danych. W nawiasach po nazwie podaje się jego składniki, czyli typy i nazwy przechowywanych wartości. Na przykład `Region(String code, String name, String macroregion)` opisuje województwo za pomocą trzech tekstów.
+
+Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczytu `code()`, `name()` i `macroregion()` oraz metody `equals()`, `hashCode()` i `toString()`. Obiekt tworzy się przez `new Region("PL82", "Podkarpackie", "Makroregion wschodni")`, a nazwę odczytuje przez `region.name()`, bez przedrostka `get`. Składniki rekordu są przechowywane w polach `private final`: po utworzeniu obiektu nie można przypisać im innych wartości i nie ma automatycznych setterów. Aby zmienić dane, należy utworzyć nowy rekord. Rekord nie zapewnia jednak niezmienności wnętrza obiektów, które przechowuje, np. zawartości listy.
+
+**Nazwa typu i nazwa pliku:** publiczna klasa lub publiczny rekord zadeklarowane bezpośrednio w pliku muszą mieć nazwę zgodną z nazwą pliku, z uwzględnieniem wielkości liter. Deklarację `public record Region(...)` należy zapisać w `Region.java`, a `public class Numbers` w `Numbers.java`. Każdy z poniższych rekordów należy umieścić w osobnym pliku.
+
 1. W pakiecie `pl.uczelnia.ekopanel.model` utworzyć trzy rekordy, używając `BigDecimal` dla wartości obserwacji:
+
+   - W panelu **Project** rozwinąć `src/main/java` i kliknąć prawym przyciskiem pakiet `pl.uczelnia.ekopanel.model`.
+   - Wybrać **New → Java Class**, wpisać `Region` (bez rozszerzenia `.java`), zaznaczyć rodzaj **Record** i nacisnąć **Enter**. IntelliJ utworzy plik `Region.java` z deklaracją pakietu i pustym rekordem.
+   - Zastąpić zawartość pliku `Region.java` pierwszym blokiem kodu poniżej.
+   - W tym samym pakiecie powtórzyć **New → Java Class → Record** dla nazw `Indicator` i `Observation`. Do plików `Indicator.java` oraz `Observation.java` wkleić odpowiadające im bloki kodu.
+   - Przy tworzeniu zwykłej klasy w dalszych zadaniach, np. `Numbers`, w tym samym oknie wybrać rodzaj **Class**.
+
+   [Dokumentacja IntelliJ IDEA: tworzenie plików i klas](https://www.jetbrains.com/help/idea/add-items-to-project.html).
+
+   **Plik `Region.java`:**
 
    ```java
    package pl.uczelnia.ekopanel.model;
@@ -64,6 +80,8 @@ W obliczeniach ekonomicznych i finansowych stosuje się `java.math.BigDecimal` w
    }
    ```
 
+   **Plik `Indicator.java`:**
+
    ```java
    package pl.uczelnia.ekopanel.model;
 
@@ -71,6 +89,8 @@ W obliczeniach ekonomicznych i finansowych stosuje się `java.math.BigDecimal` w
        @Override public String toString() { return code + " (" + unit + ") — " + name; }
    }
    ```
+
+   **Plik `Observation.java`:**
 
    ```java
    package pl.uczelnia.ekopanel.model;
@@ -80,6 +100,8 @@ W obliczeniach ekonomicznych i finansowych stosuje się `java.math.BigDecimal` w
    public record Observation(Long id, int year, String regionCode,
                              String indicatorCode, BigDecimal value, boolean included) {}
    ```
+
+   **Wynik:** pakiet `pl.uczelnia.ekopanel.model` zawiera trzy osobne pliki: `Region.java`, `Indicator.java` i `Observation.java`. Nazwa publicznego rekordu w każdym pliku jest zgodna z nazwą pliku.
 
 2. Utworzyć `service/Numbers.java` z metodą `public static BigDecimal parseDecimal(String text)`:
    - Oczyścić tekst przez `text.strip().replace(" ", "").replace(',', '.')`, utworzyć `new BigDecimal(cleaned)` i ustawić dwie cyfry po przecinku przez `.setScale(2, RoundingMode.HALF_UP)`.
