@@ -16,6 +16,9 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 1. Skopiować projekt `ekopanel-swing` jako `PO2-EkoPanel/ekopanel-fx` (przenieść `pom.xml`, `src`, `data` i `docs`, bez `target` oraz `.idea`). Zachować pakiety `model`, `repository`, `service`, `io`, `swing`.
 2. W `pom.xml` ustawić `artifactId` na `ekopanel-fx`, zachować **JDK 27 GA** i dodać zależności **JavaFX 27** ([dokumentacja JavaFX 27](https://openjfx.io/javadoc/27/)):
 
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-fx/pom.xml</figcaption>
+
    ```xml
    <dependency>
        <groupId>org.openjfx</groupId>
@@ -28,6 +31,8 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
        <version>27</version>
    </dependency>
    ```
+
+   </figure>
 
 3. Do `build/plugins` dodać `org.openjfx:javafx-maven-plugin:0.0.8` z `mainClass` ustawionym na `pl.uczelnia.ekopanel.fx.FxApp` oraz opcją `--enable-native-access=javafx.graphics`.
 4. Przeładować Maven. Utworzyć pakiet `pl.uczelnia.ekopanel.fx` oraz katalogi `src/main/resources/fxml` i `src/main/resources/css`.
@@ -113,7 +118,10 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 
 **Wynik:** filtrowanie po wskaźniku `UNEMP_RATE` dla załadowanego pakietu 75 obserwacji pokazuje 25 wierszy w tabeli i wartości `N = 25`, `4,73 %`, `4,30 %`, `1,66 p.p. (d = 1,23 p.p.)` na kartach `MetricCard`; przełączenie na `AVG_WAGE` zmienia karty na `N = 25`, `6 562,80 PLN`, `6 490,00 PLN`, `1 298,97 PLN (d = 1 046,91 PLN)`.
 
-![Główne okno aplikacji w JavaFX 27 (motyw jasny) z 4 komponentami MetricCard, formularzem i tabelą](assets/ekopanel-fx-main.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-fx-main.png" alt="Główne okno aplikacji w JavaFX 27 (motyw jasny) z 4 komponentami MetricCard, formularzem i tabelą">
+  <figcaption>Główne okno EkoPanel w JavaFX w motywie jasnym.</figcaption>
+</figure>
 
 ## Zadanie 2.6. Drugie okno `Stage` ładowane z `/fxml/region-details.fxml`
 
@@ -127,7 +135,10 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 
 **Wynik:** aplikacja wykorzystuje dwa niezależne widoki FXML i dwa kontrolery oraz reużywa komponent `MetricCard` w obu oknach.
 
-![Drugie okno Stage ładowane z osobnego pliku region-details.fxml prezentujące przekrój województwa PL82](assets/ekopanel-fx-dialog.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-fx-dialog.png" alt="Drugie okno Stage ładowane z osobnego pliku region-details.fxml prezentujące przekrój województwa PL82">
+  <figcaption>Okno szczegółów województwa PL82 wczytywane z osobnego pliku FXML.</figcaption>
+</figure>
 
 ## Zadanie 2.7. Asynchroniczny import w `Task`, wykres wieloseryjny `LineChart` i kalkulator
 
@@ -144,6 +155,9 @@ Wzorzec `<fx:root type="javafx.scene.layout.VBox">` pozwala zdefiniować własny
 3. Zaimplementować `fx/ThemeManager` wykorzystujący [`Platform.getPreferences().colorSchemeProperty()`](https://openjfx.io/javadoc/27/javafx.graphics/javafx/application/Platform.Preferences.html) dla trybu `SYSTEM` oraz zapis w `Preferences`. Aktualizować arkusze CSS zarówno głównej sceny, jak i otwartych okien `Stage` / `Alert`.
 4. Wykonać [macierz 12 prób DPI i motywów](../../jakosc-gui.html) oraz zapisać wnioski w `docs/lab2.md`.
 
-![Główne okno aplikacji w JavaFX 27 przełączone do motywu ciemnego (dark.css)](assets/ekopanel-fx-dark.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-fx-dark.png" alt="Główne okno aplikacji w JavaFX 27 przełączone do motywu ciemnego (dark.css)">
+  <figcaption>Główne okno EkoPanel w motywie ciemnym.</figcaption>
+</figure>
 
 **Do oddania:** projekt `ekopanel-fx`, pliki `main-view.fxml`, `metric-card.fxml`, `region-details.fxml`, arkusze CSS, dane GUS BDL, `docs/lab2.md` i zrzuty ekranu.

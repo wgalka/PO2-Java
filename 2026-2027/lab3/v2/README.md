@@ -61,6 +61,9 @@ erDiagram
 
 1. Utworzyć plik `src/main/resources/db/schema.sql`:
 
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-jdbc/src/main/resources/db/schema.sql</figcaption>
+
    ```sql
    CREATE TABLE IF NOT EXISTS region (
        code TEXT PRIMARY KEY CHECK(length(trim(code)) = 4),
@@ -102,6 +105,8 @@ erDiagram
        ('INV_PER_CAPITA', 'Nakłady inwestycyjne na 1 mieszkańca', 'PLN', 'Inwestycje')
        ON CONFLICT(code) DO NOTHING;
    ```
+
+   </figure>
 
 2. W `Database.initialize()` wykonać polecenia z `schema.sql`. W `DatabaseCheck` wywołać `initialize()` dwukrotnie i sprawdzić liczby wierszy: `region` = `5`, `indicator` = `3`.
 
@@ -151,7 +156,10 @@ erDiagram
 
 **Wynik:** jedno zapytanie SQL `JOIN` po 3 tabelach zasila okno szczegółów regionu (`RegionDetailsController`).
 
-![Widok podsumowania złączenia SQL JOIN po 3 tabelach (region, indicator, observation) z miarami BigDecimal](assets/ekopanel-jdbc-summary.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-jdbc-summary.png" alt="Widok podsumowania złączenia SQL JOIN po 3 tabelach (region, indicator, observation) z miarami BigDecimal">
+  <figcaption>Podsumowanie danych połączonych z tabel region, indicator i observation.</figcaption>
+</figure>
 
 ## Zadanie 3.6. Integracja repozytorium JDBC z oknem JavaFX poza wątkiem GUI
 

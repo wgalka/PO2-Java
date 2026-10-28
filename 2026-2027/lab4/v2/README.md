@@ -20,6 +20,9 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 3. Utworzyć pakiet `pl.uczelnia.ekopanel.orm` i podpakiet `.entity`.
 4. Utworzyć `src/main/resources/hibernate.properties`:
 
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-orm/src/main/resources/hibernate.properties</figcaption>
+
    ```properties
    hibernate.connection.driver_class=org.h2.Driver
    hibernate.connection.url=jdbc:h2:./data/ekopanel_orm
@@ -31,7 +34,12 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
    hibernate.generate_statistics=true
    ```
 
+   </figure>
+
 5. Utworzyć `src/main/resources/db/schema-h2.sql` z trzema tabelami odpowiadającymi encjom:
+
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-orm/src/main/resources/db/schema-h2.sql</figcaption>
 
    ```sql
    CREATE TABLE IF NOT EXISTS region (
@@ -61,6 +69,8 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
    CREATE INDEX IF NOT EXISTS ix_observation_lookup
        ON observation(indicator_code, region_code, observed_year);
    ```
+
+   </figure>
 
 6. Utworzyć `orm/HibernateBootstrap.java`, który przed zbudowaniem `SessionFactory` wykonuje `schema-h2.sql` i zasiewa 5 województw oraz 3 wskaźniki GUS, po czym uruchamia walidację schematu (`hbm2ddl.auto=validate`).
 
@@ -138,7 +148,10 @@ Z kolei `RegionEntity` i `IndicatorEntity` mogą udostępniać kolekcje `@OneToM
 
 **Wynik:** projekcja HQL bezpośrednio tworzy obiekty DTO dla okna szczegółów regionu bez ładowania pełnych kolekcji encji.
 
-![Widok projekcji DTO (RegionIndicatorSummaryDto) oraz miar statystycznych i średniej ważonej BigDecimal w Hibernate ORM](assets/ekopanel-orm-dto.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-orm-dto.png" alt="Widok projekcji DTO (RegionIndicatorSummaryDto) oraz miar statystycznych i średniej ważonej BigDecimal w Hibernate ORM">
+  <figcaption>Zestawienie DTO z miarami statystycznymi i średnią ważoną.</figcaption>
+</figure>
 
 ## Zadanie 4.6. Podłączenie `HibernateObservationRepository` do JavaFX i zamknięcie `SessionFactory`
 

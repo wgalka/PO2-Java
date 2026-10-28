@@ -70,7 +70,10 @@ Kod interfejsu należy uruchamiać w wątku zdarzeń Swing za pomocą `SwingUtil
 
 Kontener, np. `JPanel`, powierza menedżerowi układu obliczenie pozycji i rozmiarów komponentów potomnych. Menedżer należy dobierać do struktury widoku; współrzędnych przycisków nie należy ustawiać ręcznie.
 
-![Schemat działania sześciu menedżerów układu Swing](assets/layouts-guide.svg)
+<figure class="image-example" markdown="1">
+  <img src="assets/layouts-guide.svg" alt="Schemat działania sześciu menedżerów układu Swing">
+  <figcaption>Zestawienie sześciu menedżerów układu Swing.</figcaption>
+</figure>
 
 ### Układ wierszowy lub jednokierunkowy
 
@@ -1319,9 +1322,15 @@ frame.setJMenuBar(menuBar);
 
 Efekt: u góry okna jest pasek `Plik`; rozwinięcie pokazuje pozycje menu, a `Otwórz` uruchamia okno wyboru pliku. Anulowanie nie zmienia danych.
 
-![Układy komponentów Swing](assets/layouts.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/layouts.png" alt="Układy komponentów Swing">
+  <figcaption>Przykładowe układy komponentów Swing.</figcaption>
+</figure>
 
-![Menu i widok danych w Swing](assets/menu.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/menu.png" alt="Menu i widok danych w Swing">
+  <figcaption>Przykład menu Plik i tabeli danych w aplikacji Swing.</figcaption>
+</figure>
 
 W [galerii Swing](demo/README.html) można zmieniać rozmiar okna, porównywać menedżery układu i wypróbować menu.
 

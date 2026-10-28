@@ -73,7 +73,10 @@ W aplikacjach JSP unika się powielania kodu HTML na dwa uzupełniające sposoby
 
 **Wynik:** formularz realizuje pełny cykl CRUD zgodnie z wzorcem PRG i zwraca status `400` przy błędnych danych.
 
-![Widok katalogu wskaźników GUS BDL w przeglądarce z 4 komponentami ui:kpiCard, formularzem POST (PRG) i filtrem GET](assets/ekopanel-web-list.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-web-list.png" alt="Widok katalogu wskaźników GUS BDL w przeglądarce z 4 komponentami ui:kpiCard, formularzem POST (PRG) i filtrem GET">
+  <figcaption>Katalog wskaźników GUS BDL z formularzem i filtrem.</figcaption>
+</figure>
 
 ## Zadanie 5.4. Podstrona szczegółów wskaźnika i przekroju województw (`/indicator`) oraz ochrona XSS
 
@@ -85,4 +88,7 @@ W aplikacjach JSP unika się powielania kodu HTML na dwa uzupełniające sposoby
 
 **Do oddania:** projekt `ekopanel-web`, `target/lab5.war`, plik znacznika `kpiCard.tag`, `docs/lab5.md` oraz zrzuty ekranu.
 
-![Widok podstrony szczegółów wskaźnika (/indicator?code=AVG_WAGE) z przekrojem 5 województw](assets/ekopanel-web-details.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-web-details.png" alt="Widok podstrony szczegółów wskaźnika (/indicator?code=AVG_WAGE) z przekrojem 5 województw">
+  <figcaption>Szczegóły wskaźnika AVG_WAGE dla pięciu województw.</figcaption>
+</figure>

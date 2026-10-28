@@ -16,10 +16,16 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 1. Utworzyć katalog roboczy `PO2-EkoPanel` i rozpakować [projekt startowy Swing](../v1/projekt-startowy.zip) do `PO2-EkoPanel/ekopanel-swing`.
 2. Otworzyć `pom.xml` w IntelliJ IDEA i ustawić **JDK 27 GA** (poziom języka 27 bez preview) według [konfiguracji środowiska](../../srodowisko.html).
 
-   ![Plik pom.xml w katalogu ekopanel-swing i opcja Open with (Otwórz za pomocą) w Eksploratorze Windows](assets/otwieranie-pom-xml.png)
+   <figure class="image-example" markdown="1">
+     <img src="assets/otwieranie-pom-xml.png" alt="Plik pom.xml w katalogu ekopanel-swing i opcja Open with (Otwórz za pomocą) w Eksploratorze Windows">
+     <figcaption>Plik pom.xml i jego menu kontekstowe w katalogu ekopanel-swing.</figcaption>
+   </figure>
 
 3. Uruchomić `pl.uczelnia.lab1.Main.main()`, kliknąć `Przywitaj` i sprawdzić zmianę etykiety na `Interfejs reaguje na zdarzenie`.
 4. W `pom.xml` zmienić `artifactId` na `ekopanel-swing`. Do sekcji `dependencies` dodać bibliotekę [FlatLaf 3.7](https://www.formdev.com/flatlaf/) (pozostawiając istniejącą zależność `jSystemThemeDetector` 3.9):
+
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-swing/pom.xml</figcaption>
 
    ```xml
    <dependency>
@@ -29,11 +35,16 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
    </dependency>
    ```
 
+   </figure>
+
 5. Wykonać **Reload All Maven Projects**. Utworzyć pakiety: `pl.uczelnia.ekopanel.model`, `.repository`, `.service`, `.io`, `.swing`.
 
    **Wynik:** w panelu **Project** widoczne są pakiety `io`, `model`, `repository`, `service` i `swing` wewnątrz `pl.uczelnia.ekopanel`, jak na poniższym zrzucie. Pakiety należy utworzyć w katalogu `src/main/java` projektu `ekopanel-swing`.
 
-   ![Układ pakietów pl.uczelnia.ekopanel w panelu Project w IntelliJ IDEA](assets/struktura-pakietow-intellij.png)
+   <figure class="image-example" markdown="1">
+     <img src="assets/struktura-pakietow-intellij.png" alt="Układ pakietów pl.uczelnia.ekopanel w panelu Project w IntelliJ IDEA">
+     <figcaption>Oczekiwana struktura pakietów w panelu Project IntelliJ IDEA.</figcaption>
+   </figure>
 
 6. Pobrać [gus-bdl-dane.zip](../../dane/gus-bdl-dane.zip) (lub pojedyncze pliki: [regions.csv](../../dane/regions.csv), [indicators.csv](../../dane/indicators.csv), [observations.csv](../../dane/observations.csv), [observations-bledne.csv](../../dane/observations-bledne.csv), [observations-duplikat.csv](../../dane/observations-duplikat.csv), [observations-brak-klucza.csv](../../dane/observations-brak-klucza.csv)) i rozpakować do katalogu `PO2-EkoPanel/ekopanel-swing/data/`.
 
@@ -70,7 +81,8 @@ Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczyt
 
    [Dokumentacja IntelliJ IDEA: tworzenie plików i klas](https://www.jetbrains.com/help/idea/add-items-to-project.html).
 
-   **Plik `Region.java`:**
+   <figure class="code-example" markdown="1">
+   <figcaption>src/main/java/pl/uczelnia/ekopanel/model/Region.java</figcaption>
 
    ```java
    package pl.uczelnia.ekopanel.model;
@@ -80,7 +92,10 @@ Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczyt
    }
    ```
 
-   **Plik `Indicator.java`:**
+   </figure>
+
+   <figure class="code-example" markdown="1">
+   <figcaption>src/main/java/pl/uczelnia/ekopanel/model/Indicator.java</figcaption>
 
    ```java
    package pl.uczelnia.ekopanel.model;
@@ -90,7 +105,10 @@ Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczyt
    }
    ```
 
-   **Plik `Observation.java`:**
+   </figure>
+
+   <figure class="code-example" markdown="1">
+   <figcaption>src/main/java/pl/uczelnia/ekopanel/model/Observation.java</figcaption>
 
    ```java
    package pl.uczelnia.ekopanel.model;
@@ -100,6 +118,8 @@ Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczyt
    public record Observation(Long id, int year, String regionCode,
                              String indicatorCode, BigDecimal value, boolean included) {}
    ```
+
+   </figure>
 
    **Wynik:** pakiet `pl.uczelnia.ekopanel.model` zawiera trzy osobne pliki: `Region.java`, `Indicator.java` i `Observation.java`. Nazwa publicznego rekordu w każdym pliku jest zgodna z nazwą pliku.
 
@@ -125,6 +145,9 @@ Interfejs repozytorium oddziela logikę aplikacji od sposobu składowania danych
 
 1. W pakiecie `repository` utworzyć `ObservationRepository.java`:
 
+   <figure class="code-example" markdown="1">
+   <figcaption>src/main/java/pl/uczelnia/ekopanel/repository/ObservationRepository.java</figcaption>
+
    ```java
    package pl.uczelnia.ekopanel.repository;
 
@@ -140,6 +163,8 @@ Interfejs repozytorium oddziela logikę aplikacji od sposobu składowania danych
        void replaceDataset(List<Region> regions, List<Indicator> indicators, List<Observation> observations);
    }
    ```
+
+   </figure>
 
 2. Utworzyć `repository/MemoryObservationRepository implements ObservationRepository`. Przechowywać prywatne listy `regions`, `indicators`, `observations` oraz licznik `long nextId = 1`.
 3. W konstruktorze `MemoryObservationRepository` załadować domyślne 5 województw (`PL82`, `PL21`, `PL22`, `PL91`, `PL41`) i 3 wskaźniki (`UNEMP_RATE`, `AVG_WAGE`, `INV_PER_CAPITA`), aby formularz miał słowniki natychmiast po uruchomieniu okna.
@@ -190,7 +215,10 @@ flowchart TB
 
 **Wynik:** przyciski przełączają 3 widoki w obrębie jednego okna bez tworzenia nowych ramek `JFrame`.
 
-![Ćwiczenie menedżerów układu w Swing — połączenie BorderLayout, FlowLayout, GridBagLayout i CardLayout](assets/layout-sandbox.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/layout-sandbox.png" alt="Ćwiczenie menedżerów układu w Swing — połączenie BorderLayout, FlowLayout, GridBagLayout i CardLayout">
+  <figcaption>Rozmieszczenie kontrolek za pomocą czterech menedżerów układu Swing.</figcaption>
+</figure>
 
 ## Zadanie 1.5. Zbudowanie reużywalnego komponentu `KpiCardPanel` i implementacja wzorów statystycznych na `BigDecimal`
 
@@ -275,7 +303,10 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 
 **Wynik:** tabela prezentuje złączone dane obserwacji, województw i jednostek wskaźników GUS, a formularz korzysta z list rozwijanych słowników.
 
-![Docelowy wygląd głównego okna aplikacji EkoPanel w Swing z kartami KpiCardPanel, formularzem GridBagLayout i tabelą JTable](assets/ekopanel-swing-main.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-swing-main.png" alt="Docelowy wygląd głównego okna aplikacji EkoPanel w Swing z kartami KpiCardPanel, formularzem GridBagLayout i tabelą JTable">
+  <figcaption>Główne okno EkoPanel z formularzem, kartami wskaźników i tabelą danych.</figcaption>
+</figure>
 
 ## Zadanie 1.7. Operacje CRUD, filtrowanie wielokryterialne i konwersja indeksów
 
@@ -303,7 +334,10 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 
 **Wynik:** użytkownik może otworzyć modalne okno przekrojowe wybranego województwa i zamknąć je przyciskiem lub klawiszem `Escape`.
 
-![Modalne okno szczegółów regionu (RegionDetailsDialog) prezentujące 3 karty KPI oraz przekrój lat 2020–2024](assets/ekopanel-swing-dialog.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-swing-dialog.png" alt="Modalne okno szczegółów regionu (RegionDetailsDialog) prezentujące 3 karty KPI oraz przekrój lat 2020–2024">
+  <figcaption>Okno szczegółów regionu z kartami KPI i danymi za lata 2020–2024.</figcaption>
+</figure>
 
 ## Zadanie 1.9. Rozbudowane menu (`JMenuBar`, skróty klawiszowe, mnemoniki i `JPopupMenu`)
 
@@ -359,7 +393,10 @@ W `GridBagLayout` sama obecność pola w kolumnie 1 nie powoduje jego rozciągan
 
 **Wynik:** wykres prezentuje przebieg dowolnego z 3 wskaźników GUS dla wybranego województwa.
 
-![Wykres szeregu czasowego w komponencie RateChartPanel z zaznaczoną linią średniej arytmetycznej BigDecimal](assets/ekopanel-swing-chart.png)
+<figure class="image-example" markdown="1">
+  <img src="assets/ekopanel-swing-chart.png" alt="Wykres szeregu czasowego w komponencie RateChartPanel z zaznaczoną linią średniej arytmetycznej BigDecimal">
+  <figcaption>Szereg czasowy z zaznaczoną linią średniej arytmetycznej.</figcaption>
+</figure>
 
 ## Zadanie 1.12. Responsywny podział okna, motywy (`SYSTEM`, `LIGHT`, `DARK`) i weryfikacja
 
