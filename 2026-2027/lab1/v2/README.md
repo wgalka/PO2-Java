@@ -129,11 +129,11 @@ Na podstawie tej deklaracji Java automatycznie tworzy konstruktor, metody odczyt
 
    | Warunek | Zgłaszany `IllegalArgumentException` |
    |---|---|
-   | `year < 1990 \|\| year > 2035` | `Rok musi być z zakresu 1990–2035.` |
-   | `regionCode == null \|\| !regionCode.strip().matches("PL\\d{2}")` | `Kod regionu musi mieć format PL i dwie cyfry (np. PL82).` |
-   | `indicatorCode == null \|\| !indicatorCode.strip().matches("[A-Z][A-Z0-9_]{1,29}")` | `Kod wskaźnika musi składać się z wielkich liter, cyfr i podkreśleń.` |
+   | `year < 1990 || year > 2035` | `Rok musi być z zakresu 1990–2035.` |
+   | `regionCode == null || !regionCode.strip().matches("PL\\d{2}")` | `Kod regionu musi mieć format PL i dwie cyfry (np. PL82).` |
+   | `indicatorCode == null || !indicatorCode.strip().matches("[A-Z][A-Z0-9_]{1,29}")` | `Kod wskaźnika musi składać się z wielkich liter, cyfr i podkreśleń.` |
    | `value == null` | `Wartość nie może być pusta.` |
-   | `indicator != null && "%".equals(indicator.unit()) && (value.compareTo(BigDecimal.ZERO) < 0 \|\| value.compareTo(new BigDecimal("100")) > 0)` | `Stopa procentowa musi być z zakresu 0–100.` |
+   | `indicator != null && "%".equals(indicator.unit()) && (value.compareTo(BigDecimal.ZERO) < 0 || value.compareTo(new BigDecimal("100")) > 0)` | `Stopa procentowa musi być z zakresu 0–100.` |
    | `indicator != null && "PLN".equals(indicator.unit()) && value.compareTo(BigDecimal.ZERO) < 0` | `Wartość kwotowa w PLN nie może być ujemna.` |
 
 **Wynik:** kwoty w `PLN` i stopy w `%` są przechowywane dokładnie z dwoma miejscami po przecinku jako `BigDecimal` bez błędów binarnych `double`.
