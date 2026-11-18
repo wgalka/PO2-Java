@@ -12,6 +12,7 @@ Stan zweryfikowany **13 października 2026**:
 
 | Element | Wersja w laboratoriach |
 |---|---|
+| IDE | **IntelliJ IDEA 2026.3** (stabilne wydanie GA, bez EAP) |
 | JDK | **27 (GA)** |
 | JavaFX | **27** — wszystkie moduły `org.openjfx` |
 | Maven `maven.compiler.release` | **27** |
@@ -34,7 +35,7 @@ oraz [wydanie i wymagania JavaFX 27](https://gluonhq.com/products/javafx/openjfx
 ## Pierwszy projekt
 
 1. Utworzyć projekt przez **New Project → Java**, nadać mu nazwę `lab1` i wybrać **Maven** jako system budowania.
-2. W polu JDK wskazać JDK 27 GA albo użyć **Download JDK → Version 27** i wybrać wydanie bez oznaczenia Early Access. Środowisko uruchomieniowe IDE nie zastępuje JDK projektu.
+2. W polu JDK wskazać JDK 27 GA albo użyć **Download JDK → Version 27**, w polu **Vendor** wybrać **Oracle OpenJDK** (ewentualnie **Eclipse Temurin**, **Amazon Corretto** lub **Azul Zulu** — bez oznaczenia Early Access). Środowisko uruchomieniowe IDE nie zastępuje JDK projektu.
 3. Ustawić GroupId `pl.uczelnia` i ArtifactId `lab1`. W kolejnych projektach zmieniać numer laboratorium.
 4. Otworzyć `pom.xml` i zastosować poniższy szablon. Zależności z instrukcji umieszczać w `dependencies`, a pluginy w `build/plugins`.
 5. Po zmianie POM zsynchronizować Maven przez **Load Maven Changes / Reload All Maven Projects**. Nazwa polecenia zależy od wersji IDE.
@@ -86,13 +87,27 @@ labN/
 ```
 
 W przypadku istniejącego projektu należy otworzyć jego `pom.xml` przez
-**Open as Project**, a nie sam katalog z klasami. W **Project Structure → Project SDK**
-trzeba ustawić JDK 27, a **Language level** na 27 bez preview. W **Modules →
-Dependencies** należy ustawić Module SDK zgodny z Project SDK. W **Build Tools →
-Maven → Runner** i **Importing** trzeba wskazać JDK 27. Jeżeli IDE nie obsługuje
-poziomu 27, należy zainstalować aktualne stabilne IntelliJ IDEA, nie wydanie EAP.
-Wbudowany Maven wystarcza; polecenie `mvn` w zewnętrznym terminalu wymaga osobnej
-instalacji lub wrappera.
+**Open as Project**, a nie sam katalog z klasami. Następnie należy upewnić się,
+że środowisko korzysta ze stabilnego **JDK 27 GA** (*General Availability*, bez
+wydania Early Access) i poziomu języka **27** bez funkcji *preview* — dzięki temu
+projekt kompiluje się wyłącznie ze stabilnych elementów języka i działa identycznie
+w IntelliJ IDEA, w Mavenie oraz podczas sprawdzania (a od Lab 2 spełnia wymagania
+JavaFX 27).
+
+Konfiguracja w IntelliJ IDEA krok po kroku:
+
+1. Otworzyć **File → Project Structure…** (skrót `Ctrl+Alt+Shift+S`).
+2. W zakładce **Project**:
+   - w polu **SDK** wybrać **27** (jeśli brak na liście: **Add SDK → Download JDK…**, wybrać **Version: 27**, a w polu **Vendor** wskazać **Oracle OpenJDK** — ewentualnie **Eclipse Temurin**, **Amazon Corretto** lub **Azul Zulu** — bez dopisku EA);
+   - w polu **Language level** wybrać **27** (bez dopisku *Preview*).
+3. W zakładce **Modules → Dependencies** sprawdzić, czy **Module SDK** jest ustawione na **Project SDK**, i zatwierdzić **OK**.
+4. Otworzyć **File → Settings…** (skrót `Ctrl+Alt+S`) → **Build, Execution, Deployment → Build Tools → Maven**:
+   - w **Importing → JDK for importer** ustawić **Use Project JDK** (lub **27**);
+   - w **Runner → JRE** ustawić **Use Project JDK** (lub **27**) i zatwierdzić **OK**.
+
+Jeżeli IDE nie obsługuje poziomu 27, należy zainstalować aktualne stabilne
+IntelliJ IDEA, nie wydanie EAP. Wbudowany Maven wystarcza; polecenie `mvn`
+w zewnętrznym terminalu wymaga osobnej instalacji lub wrappera.
 
 W terminalu należy sprawdzić `java --version` oraz `javac --version`; obydwa
 powinny wskazywać wersję 27 bez oznaczenia `-ea`. Przy zewnętrznym Maven trzeba

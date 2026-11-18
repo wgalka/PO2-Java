@@ -33,7 +33,30 @@ Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane
 
    </figure>
 
-3. Do `build/plugins` dodać `org.openjfx:javafx-maven-plugin:0.0.8` z `mainClass` ustawionym na `pl.uczelnia.ekopanel.fx.FxApp` oraz opcją `--enable-native-access=javafx.graphics`.
+3. W `pom.xml` skonfigurować wtyczkę `javafx-maven-plugin`, która umożliwia uruchamianie aplikacji JavaFX poleceniem `javafx:run`. Opcja `--enable-native-access=javafx.graphics` nadaje modułowi graficznemu JavaFX uprawnienia do wywołań natywnych wymagane w JDK 27. W sekcji `<build><plugins>` (a jeśli w `pom.xml` nie ma jeszcze sekcji `<build>`, dodać ją przed `</project>`) umieścić wpis:
+
+   <figure class="code-example" markdown="1">
+   <figcaption>ekopanel-fx/pom.xml</figcaption>
+
+   ```xml
+   <build>
+       <plugins>
+           <plugin>
+               <groupId>org.openjfx</groupId>
+               <artifactId>javafx-maven-plugin</artifactId>
+               <version>0.0.8</version>
+               <configuration>
+                   <mainClass>pl.uczelnia.ekopanel.fx.FxApp</mainClass>
+                   <options>
+                       <option>--enable-native-access=javafx.graphics</option>
+                   </options>
+               </configuration>
+           </plugin>
+       </plugins>
+   </build>
+   ```
+
+   </figure>
 4. Przeładować Maven. Utworzyć pakiet `pl.uczelnia.ekopanel.fx` oraz katalogi `src/main/resources/fxml` i `src/main/resources/css`.
 
 **Wynik:** projekt kompiluje się z JavaFX 27 i współdzieli trójencjowy model GUS BDL z etapem Swing.

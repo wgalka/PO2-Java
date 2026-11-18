@@ -10,17 +10,75 @@ title: "Lab 1 — polecenia: EkoPanel GUS BDL w Swing"
 
 Należy wykonywać zadania w podanej kolejności. Wszystkie zadania są wymagane. W ramach ćwiczenia powstaje desktopowa aplikacja **EkoPanel — GUS BDL** operująca na trzech powiązanych encjach Banku Danych Lokalnych GUS: województwach (`Region`), słowniku wskaźników makroekonomicznych (`Indicator`) oraz obserwacjach rocznych (`Observation`).
 
+**Środowisko pracy:** **IntelliJ IDEA 2026.3** (stabilne wydanie GA, bez wersji EAP), **JDK 27 GA** (poziom języka 27 bez *preview*) oraz Maven — szczegóły w [konfiguracji środowiska](../../srodowisko.html).
+
 ## Zadanie 1.1. Utworzenie projektu i pobranie pakietu danych GUS BDL
 
-1. Utworzyć katalog roboczy `PO2-EkoPanel` i rozpakować [projekt startowy Swing](../v1/projekt-startowy.zip) do `PO2-EkoPanel/ekopanel-swing`.
-2. Otworzyć `pom.xml` w IntelliJ IDEA i ustawić **JDK 27 GA** (poziom języka 27 bez preview) według [konfiguracji środowiska](../../srodowisko.html).
+1. Utworzyć katalog roboczy (folder) `PO2-EkoPanel` i rozpakować [projekt startowy Swing](../v1/projekt-startowy.zip) do `PO2-EkoPanel/ekopanel-swing`.
+
+   <figure class="image-example" markdown="1">
+     <img src="assets/katalog-roboczy-ekopanel.png" alt="Struktura katalogu roboczego PO2-EkoPanel/ekopanel-swing z rozpakowanym projektem startowym">
+     <figcaption>Oczekiwana ścieżka i zawartość rozpakowanego projektu startowego w katalogu roboczym PO2-EkoPanel/ekopanel-swing.</figcaption>
+   </figure>
+
+   <details markdown="1">
+   <summary><strong>Struktura folderu PO2-EkoPanel w kolejnych laboratoriach</strong></summary>
+
+   Folder `PO2-EkoPanel` jest wspólnym katalogiem roboczym na cały semestr. Na kolejnych laboratoriach w jego wnętrzu tworzone są osobne podfoldery dla kolejnych etapów aplikacji (poprzednie wersje pozostają nienaruszone):
+
+   - **Lab 1:** `PO2-EkoPanel/ekopanel-swing` (projekt startowy Swing)
+   - **Lab 2:** `PO2-EkoPanel/ekopanel-fx` (kopia `ekopanel-swing` przeniesiona do JavaFX)
+   - **Lab 3:** `PO2-EkoPanel/ekopanel-jdbc` (kopia `ekopanel-fx` z bazą SQLite i JDBC)
+   - **Lab 4:** `PO2-EkoPanel/ekopanel-orm` (kopia `ekopanel-jdbc` z Hibernate ORM i H2)
+   - **Lab 5:** `PO2-EkoPanel/ekopanel-web` oraz `PO2-EkoPanel/apache-tomcat-10.1.61` (osobny projekt webowy i serwer Tomcat)
+   - **Lab 6:** `PO2-EkoPanel/ekopanel-final` (kopia `ekopanel-orm` z funkcjami końcowymi i dystrybucją)
+
+   </details>
+
+2. Otworzyć plik `pom.xml` za pomocą aplikacji **IntelliJ IDEA** (w Eksploratorze Windows: prawy przycisk myszy na `pom.xml` → **Open with** / **Otwórz za pomocą** → **IntelliJ IDEA**, albo w samej aplikacji: **File** → **Open…** → wskazać `pom.xml` → **Open as Project**), a następnie ustawić **JDK 27 GA** (poziom języka 27 bez preview) według [konfiguracji środowiska](../../srodowisko.html).
 
    <figure class="image-example" markdown="1">
      <img src="assets/otwieranie-pom-xml.png" alt="Plik pom.xml w katalogu ekopanel-swing i opcja Open with (Otwórz za pomocą) w Eksploratorze Windows">
      <figcaption>Plik pom.xml i jego menu kontekstowe w katalogu ekopanel-swing.</figcaption>
    </figure>
 
-3. Uruchomić `pl.uczelnia.lab1.Main.main()`, kliknąć `Przywitaj` i sprawdzić zmianę etykiety na `Interfejs reaguje na zdarzenie`.
+   <details markdown="1">
+   <summary><strong>Co to jest pom.xml i dlaczego otwiera się go jako projekt?</strong></summary>
+
+   - **Czym jest `pom.xml` (*Project Object Model*)?** Jest to główny plik konfiguracyjny narzędzia **Maven** (systemu budowania i zarządzania zależnościami w Javie). Określa on identyfikator projektu (`groupId`, `artifactId`, `version`), docelową wersję Javy (`maven.compiler.release`), listę zewnętrznych bibliotek (`<dependencies>`) oraz wtyczki budujące (`<plugins>`).
+   - **Dlaczego otwiera się właśnie `pom.xml` jako projekt?** Wskazanie pliku `pom.xml` (z opcją **Open as Project**) informuje IntelliJ IDEA, że katalog jest projektem Mavena. Środowisko automatycznie rozpoznaje strukturę katalogów (`src/main/java`, `src/main/resources`), pobiera wymagane biblioteki i konfiguruje ścieżkę klas (*classpath*). Otwarcie pojedynczego pliku `.java` bez wczytania `pom.xml` powoduje brak dostępu do bibliotek zdefiniowanych w projekcie.
+
+   </details>
+
+   <details markdown="1">
+   <summary><strong>Jak i po co ustawić JDK 27 GA oraz poziom języka 27?</strong></summary>
+
+   - **Po co?** **JDK 27 GA** (*General Availability*, czyli stabilne wydanie bez Early Access) dostarcza kompilator i maszynę wirtualną zgodną z zapisem `<maven.compiler.release>27</maven.compiler.release>` w `pom.xml` oraz wymaganiami JavaFX 27. Ustawienie poziomu języka **27 (bez preview)** gwarantuje korzystanie wyłącznie ze stabilnych funkcji Javy 27, dzięki czemu kod kompiluje się identycznie w IntelliJ IDEA, w Mavenie i na stanowisku sprawdzającym.
+   - **Jak to zrobić w IntelliJ IDEA:**
+     1. Otworzyć **File → Project Structure…** (`Ctrl+Alt+Shift+S`).
+     2. W sekcji **Project** ustawić **SDK** na **27** (jeśli brak na liście: **Add SDK → Download JDK…**, wybrać **Version: 27** oraz w polu **Vendor** wskazać **Oracle OpenJDK** — ewentualnie **Eclipse Temurin**, **Amazon Corretto** lub **Azul Zulu** — bez dopisku EA/Early Access), a **Language level** na **27** (bez *Preview*) lub **`SDK default`** (na samej górze listy, gdy **SDK** jest już ustawione na 27).
+     3. W sekcji **Modules → Dependencies** upewnić się, że **Module SDK** wskazuje **Project SDK**, i kliknąć **OK**.
+     4. W **File → Settings…** (`Ctrl+Alt+S`) → **Build, Execution, Deployment → Build Tools → Maven** ustawić **Importing → JDK for importer** oraz **Runner → JRE** na **Use Project JDK** (lub **27**).
+   - **Co zrobić, jeśli na liście `Language level` nie ma pozycji `27`?**
+     - Wybrać **`SDK default`** z samej góry listy — po ustawieniu **SDK** na **27** oznacza ono poziom języka przypisany do JDK 27 (bez *preview*).
+     - Jeśli lista kończy się na niższej wersji (np. 25 lub 26), zainstalowana wersja IntelliJ IDEA jest starsza niż Java 27. Należy zaktualizować IDE do najnowszego stabilnego wydania (bez EAP), a jeśli aktualizacja nie jest możliwa, wybrać **`SDK default`** i przeładować projekt w panelu **Maven** (**Reload All Maven Projects**) — kompilator użyje JDK 27 zgodnie z `<maven.compiler.release>27</maven.compiler.release>` w `pom.xml`.
+   - **Jak `pom.xml` współgra z ustawieniami IntelliJ IDEA?**
+     - `pom.xml` określa **wersję kompilacji i biblioteki** (`<maven.compiler.release>27</maven.compiler.release>`, `<dependencies>`, `<plugins>`), które IntelliJ przejmuje przy **Reload All Maven Projects**.
+     - W IntelliJ ustawia się **fizyczną lokalizację JDK 27** (**Project/Module SDK**) oraz JDK dla wbudowanego Mavena (**Importing** i **Runner → Use Project JDK**).
+     - Zielona strzałka przy `main()` uruchamia kod na **Project SDK** z bibliotekami z `pom.xml` (wystarcza w Swing, JDBC i Hibernate), natomiast konfiguracja z `<build><plugins>` (np. `javafx:run` od Lab 2) działa wyłącznie przy uruchamianiu z panelu **Maven** (lub przez `mvn` w terminalu).
+
+   </details>
+
+3. Odszukać metodę `main()` w projekcie (w panelu **Project** rozwinąć `src/main/java` → `pl.uczelnia.lab1` → `Main.java`) i uruchomić ją zieloną strzałką na lewym marginesie edytora (**Run 'Main.main()'**). Po uruchomieniu programu kliknąć przycisk `Przywitaj`, sprawdzić zmianę etykiety na `Interfejs reaguje na zdarzenie`, a następnie upewnić się w dolnym panelu **Run** (w oknie IntelliJ IDEA), że w konsoli nie pojawiają się żadne błędy ani wyjątki.
+
+   <details markdown="1">
+   <summary><strong>Dlaczego program potrzebuje statycznej metody main() i czy może być ich kilka?</strong></summary>
+
+   - **Punkt wejścia programu:** Aby uruchomić projekt w Javie jako aplikację, musi istnieć w nim co najmniej jedna metoda startowa `public static void main(String[] args)`, od której maszyna wirtualna (JVM) rozpoczyna wykonywanie programu.
+   - **Dlaczego `static` i `public`?** Modyfikator `static` pozwala JVM wywołać metodę `main()` bez wcześniejszego tworzenia obiektu danej klasy (zanim jeszcze program ruszy), a `public` daje maszynie wirtualnej dostęp do metody spoza klasy. `void` oznacza brak zwracanej wartości, natomiast `String[] args` przyjmuje ewentualne argumenty przekazane przy uruchomieniu z wiersza poleceń.
+   - **Wiele metod `main()` w jednym projekcie:** W projekcie może istnieć kilka klas posiadających własną metodę `main()` (np. główna aplikacja oraz mniejsze klasy pomocnicze lub testowe). Przy uruchomieniu wykonywana jest ta metoda, którą wskażemy zieloną strzałką w IDE lub w konfiguracji uruchamiania.
+
+   </details>
 4. W `pom.xml` zmienić `artifactId` na `ekopanel-swing`. Do sekcji `dependencies` dodać bibliotekę [FlatLaf 3.7](https://www.formdev.com/flatlaf/) (pozostawiając istniejącą zależność `jSystemThemeDetector` 3.9):
 
    <figure class="code-example" markdown="1">
